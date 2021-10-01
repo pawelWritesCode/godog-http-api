@@ -1,10 +1,10 @@
-name: godog_example_setup
+name: godog-example-setup
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
 
