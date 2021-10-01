@@ -1,3 +1,5 @@
+![godog-example-setup](https://github.com/pawelWritesCode/godog-example-setup/actions/workflows/go.yml/badge.svg)
+
 # Example godog setup with gdutils
 
 ## Overview:
