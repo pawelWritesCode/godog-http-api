@@ -1,3 +1,5 @@
+[![GitHubActions](https://github.com/pawelWritesCode/godog-example-setup/workflows/go/badge.svg)](https://github.com/pawelWritesCode/godog-example-setup/actions)
+
 # Example godog setup with gdutils
 
 ## Overview:
