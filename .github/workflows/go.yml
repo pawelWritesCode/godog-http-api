@@ -20,14 +20,14 @@ jobs:
 
       - name: Turn on backend
         working-directory: bin
-        run: ./users_crud
+        run: ./user_crud &
 
       - name: Run e2e tests
         run: |
-          pwd
           go mod download
+          go install github.com/cucumber/godog/cmd/godog@v0.12.0
           echo " " > .env
           sleep 10
           mkdir cucumber
           godog --version
-          godog
+          godog --concurrency=2 --format=progress --random
