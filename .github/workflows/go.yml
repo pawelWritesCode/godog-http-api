@@ -18,10 +18,6 @@ jobs:
         with:
           go-version: 1.17
 
-#      - name: Download godog binary
-#        working-directory: godog
-#        run: go get github.com/cucumber/godog/cmd/godog
-
       - name: Turn on backend
         working-directory: bin
         run: ./users_crud
