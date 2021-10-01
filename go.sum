@@ -161,8 +161,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRW
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
-github.com/pawelWritesCode/gdutils v0.6.7 h1:o/IA19VnECY/rKFTk6vjyZIvq5nsJe+6uobjbejipOc=
-github.com/pawelWritesCode/gdutils v0.6.7/go.mod h1:pACBZn/QpBQoizsXHF56ITMuJBic3CepPmxKAgjb6/8=
+github.com/pawelWritesCode/gdutils v0.6.9 h1:2O/petaKQDx3fGzCRqvjqdtjoUMhGD3xNt+6ePeQWzc=
+github.com/pawelWritesCode/gdutils v0.6.9/go.mod h1:pACBZn/QpBQoizsXHF56ITMuJBic3CepPmxKAgjb6/8=
 github.com/pawelWritesCode/qjson v1.0.1 h1:MreBuXjjQj2XROgrGK5e9rWDiwLzDO4TyMyo8IvYP9M=
 github.com/pawelWritesCode/qjson v1.0.1/go.mod h1:BBj5FLhYUYGE8lNCKdz+MjJab+2fFcs+s9NFDDFjjnk=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
