@@ -1,6 +1,31 @@
 Feature: Test users CRUD
 
-  Scenario: Create user
+  Scenario: Create user v1
+    Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE"
+    Given I prepare new "POST" request to "http://127.0.0.1:1234/users" and save it as "CREATE_USER"
+    Given I set following headers for prepared request "CREATE_USER":
+    """
+    {
+        "Content-Type": "application/json"
+    }
+    """
+    Given I set following body for prepared request "CREATE_USER":
+    """
+        {
+            "firstName": "{{.RANDOM_FIRST_NAME}}",
+            "lastName": "{{.RANDOM_LAST_NAME}}",
+            "age": {{.RANDOM_AGE}}
+        }
+    """
+    When I send request "CREATE_USER"
+    Then the response status code should be 201
+    And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
+    And the response body should have type "JSON"
+    And I save from the last response JSON node "id" as "USER_ID"
+
+  Scenario: Create user v2
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE"
