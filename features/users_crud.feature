@@ -3,7 +3,7 @@ Feature: Test users CRUD
   Scenario: Create user v1
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
-    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
     Given I prepare new "POST" request to "http://127.0.0.1:1234/users" and save it as "CREATE_USER"
     Given I set following headers for prepared request "CREATE_USER":
     """
@@ -28,7 +28,7 @@ Feature: Test users CRUD
   Scenario: Create user v2
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
-    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
     When I send "POST" request to "http://127.0.0.1:1234/users" with body and headers:
     """
     {
@@ -51,7 +51,7 @@ Feature: Test users CRUD
 
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
-    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
     When I send "POST" request to "http://127.0.0.1:1234/users" with body and headers:
     """
     {
@@ -91,7 +91,7 @@ Feature: Test users CRUD
 
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME1"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME1"
-    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE1"
+    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE1"
     When I send "POST" request to "http://127.0.0.1:1234/users" with body and headers:
     """
     {
@@ -112,7 +112,7 @@ Feature: Test users CRUD
 
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME2"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME2"
-    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE2"
+    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE2"
     When I send "POST" request to "http://127.0.0.1:1234/users" with body and headers:
     """
     {
@@ -150,7 +150,7 @@ Feature: Test users CRUD
 
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
-    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
     When I send "POST" request to "http://127.0.0.1:1234/users" with body and headers:
     """
     {
@@ -212,7 +212,7 @@ Feature: Test users CRUD
 
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
-    Given I generate a random int in the range "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
     When I send "POST" request to "http://127.0.0.1:1234/users" with body and headers:
     """
     {
@@ -250,7 +250,7 @@ Feature: Test users CRUD
 
     Given I generate a random string of length "10" without unicode characters and save it as "NEW_USER_RANDOM_FIRST_NAME"
     Given I generate a random string of length "10" without unicode characters and save it as "NEW_USER_RANDOM_LAST_NAME"
-    Given I generate a random int in the range "18" to "48" and save it as "NEW_USER_RANDOM_AGE"
+    Given I generate a random int in the range from "18" to "48" and save it as "NEW_USER_RANDOM_AGE"
     When I send "PUT" request to "http://127.0.0.1:1234/users/{{.USER_ID}}" with body and headers:
     """
     {
