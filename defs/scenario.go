@@ -39,6 +39,27 @@ func (s *Scenario) ISendRequestToWithBodyAndHeaders(method, urlTemplate string, 
 	return s.State.ISendRequestToWithBodyAndHeaders(method, urlTemplate, reqBody)
 }
 
+//IPrepareNewRequestToAndSaveItAs prepares new request and saves it in cache under cacheKey
+func (s Scenario) IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey string) error {
+	return s.State.IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey)
+}
+
+//ISetFollowingHeadersForPreparedRequest sets provided headers for previously prepared request
+func (s Scenario) ISetFollowingHeadersForPreparedRequest(cacheKey string, headersTemplate *godog.DocString) error {
+	return s.State.ISetFollowingHeadersForPreparedRequest(cacheKey, headersTemplate)
+}
+
+//ISetFollowingBodyForPreparedRequest sets body for previously prepared request
+//bodyTemplate may be in any format and accepts template values
+func (s Scenario) ISetFollowingBodyForPreparedRequest(cacheKey string, bodyTemplate *godog.DocString) error {
+	return s.State.ISetFollowingBodyForPreparedRequest(cacheKey, bodyTemplate)
+}
+
+//ISendRequest sends previously prepared HTTP(s) request
+func (s Scenario) ISendRequest(cacheKey string) error {
+	return s.State.ISendRequest(cacheKey)
+}
+
 //TheResponseShouldHaveHeader checks whether last HTTP response has given header
 func (s *Scenario) TheResponseShouldHaveHeader(name string) error {
 	return s.State.TheResponseShouldHaveHeader(name)

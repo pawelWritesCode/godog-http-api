@@ -58,16 +58,47 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		return ctx, nil
 	})
 
-	//random data generation
+	/*
+	   |--------------------------------------------------------------------------
+	   | Random data generation
+	   |--------------------------------------------------------------------------
+	   |
+	   | This section contains utility methods for random data generation.
+	   | Those methods contains creation of
+	   | - fixed length strings with/without unicode characters
+	   | - int/float from provided range.
+	   |
+	   | Every method saves its output in state's cache under provided key
+	*/
 	ctx.Step(`^I generate a random string of length "([^"]*)" without unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithoutUnicodeCharactersAndSaveItAs)
 	ctx.Step(`^I generate a random string of length "([^"]*)" with unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs)
-	ctx.Step(`^I generate a random float in the range "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomFloatInTheRangeToAndSaveItAs)
-	ctx.Step(`^I generate a random int in the range "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomIntInTheRangeToAndSaveItAs)
+	ctx.Step(`^I generate a random float in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomFloatInTheRangeToAndSaveItAs)
+	ctx.Step(`^I generate a random int in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomIntInTheRangeToAndSaveItAs)
 
-	//sending HTTP requests
+	/*
+	   |--------------------------------------------------------------------------
+	   | Sending HTTP(s) requests
+	   |--------------------------------------------------------------------------
+	   |
+	   | This section contains utility methods for preparing and sending HTTP(s) requests.
+	*/
 	ctx.Step(`^I send "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" with body and headers:$`, scenario.ISendRequestToWithBodyAndHeaders)
+	ctx.Step(`^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" and save it as "([^"]*)"$`, scenario.IPrepareNewRequestToAndSaveItAs)
+	ctx.Step(`^I set following headers for prepared request "([^"]*)":$`, scenario.ISetFollowingHeadersForPreparedRequest)
+	ctx.Step(`^I set following body for prepared request "([^"]*)":$`, scenario.ISetFollowingBodyForPreparedRequest)
+	ctx.Step(`^I send request "([^"]*)"$`, scenario.ISendRequest)
 
-	//assertions
+	/*
+	   |--------------------------------------------------------------------------
+	   | Assertions
+	   |--------------------------------------------------------------------------
+	   |
+	   | This section contains assertions against last request
+	   | Those include assertions against:
+	   | - response body JSON nodes,
+	   | - HTTP(s) headers,
+	   | - status code.
+	*/
 	ctx.Step(`^the response should have header "([^"]*)"$`, scenario.TheResponseShouldHaveHeader)
 	ctx.Step(`^the response should have header "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveHeaderOfValue)
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
@@ -79,15 +110,33 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the JSON response should have nodes "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
 	ctx.Step(`^the response body should have type "(JSON)"$`, scenario.TheResponseBodyShouldHaveType)
 
-	//preserving values
+	/*
+	   |--------------------------------------------------------------------------
+	   | Preserving values
+	   |--------------------------------------------------------------------------
+	   |
+	   | This section contains method for preserving JSON nodes in state's cache
+	*/
 	ctx.Step(`^I save from the last response JSON node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseJSONNodeAs)
 
-	//debugging
+	/*
+	   |--------------------------------------------------------------------------
+	   | Debugging
+	   |--------------------------------------------------------------------------
+	   |
+	   | This section contains methods that are useful during test creation
+	*/
 	ctx.Step(`^I print last response body$`, scenario.IPrintLastResponseBody)
 	ctx.Step(`^I start debug mode$`, scenario.IStartDebugMode)
 	ctx.Step(`^I stop debug mode$`, scenario.IStopDebugMode)
 
-	//block scenario execution for some time. Available method values should compatible with time.ParseDuration method
+	/*
+	   |--------------------------------------------------------------------------
+	   | Flow control
+	   |--------------------------------------------------------------------------
+	   |
+	   | This section contains methods for control scenario flow
+	*/
 	ctx.Step(`^I wait "([^"]*)"`, scenario.IWait)
 }
 
