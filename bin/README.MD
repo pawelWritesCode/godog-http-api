@@ -1,12 +1,6 @@
-Binary `user_crud` is web server (DOMAIN: _http://127.0.0.1:1234_) existing for github-actions testing purposes. Server has following endpoints:
+## This folder contains server bins for different architectures
 
-| Method   | URI            | Body schema                                           |
-| -------- | -------------- | ----------------------------------------------------  |
-| POST     | /users         | {"firstName": string, "lastName": string, "age": int} |
-| GET      | /users         | none                                                  |
-| GET      | /users/:userId | none                                                  |
-| PUT      | /users/:userId | {"firstName": string, "lastName": string, "age": int} |
-| DELETE   | /users/:userId | none                                                  |
+Server's API is described in `schema.yaml`.
 
-
-Entire directory `bin/` may be removed if necessary, but `features/test2.feature` will no longer pass.
+This server is required for Github Actions and may be used by user 
+for testing new methods
