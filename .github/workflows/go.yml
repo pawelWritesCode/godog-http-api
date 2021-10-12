@@ -20,7 +20,7 @@ jobs:
 
       - name: Turn on backend
         working-directory: bin
-        run: ./user_crud &
+        run: ./linux/amd64/user_crud &
 
       - name: Run e2e tests
         run: |
