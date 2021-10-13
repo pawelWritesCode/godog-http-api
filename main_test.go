@@ -41,19 +41,16 @@ func TestMain(m *testing.M) {
 }
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
-	var isDebug bool
-	err := godotenv.Load()
-	checkErr(err)
-
-	debugString := os.Getenv("GODOG_DEBUG")
-	if strings.ToLower(debugString) == "true" {
-		isDebug = true
-	}
+	checkErr(godotenv.Load())
+	isDebug := strings.ToLower(os.Getenv("GODOG_DEBUG")) == "true"
 
 	scenario := &defs.Scenario{State: gdutils.NewDefaultState(isDebug)}
 
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		scenario.State.ResetState(isDebug)
+
+		//Here you can define more scenario-scoped values using scenario.State.Cache.Save() method
+		scenario.State.Cache.Save("MY_APP_URL", os.Getenv("GODOG_MY_APP_URL"))
 
 		return ctx, nil
 	})
@@ -80,7 +77,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | Sending HTTP(s) requests
 	   |--------------------------------------------------------------------------
 	   |
-	   | This section contains utility methods for preparing and sending HTTP(s) requests.
+	   | This section contains methods for preparing and sending HTTP(s) requests.
 	*/
 	ctx.Step(`^I send "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" with body and headers:$`, scenario.ISendRequestToWithBodyAndHeaders)
 	ctx.Step(`^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" and save it as "([^"]*)"$`, scenario.IPrepareNewRequestToAndSaveItAs)
@@ -93,7 +90,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | Assertions
 	   |--------------------------------------------------------------------------
 	   |
-	   | This section contains assertions against last request
+	   | This section contains assertions against last HTTP(s) request.
 	   | Those include assertions against:
 	   | - response body JSON nodes,
 	   | - HTTP(s) headers,
@@ -112,10 +109,10 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	/*
 	   |--------------------------------------------------------------------------
-	   | Preserving values
+	   | Preserving data
 	   |--------------------------------------------------------------------------
 	   |
-	   | This section contains method for preserving JSON nodes in state's cache
+	   | This section contains method for preserving data
 	*/
 	ctx.Step(`^I save from the last response JSON node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseJSONNodeAs)
 
