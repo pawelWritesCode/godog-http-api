@@ -5,19 +5,34 @@
 ## Overview:
 
 This repository contains skeleton that allow to write behaviour driven tests with use of framework [godog](https://github.com/cucumber/godog)
-that implements [gherkin](https://cucumber.io/docs/gherkin/) syntax with step library [gdutils](https://github.com/pawelWritesCode/gdutils).
+that implements [gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax with step library [gdutils](https://github.com/pawelWritesCode/gdutils).
 
 ## Project structure:
+```
 
-Directory `features/` contains **tests** (_files with extension `.feature`_) aggregated into logic subdirectories.
-
-File `main_test.go` holds set-up for godog framework
-
-Package `defs` holds definitions of steps (methods) used in every test.
-
-Directory `bin/` contains binaries with simple `user CRUD server` required for testing purposes and may be removed later.
+.
+├── LICENSE
+├── Makefile                - source of useful commands (make env, make download-dependencies, make clean)
+├── README.MD
+├── bin                     - binaries with simple CRUD API server, required ONLY for testing purposes
+│   ├── README.MD
+│   ├── darwin
+│   ├── linux
+│   ├── schema.yaml         - CRUD API schema - if you would like to use it somehow
+│   └── windows
+├── defs                    - 🥒 package with implementation of godog methods(steps)
+│   └── scenario.go         - 🥒 here add your custom methods(steps) definitions if required
+├── features                - 🥒 place for your tests (files with extensions .feature)
+│   └── users_crud.feature  - 🥒 simple test feature, required ONLY for testing purposes
+├── go.mod
+├── go.sum
+├── main_test.go            - 🥒 setup for godog  framework
+└── usage.gif
+```
 
 ## Usage:
+
+![Usage example](usage.gif)
 
 #### Prerequisites
 
@@ -26,8 +41,7 @@ Directory `bin/` contains binaries with simple `user CRUD server` required for t
 
 ### First time:
 
-Tests may be run locally from OS host console(terminal). At first
-**download go packages & godog CLI**. You can do it by typing in console
+At first **download go packages & godog CLI**. You can do it by typing in console
 
 ```shell
 make download-dependencies
@@ -42,27 +56,31 @@ godog --version
 
 Note, that project directory should not be inside **GOPATH** !
 
-Then, create `.env` file
+Next, create `.env` file
 ```shell
 make env
 ```
 
-Finally, remove unnecessary files and directories (run it just once)
+Finally, remove unnecessary files and directories ✂ (**run it just once**).
+
+**Warning**: This command removes `.git/`, `.github/`, `bin/`, `usage.gif`, `.gitignore` and example test suite from `features/` dir. If you want 
+to keep any of these (for example if you want to use `features/users_crud.feature` as example for your test suites),
+then **do not run this command!**
 ```shell
 make clean
 ```
 
 ### Regular:
 
-##### Running **all tests** directly by `godog` CLI
+Following commands run from local terminal in main project directory:
 
-In main project directory run from local console(terminal) command:
+##### Running **all tests** directly by `godog` CLI
 
 ```
 godog
 ```
 
-or
+##### Running **all tests** from console using **go** binary:
 
 ```
 go test
@@ -70,15 +88,11 @@ go test
 
 ##### Run **single test** directly by `godog` CLI
 
-In main project directory run from local console(terminal) command:
-
 ```
 godog features/test.feature
 ```
 
 ##### Run tests with parallelization (many at once)
-
-In main project directory run from local console(terminal) command:
 
 ```
 godog --concurrency=X --format=progress

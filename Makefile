@@ -10,6 +10,12 @@ github_actions_dir=./.github
 #features_dir is path to directory with features
 features_dir=./features
 
+#usage_gif_path is path to usage gif
+usage_gif_path=./usage.gif
+
+#gitignore_path is path to .gitignore file
+gitignore_path=./.gitignore
+
 #env creates .env file and populates it with default values
 env:
 	touch .env
@@ -26,3 +32,5 @@ clean:
 	rm -rf ${git_dir}
 	rm -rf ${github_actions_dir}
 	rm ${features_dir}/users_crud.feature
+	rm ${usage_gif_path}
+	rm ${gitignore_path}
