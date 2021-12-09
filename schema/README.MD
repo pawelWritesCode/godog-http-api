@@ -1,0 +1,1 @@
+Here place your dir structure with JSON SCHEMAS

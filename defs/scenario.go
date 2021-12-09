@@ -144,3 +144,8 @@ func (s *Scenario) IStartDebugMode() error {
 func (s *Scenario) IStopDebugMode() error {
 	return s.State.IStopDebugMode()
 }
+
+//IValidateLastResponseBodyWithSchema validates last response body against JSON schema as provided in schemaPath
+func (s *Scenario) IValidateLastResponseBodyWithSchema(schemaPath string) error {
+	return s.State.IValidateLastResponseBodyWithSchema(schemaPath)
+}

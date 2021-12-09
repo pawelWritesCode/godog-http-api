@@ -44,7 +44,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	checkErr(godotenv.Load())
 	isDebug := strings.ToLower(os.Getenv("GODOG_DEBUG")) == "true"
 
-	scenario := &defs.Scenario{State: gdutils.NewDefaultState(isDebug)}
+	scenario := &defs.Scenario{State: gdutils.NewDefaultState(isDebug, os.Getenv("GODOG_JSON_SCHEMA_DIR"))}
 
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		scenario.State.ResetState(isDebug)
@@ -106,6 +106,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the JSON node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldNotBe)
 	ctx.Step(`^the JSON response should have nodes "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
 	ctx.Step(`^the response body should have type "(JSON)"$`, scenario.TheResponseBodyShouldHaveType)
+	ctx.Step(`^the response body should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
 
 	/*
 	   |--------------------------------------------------------------------------
