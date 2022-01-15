@@ -130,7 +130,8 @@ func (s *Scenario) IPrintLastResponseBody() error {
 }
 
 //IWait waits for provided time interval amount of time
-//timeInterval should be string valid for time.ParseDuration func
+//timeInterval should be string valid for time.ParseDuration func,
+//for example: 3s, 1h, 30ms
 func (s *Scenario) IWait(timeInterval string) error {
 	return s.State.IWait(timeInterval)
 }

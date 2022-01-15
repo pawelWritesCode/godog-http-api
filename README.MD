@@ -9,26 +9,21 @@ that implements [gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax wit
 
 ## Project structure:
 ```
-
 .
 ├── LICENSE
-├── Makefile                - source of useful commands (make env, make download-dependencies, make clean)
+├── Makefile                        - source of useful commands (make env, make download-dependencies, make clean)
 ├── README.MD
-├── bin                     - binaries with simple CRUD API server, required ONLY for testing purposes
-│   ├── README.MD
-│   ├── darwin
-│   ├── linux
-│   ├── schema.yaml         - CRUD API schema - if you would like to use it somehow
-│   └── windows
-├── defs                    - 🥒 package with implementation of godog methods(steps)
-│   └── scenario.go         - 🥒 here add your custom methods(steps) definitions if required
-├── features                - 🥒 place for your tests (files with extensions .feature)
-│   └── users_crud.feature  - 🥒 simple test feature, required ONLY for testing purposes
+├── assets                          - temporary folder with project assets
+│   ├── gifs                  
+│   └── test_server                 - binaries with simple CRUD API server, required ONLY for testing purposes
+├── defs                            - 🥒 package with implementation of godog methods(steps)
+│   └── scenario.go                 - 🥒 here add your custom methods(steps) definitions if required
+├── features                        - 🥒 place for your tests (files with extensions .feature)
+│   └── users_crud.feature          - 🥒 simple test feature, required ONLY for testing purposes
 ├── go.mod
 ├── go.sum
-├── main_test.go            - 🥒 setup for godog  framework
-└── usage_1.gif
-└── usage_2.gif
+└── main_test.go                    - 🥒 setup for godog framework
+
 ```
 
 ## Usage:
@@ -40,7 +35,7 @@ that implements [gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax wit
 
 ### First time:
 
-![Usage example](usage_1.gif)
+![Usage example](assets/gifs/usage_1.gif)
 
 At first **download go packages & godog CLI**. You can do it by typing in console
 
@@ -64,7 +59,7 @@ make env
 
 Finally, remove unnecessary files and directories ✂ (**run it just once**).
 
-**Warning**: This command removes `.git/`, `.github/`, `bin/`, `usage_1.gif`, `usage_2.gif`, `.gitignore` and example test suite from `features/` dir. If you want 
+**Warning**: This command removes `.git/`, `.github/`, `bin/`, `assets`, `.gitignore` and example test suite from `features/` dir. If you want 
 to keep any of these (for example if you want to use `features/users_crud.feature` as example for your test suites),
 then **do not run this command!**
 ```shell
@@ -73,7 +68,7 @@ make clean
 
 ### Regular:
 
-![Usage example](usage_2.gif)
+![Usage example](assets/gifs/usage_2.gif)
 
 Following commands run from local terminal in main project directory:
 

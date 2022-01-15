@@ -19,12 +19,11 @@ jobs:
           go-version: 1.17
 
       - name: Turn on backend
-        working-directory: bin
-        run: ./linux/amd64/user_crud &
+        working-directory: assets
+        run: ./test_server/bin/linux/amd64/user_crud &
 
       - name: Run e2e tests
         run: |
           make download-dependencies
           make env
-          godog --version
           godog --concurrency=2 --format=progress --random

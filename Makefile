@@ -13,10 +13,13 @@ features_dir=./features
 #gitignore_path is path to .gitignore file
 gitignore_path=./.gitignore
 
+#assets_dir is path to directory with temporary assets
+assets_dir=./assets
+
 #env creates .env file and populates it with default values
 env:
 	touch .env
-	echo "GODOG_DEBUG=false\nGODOG_MY_APP_URL=http://localhost:1234\nGODOG_JSON_SCHEMA_DIR=/your/local/full/path/to/schema/directory" >> .env
+	echo "GODOG_DEBUG=false\nGODOG_MY_APP_URL=http://localhost:1234\nGODOG_JSON_SCHEMA_DIR=./assets/test_server/doc/schema" >> .env
 
 #download-dependencies download go packages and godog binary
 download-dependencies:
@@ -28,7 +31,6 @@ clean:
 	rm -rf ${bin_dir}
 	rm -rf ${git_dir}
 	rm -rf ${github_actions_dir}
+	rm -rf ${assets_dir}
 	rm ${features_dir}/users_crud.feature
-	rm ./usage_1.gif
-	rm ./usage_2.gif
 	rm ${gitignore_path}

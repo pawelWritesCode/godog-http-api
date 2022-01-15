@@ -17,6 +17,17 @@ import (
 	"github.com/pawelWritesCode/godog-example-setup/defs"
 )
 
+const (
+	//envDebug describes environment variable responsible for debug mode - (true/false)
+	envDebug = "GODOG_DEBUG"
+
+	// envMyAppURL describes URL to "My app" - should be valid URL
+	envMyAppURL = "GODOG_MY_APP_URL"
+
+	// envJsonSchemaDir path to JSON schemas dir - relative path from project root
+	envJsonSchemaDir = "GODOG_JSON_SCHEMA_DIR"
+)
+
 var opt = godog.Options{
 	Output:    colors.Colored(os.Stdout),
 	Format:    "progress", // can define default values
@@ -41,16 +52,16 @@ func TestMain(m *testing.M) {
 }
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
-	checkErr(godotenv.Load())
-	isDebug := strings.ToLower(os.Getenv("GODOG_DEBUG")) == "true"
+	checkErr(godotenv.Load()) // loading environment variables from .env file
+	isDebug := strings.ToLower(os.Getenv(envDebug)) == "true"
 
-	scenario := &defs.Scenario{State: gdutils.NewDefaultState(isDebug, os.Getenv("GODOG_JSON_SCHEMA_DIR"))}
+	scenario := &defs.Scenario{State: gdutils.NewDefaultState(isDebug, os.Getenv(envJsonSchemaDir))}
 
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		scenario.State.ResetState(isDebug)
 
 		//Here you can define more scenario-scoped values using scenario.State.Cache.Save() method
-		scenario.State.Cache.Save("MY_APP_URL", os.Getenv("GODOG_MY_APP_URL"))
+		scenario.State.Cache.Save("MY_APP_URL", os.Getenv(envMyAppURL))
 
 		return ctx, nil
 	})
@@ -100,7 +111,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the response should have header "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveHeaderOfValue)
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
 	ctx.Step(`^the JSON response should have key "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
-	ctx.Step(`^the JSON node "([^"]*)" should be "([^"]*)" of value "([^"]*)"$`, scenario.TheJSONNodeShouldBeOfValue)
+	ctx.Step(`^the JSON node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheJSONNodeShouldBeOfValue)
 	ctx.Step(`^the JSON node "([^"]*)" should be slice of length "([^"]*)"$`, scenario.TheJSONNodeShouldBeSliceOfLength)
 	ctx.Step(`^the JSON node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldBe)
 	ctx.Step(`^the JSON node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldNotBe)
