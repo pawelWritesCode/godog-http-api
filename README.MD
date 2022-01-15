@@ -5,7 +5,7 @@
 ## Overview:
 
 This repository contains skeleton that allow to write behaviour driven tests with use of framework [godog](https://github.com/cucumber/godog)
-that implements [gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax with step library [gdutils](https://github.com/pawelWritesCode/gdutils).
+that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax with step library [gdutils](https://github.com/pawelWritesCode/gdutils).
 
 ## Project structure:
 ```
