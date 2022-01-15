@@ -27,12 +27,11 @@ that implements [gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax wit
 ├── go.mod
 ├── go.sum
 ├── main_test.go            - 🥒 setup for godog  framework
-└── usage.gif
+└── usage_1.gif
+└── usage_2.gif
 ```
 
 ## Usage:
-
-![Usage example](usage.gif)
 
 #### Prerequisites
 
@@ -40,6 +39,8 @@ that implements [gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax wit
 * `.env` file
 
 ### First time:
+
+![Usage example](usage_1.gif)
 
 At first **download go packages & godog CLI**. You can do it by typing in console
 
@@ -63,7 +64,7 @@ make env
 
 Finally, remove unnecessary files and directories ✂ (**run it just once**).
 
-**Warning**: This command removes `.git/`, `.github/`, `bin/`, `usage.gif`, `.gitignore` and example test suite from `features/` dir. If you want 
+**Warning**: This command removes `.git/`, `.github/`, `bin/`, `usage_1.gif`, `usage_2.gif`, `.gitignore` and example test suite from `features/` dir. If you want 
 to keep any of these (for example if you want to use `features/users_crud.feature` as example for your test suites),
 then **do not run this command!**
 ```shell
@@ -71,6 +72,8 @@ make clean
 ```
 
 ### Regular:
+
+![Usage example](usage_2.gif)
 
 Following commands run from local terminal in main project directory:
 
@@ -89,7 +92,7 @@ go test
 ##### Run **single test** directly by `godog` CLI
 
 ```
-godog features/test.feature
+godog features/users_crud.feature
 ```
 
 ##### Run tests with parallelization (many at once)
