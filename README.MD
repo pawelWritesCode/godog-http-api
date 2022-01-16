@@ -13,7 +13,7 @@ utility methods** (for testing HTTP(s) API) in just few steps.
 
 ## Documentation
 
-See project [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki)
+See project **⭆** [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki) **⭅**
 
 ## Example
 
