@@ -4,8 +4,8 @@
 
 ## Overview:
 
-This repository contains skeleton that allow to write behaviour driven tests with use of framework [godog](https://github.com/cucumber/godog)
-that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax with step library [gdutils](https://github.com/pawelWritesCode/gdutils).
+This repository contains skeleton that allow to write End-2-End tests with use of framework [godog](https://github.com/cucumber/godog)
+that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax using step library [gdutils](https://github.com/pawelWritesCode/gdutils).
 
 ## Why ?
 **No more** need for long and time-consuming framework setup. This project **cuts initial time** & allows setting up e2e test framework with **plenty of
