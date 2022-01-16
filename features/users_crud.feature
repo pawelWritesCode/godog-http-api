@@ -49,6 +49,9 @@ Feature: Test for User's CRUD.
     # Environment variable GODOG_JSON_SCHEMA_DIR from .env file should contain path to schemas dir
     # That is why we only need to pass relative path to json schema
     And the response body should be valid according to JSON schema "user/get_user.json"
+    And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
+    And the JSON node "lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
+    And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
 
   Scenario: Create new user v1.
   As application user
