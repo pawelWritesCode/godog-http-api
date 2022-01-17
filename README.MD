@@ -76,6 +76,6 @@ Feature: Test for User's CRUD.
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
 ```
 
-#### Set-up
+#### Set-up (step-by-step guide -> [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki))
 
 ![Usage example](assets/gifs/usage_0.gif)
