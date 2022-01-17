@@ -15,8 +15,8 @@ Feature: Test for User's CRUD.
     - age.
   and save it under provided key in scenario cache.
 
-    Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME"
-    Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random string in the range from "5" to "15" without unicode characters and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random string in the range from "5" to "15" with unicode characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Create user v1
@@ -188,8 +188,8 @@ Feature: Test for User's CRUD.
 
     #---------------------------------------------------------------------------------------------------
     # We generate new user's data
-    Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_FIRST_NAME2"
-    Given I generate a random string of length "10" without unicode characters and save it as "RANDOM_LAST_NAME2"
+    Given I generate a random string in the range from "5" to "15" without unicode characters and save it as "RANDOM_FIRST_NAME2"
+    Given I generate a random string in the range from "5" to "15" with unicode characters and save it as "RANDOM_LAST_NAME2"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE2"
 
     #---------------------------------------------------------------------------------------------------
@@ -352,8 +352,8 @@ Feature: Test for User's CRUD.
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
     And the JSON node "id" should be "int" of value "{{.USER_ID}}"
 
-    Given I generate a random string of length "10" without unicode characters and save it as "NEW_USER_RANDOM_FIRST_NAME"
-    Given I generate a random string of length "10" without unicode characters and save it as "NEW_USER_RANDOM_LAST_NAME"
+    Given I generate a random string in the range from "5" to "15" without unicode characters and save it as "NEW_USER_RANDOM_FIRST_NAME"
+    Given I generate a random string in the range from "5" to "15" with unicode characters and save it as "NEW_USER_RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "NEW_USER_RANDOM_AGE"
 
     #---------------------------------------------------------------------------------------------------

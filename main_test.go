@@ -12,6 +12,7 @@ import (
 	"github.com/cucumber/godog/colors"
 	"github.com/joho/godotenv"
 	"github.com/pawelWritesCode/gdutils"
+	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
 	"github.com/spf13/pflag"
 
 	"github.com/pawelWritesCode/godog-example-setup/defs"
@@ -78,8 +79,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Every method saves its output in state's cache under provided key
 	*/
-	ctx.Step(`^I generate a random string of length "([^"]*)" without unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithoutUnicodeCharactersAndSaveItAs)
-	ctx.Step(`^I generate a random string of length "([^"]*)" with unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs)
+	ctx.Step(`^I generate a random string in the range from "([^"]*)" to "([^"]*)" without unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetASCII))
+	ctx.Step(`^I generate a random string in the range from "([^"]*)" to "([^"]*)" with unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetUnicode))
 	ctx.Step(`^I generate a random float in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomFloatInTheRangeToAndSaveItAs)
 	ctx.Step(`^I generate a random int in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomIntInTheRangeToAndSaveItAs)
 
