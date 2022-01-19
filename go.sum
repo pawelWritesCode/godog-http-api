@@ -170,6 +170,8 @@ github.com/pawelWritesCode/gdutils v0.8.2 h1:H3Cd5fO6pvNkfe37jV0+/gBhFxmIb3MKO7Z
 github.com/pawelWritesCode/gdutils v0.8.2/go.mod h1:Q21TGzRi+egrxwg5sPWxz6HR+LLlRs/jp+J76TJxE/Y=
 github.com/pawelWritesCode/gdutils v0.8.3 h1:BQdnbX78a+w8fQ5ksoZtcogtybt1wk1vszMeLgnu96I=
 github.com/pawelWritesCode/gdutils v0.8.3/go.mod h1:Q21TGzRi+egrxwg5sPWxz6HR+LLlRs/jp+J76TJxE/Y=
+github.com/pawelWritesCode/gdutils v0.8.4 h1:en5u5G+919pC9/oiVUmrH3N/iPhIRJYqRYwZf66E4pY=
+github.com/pawelWritesCode/gdutils v0.8.4/go.mod h1:Q21TGzRi+egrxwg5sPWxz6HR+LLlRs/jp+J76TJxE/Y=
 github.com/pawelWritesCode/qjson v1.0.1 h1:MreBuXjjQj2XROgrGK5e9rWDiwLzDO4TyMyo8IvYP9M=
 github.com/pawelWritesCode/qjson v1.0.1/go.mod h1:BBj5FLhYUYGE8lNCKdz+MjJab+2fFcs+s9NFDDFjjnk=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=
