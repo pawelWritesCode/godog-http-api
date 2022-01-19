@@ -11,13 +11,10 @@ that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax
 **No more** need for long and time-consuming framework setup. This project **cuts initial time** & allows setting up e2e test framework with **plenty of
 utility methods** (for testing HTTP(s) API) in just few steps.
 
-## Documentation & installation(setup)
-
-See project **⭆** [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki) **⭅**
-
 ## Example
 
-#### [Test suite](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/users_crud.feature)
+After __just few__ set-up commands, almost instantly you can write tests like this: 
+#### [Test suite](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/)
 
 ```cucumber
 Feature: Test for User's CRUD.
@@ -76,6 +73,8 @@ Feature: Test for User's CRUD.
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
 ```
 
-#### Set-up (step-by-step guide -> [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki))
+## Documentation & installation(setup)
+
+See project **⭆** [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki) **⭅**
 
 ![Usage example](assets/gifs/usage_0.gif)
