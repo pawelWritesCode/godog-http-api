@@ -11,7 +11,7 @@ that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax
 **No more** need for long and time-consuming framework setup. This project **cuts initial time** & allows setting up e2e test framework with **plenty of
 utility methods** (for testing HTTP(s) API) in just few steps.
 
-## Documentation
+## Documentation & installation(setup)
 
 See project **⭆** [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki) **⭅**
 
