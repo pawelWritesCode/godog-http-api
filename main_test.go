@@ -29,11 +29,8 @@ const (
 	envJsonSchemaDir = "GODOG_JSON_SCHEMA_DIR"
 )
 
-var opt = godog.Options{
-	Output:    colors.Colored(os.Stdout),
-	Format:    "progress", // can define default values
-	Randomize: time.Now().UTC().UnixNano(),
-}
+// opt defines options for godog CLI while running tests from "go test" command.
+var opt = godog.Options{Output: colors.Colored(os.Stdout), Format: "progress", Randomize: time.Now().UTC().UnixNano()}
 
 func init() {
 	godog.BindCommandLineFlags("godog.", &opt)
@@ -43,11 +40,7 @@ func TestMain(m *testing.M) {
 	pflag.Parse()
 	opt.Paths = pflag.Args()
 
-	status := godog.TestSuite{
-		Name:                "godogs",
-		ScenarioInitializer: InitializeScenario,
-		Options:             &opt,
-	}.Run()
+	status := godog.TestSuite{Name: "godogs", ScenarioInitializer: InitializeScenario, Options: &opt}.Run()
 
 	os.Exit(status)
 }
