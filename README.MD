@@ -11,9 +11,13 @@ that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax
 **No more** need for long and time-consuming framework setup. This project **cuts initial time** & allows setting up e2e test framework with **plenty of
 utility methods** (for testing HTTP(s) API) in just few steps.
 
+Benefits:
+* **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Usage#usage) to writing** actual BDD tests (see demonstration gif below ⬇)
+* [25+ well-documented methods](https://github.com/pawelWritesCode/gdutils) useful for testing HTTP(s) API
+* methods are coupled in logical groups (data generation, assertions, sending HTTP(s) request, debugging, ...)
+
 ## Example
 
-After __just few__ set-up commands, almost instantly you can write tests like this: 
 #### [Test suite](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/)
 
 ```cucumber
