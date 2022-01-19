@@ -12,7 +12,7 @@ that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax
 utility methods** (for testing HTTP(s) API) in just few steps.
 
 Benefits:
-* **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Usage#usage) to writing** actual BDD tests (see demonstration gif below ⬇)
+* **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) to writing** actual BDD tests (see demonstration gif below ⬇)
 * [25+ well-documented methods](https://github.com/pawelWritesCode/gdutils) useful for testing HTTP(s) API
 * methods are coupled in logical groups (data generation, assertions, sending HTTP(s) request, debugging, ...)
 
