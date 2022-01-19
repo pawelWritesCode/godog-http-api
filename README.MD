@@ -17,7 +17,7 @@ See project **⭆** [wiki](https://github.com/pawelWritesCode/godog-example-setu
 
 ## Example
 
-#### Test suite
+#### [Test suite](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/users_crud.feature)
 
 ```cucumber
 Feature: Test for User's CRUD.
