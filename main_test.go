@@ -38,6 +38,7 @@ var opt = godog.Options{Output: colors.Colored(os.Stdout), Format: "progress", R
 
 func init() {
 	godog.BindCommandLineFlags("godog.", &opt)
+	checkErr(godotenv.Load()) // loading environment variables from .env file
 }
 
 func TestMain(m *testing.M) {
@@ -50,7 +51,6 @@ func TestMain(m *testing.M) {
 }
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
-	checkErr(godotenv.Load()) // loading environment variables from .env file
 	isDebug := strings.ToLower(os.Getenv(envDebug)) == "true"
 
 	// scenario represents godog scenario. Internally it holds different utilities for working with state.
