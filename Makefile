@@ -32,5 +32,5 @@ clean:
 	rm -rf ${git_dir}
 	rm -rf ${github_actions_dir}
 	rm -rf ${assets_dir}
-	rm ${features_dir}/users_crud.feature
+	rm -rf ${features_dir}
 	rm ${gitignore_path}
