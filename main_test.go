@@ -2,7 +2,9 @@ package godog_example_setup
 
 import (
 	"context"
+	"crypto/tls"
 	"log"
+	"net/http"
 	"os"
 	"strings"
 	"testing"
@@ -12,7 +14,9 @@ import (
 	"github.com/cucumber/godog/colors"
 	"github.com/joho/godotenv"
 	"github.com/pawelWritesCode/gdutils"
+	"github.com/pawelWritesCode/gdutils/pkg/cache"
 	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
+	"github.com/pawelWritesCode/gdutils/pkg/validator"
 	"github.com/spf13/pflag"
 
 	"github.com/pawelWritesCode/godog-example-setup/defs"
@@ -49,7 +53,16 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	checkErr(godotenv.Load()) // loading environment variables from .env file
 	isDebug := strings.ToLower(os.Getenv(envDebug)) == "true"
 
-	scenario := &defs.Scenario{State: gdutils.NewDefaultState(isDebug, os.Getenv(envJsonSchemaDir))}
+	// scenario represents godog scenario. Internally it holds different utilities for working with state.
+	// it can be also initialized simply by:
+	// defs.Scenario{State: gdutils.NewDefaultState(isDebug, os.Getenv(envJsonSchemaDir))}
+	scenario := defs.Scenario{
+		State: gdutils.NewState(
+			&http.Client{Timeout: 2 * time.Second, Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}},
+			cache.NewConcurrentCache(),
+			validator.NewJSONSchemaValidator(os.Getenv(envJsonSchemaDir)),
+			isDebug),
+	}
 
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		scenario.State.ResetState(isDebug)
