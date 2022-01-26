@@ -1,4 +1,4 @@
-Feature: Test for User's CRUD.
+Feature: Fetching single user.
   User's CRUD API binary and it's documentation can be found in assets/test_server/ directory.
   It is simple web server with endpoints:
   - POST    /users            - creates new user
@@ -15,8 +15,8 @@ Feature: Test for User's CRUD.
   - age.
   and save it under provided key in scenario cache.
 
-    Given I generate a random string in the range from "5" to "15" without unicode characters and save it as "RANDOM_FIRST_NAME"
-    Given I generate a random string in the range from "5" to "15" with unicode characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random ASCII word in the range from "5" to "15" and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random UNICODE word in the range from "5" to "15" and save it as "RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Get single user
@@ -25,9 +25,7 @@ Feature: Test for User's CRUD.
   and then obtain this data
 
     #---------------------------------------------------------------------------------------------------
-    # We send HTTP(s) request with pre-generated data to create new user
-    # Notice, we use pre-generated values(from Background section above)
-    # using go templates syntax from text/template package.
+    # Create new user
     When I send "POST" request to "{{.MY_APP_URL}}/users" with body and headers:
     """
     {
@@ -62,18 +60,6 @@ Feature: Test for User's CRUD.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have type "JSON"
     And the response body should be valid according to JSON schema "user/get_user.json"
-
-    #---------------------------------------------------------------------------------------------------
-    # Here, we check assertions against response body
-    #
-    # node argument should be pattern valid to qjson library, for example:
-    # - data.user[0].firstName    - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
-    # - root[0].city[1].size      - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
-    # - firstName                 - {"firstName": "abc", "lastName": "cdf", age:30},
-    #
-    # data type should be one of: string|int|float|bool
-    #
-    # node value may be fixed or obtained from cache using syntax from go text/template package
     And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the JSON node "lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"

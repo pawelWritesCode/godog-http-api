@@ -1,4 +1,4 @@
-Feature: Test for User's CRUD.
+Feature: Removing user
   User's CRUD API binary and it's documentation can be found in assets/test_server/ directory.
   It is simple web server with endpoints:
   - POST    /users            - creates new user
@@ -15,8 +15,8 @@ Feature: Test for User's CRUD.
   - age.
   and save it under provided key in scenario cache.
 
-    Given I generate a random string in the range from "5" to "15" without unicode characters and save it as "RANDOM_FIRST_NAME"
-    Given I generate a random string in the range from "5" to "15" with unicode characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random ASCII word in the range from "5" to "15" and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random UNICODE word in the range from "5" to "15" and save it as "RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Remove user
@@ -25,9 +25,7 @@ Feature: Test for User's CRUD.
   and then I would like to remove user's data
 
     #---------------------------------------------------------------------------------------------------
-    # We send HTTP(s) request with pre-generated data to create new user
-    # Notice, we use pre-generated values(from Background section above)
-    # using go templates syntax from text/template package.
+    # Create new user
     When I send "POST" request to "{{.MY_APP_URL}}/users" with body and headers:
     """
     {

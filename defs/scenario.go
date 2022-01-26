@@ -11,10 +11,10 @@ type Scenario struct {
 	State *gdutils.State
 }
 
-// IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs creates random string generator func using provided charset
-// return func creates string from provided range and preserve it under given cacheKey
-func (s *Scenario) IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs(charset string) func(from, to int, cacheKey string) error {
-	return s.State.IGenerateARandomStringInTheRangeToAndSaveItAs(charset)
+// IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs creates random runes generator func using provided charset
+// return func creates runes from provided range and preserve it under given cacheKey
+func (s *Scenario) IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(charset string) func(from, to int, cacheKey string) error {
+	return s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(charset)
 }
 
 //IGenerateARandomFloatInTheRangeToAndSaveItAs generates random float from provided range and preserve it under given name in cache

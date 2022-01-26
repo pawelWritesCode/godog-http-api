@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path"
 	"strings"
 	"testing"
 	"time"
@@ -15,8 +16,8 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/pawelWritesCode/gdutils"
 	"github.com/pawelWritesCode/gdutils/pkg/cache"
+	"github.com/pawelWritesCode/gdutils/pkg/datatype"
 	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
-	"github.com/pawelWritesCode/gdutils/pkg/validator"
 	"github.com/spf13/pflag"
 
 	"github.com/pawelWritesCode/godog-example-setup/defs"
@@ -52,6 +53,8 @@ func TestMain(m *testing.M) {
 
 func InitializeScenario(ctx *godog.ScenarioContext) {
 	isDebug := strings.ToLower(os.Getenv(envDebug)) == "true"
+	wd, err := os.Getwd()
+	checkErr(err)
 
 	// scenario represents godog scenario. Internally it holds different utilities for working with state.
 	// it can be also initialized simply by:
@@ -60,7 +63,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		State: gdutils.NewState(
 			&http.Client{Timeout: 2 * time.Second, Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}},
 			cache.NewConcurrentCache(),
-			validator.NewJSONSchemaValidator(os.Getenv(envJsonSchemaDir)),
+			datatype.NewDefaultJSONSchemaValidator(path.Join(wd, os.Getenv(envJsonSchemaDir))),
 			isDebug),
 	}
 
@@ -85,8 +88,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Every method saves its output in state's cache under provided key
 	*/
-	ctx.Step(`^I generate a random string in the range from "([^"]*)" to "([^"]*)" without unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetASCII))
-	ctx.Step(`^I generate a random string in the range from "([^"]*)" to "([^"]*)" with unicode characters and save it as "([^"]*)"$`, scenario.IGenerateARandomStringOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetUnicode))
+	ctx.Step(`^I generate a random ASCII word in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetASCII))
+	ctx.Step(`^I generate a random UNICODE word in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetUnicode))
 	ctx.Step(`^I generate a random float in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomFloatInTheRangeToAndSaveItAs)
 	ctx.Step(`^I generate a random int in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomIntInTheRangeToAndSaveItAs)
 
