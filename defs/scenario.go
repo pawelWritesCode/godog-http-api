@@ -3,7 +3,6 @@ package defs
 import (
 	"github.com/cucumber/godog"
 	"github.com/pawelWritesCode/gdutils"
-	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
 )
 
 // Scenario represents Scenario unit in context of godog framework.
@@ -30,7 +29,7 @@ func (s *Scenario) IGenerateARandomIntInTheRangeToAndSaveItAs(from, to int, cach
 
 // IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs creates random sentence generator func
 func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(charset string, minWordLength, maxWordLength int) func(from, to int, cacheKey string) error {
-	return s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetASCII, 3, 10)
+	return s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(charset, minWordLength, maxWordLength)
 }
 
 /*
