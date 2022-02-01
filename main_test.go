@@ -63,9 +63,11 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		State: gdutils.NewState(
 			&http.Client{Timeout: 2 * time.Second, Transport: &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}},
 			cache.NewConcurrentCache(),
-			datatype.NewDefaultJSONSchemaValidator(path.Join(wd, os.Getenv(envJsonSchemaDir))),
-			isDebug),
-	}
+			gdutils.JSONSchemaValidators{
+				StringValidator:    datatype.NewJSONSchemaRawValidator(),
+				ReferenceValidator: datatype.NewDefaultJSONSchemaReferenceValidator(path.Join(wd, os.Getenv(envJsonSchemaDir))),
+			},
+			isDebug)}
 
 	ctx.Before(func(ctx context.Context, sc *godog.Scenario) (context.Context, error) {
 		scenario.State.ResetState(isDebug)
@@ -83,13 +85,18 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | This section contains utility methods for random data generation.
 	   | Those methods contains creation of
-	   | - fixed length strings with/without unicode characters
+	   | - random length runes of ASCII/UNICODE characters
+	   | - random length sentences of ASCII/UNICODE words
 	   | - int/float from provided range.
 	   |
 	   | Every method saves its output in state's cache under provided key
 	*/
-	ctx.Step(`^I generate a random ASCII word in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetASCII))
-	ctx.Step(`^I generate a random UNICODE word in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetUnicode))
+	ctx.Step(`^I generate a random word having from "([^"]*)" to "([^"]*)" ASCII characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetASCII))
+	ctx.Step(`^I generate a random word having from "([^"]*)" to "([^"]*)" UNICODE characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(stringutils.CharsetUnicode))
+
+	ctx.Step(`^I generate a random sentence having from "([^"]*)" to "([^"]*)" ASCII words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetASCII, 3, 10))
+	ctx.Step(`^I generate a random sentence having from "([^"]*)" to "([^"]*)" UNICODE words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetUnicode, 3, 10))
+
 	ctx.Step(`^I generate a random float in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomFloatInTheRangeToAndSaveItAs)
 	ctx.Step(`^I generate a random int in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomIntInTheRangeToAndSaveItAs)
 
@@ -101,6 +108,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | This section contains methods for preparing and sending HTTP(s) requests.
 	*/
 	ctx.Step(`^I send "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" with body and headers:$`, scenario.ISendRequestToWithBodyAndHeaders)
+
 	ctx.Step(`^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" and save it as "([^"]*)"$`, scenario.IPrepareNewRequestToAndSaveItAs)
 	ctx.Step(`^I set following headers for prepared request "([^"]*)":$`, scenario.ISetFollowingHeadersForPreparedRequest)
 	ctx.Step(`^I set following body for prepared request "([^"]*)":$`, scenario.ISetFollowingBodyForPreparedRequest)
@@ -119,15 +127,20 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	*/
 	ctx.Step(`^the response should have header "([^"]*)"$`, scenario.TheResponseShouldHaveHeader)
 	ctx.Step(`^the response should have header "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveHeaderOfValue)
+
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
-	ctx.Step(`^the JSON response should have key "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
+
+	ctx.Step(`^the JSON response should have node "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
+	ctx.Step(`^the JSON response should have nodes "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
 	ctx.Step(`^the JSON node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheJSONNodeShouldBeOfValue)
 	ctx.Step(`^the JSON node "([^"]*)" should be slice of length "([^"]*)"$`, scenario.TheJSONNodeShouldBeSliceOfLength)
 	ctx.Step(`^the JSON node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldBe)
 	ctx.Step(`^the JSON node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldNotBe)
-	ctx.Step(`^the JSON response should have nodes "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
+
 	ctx.Step(`^the response body should have type "(JSON)"$`, scenario.TheResponseBodyShouldHaveType)
+
 	ctx.Step(`^the response body should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
+	ctx.Step(`^the response body should be valid according to JSON schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
 
 	/*
 	   |--------------------------------------------------------------------------
@@ -146,6 +159,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | This section contains methods that are useful during test creation
 	*/
 	ctx.Step(`^I print last response body$`, scenario.IPrintLastResponseBody)
+
 	ctx.Step(`^I start debug mode$`, scenario.IStartDebugMode)
 	ctx.Step(`^I stop debug mode$`, scenario.IStopDebugMode)
 

@@ -3,9 +3,9 @@ module github.com/pawelWritesCode/godog-example-setup
 go 1.17
 
 require (
-	github.com/cucumber/godog v0.12.2
+	github.com/cucumber/godog v0.12.4
 	github.com/joho/godotenv v1.4.0
-	github.com/pawelWritesCode/gdutils v0.9.0
+	github.com/pawelWritesCode/gdutils v0.9.2
 	github.com/spf13/pflag v1.0.5
 )
 

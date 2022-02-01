@@ -16,9 +16,9 @@ Feature: Adding new user
   and save it under provided key in scenario cache.
 
     # RANDOM_FIRST_NAME will be composed of only ASCII runes for example it may be: abc3@-
-    Given I generate a random ASCII word in the range from "5" to "15" and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random word having from "5" to "15" ASCII characters and save it as "RANDOM_FIRST_NAME"
     # RANDOM_LAST_NAME will be composed of ASCII + UNICODE runes for example it may be: 💄x1ś⚥
-    Given I generate a random UNICODE word in the range from "5" to "15" and save it as "RANDOM_LAST_NAME"
+    Given I generate a random word having from "5" to "15" UNICODE characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Create user v1
@@ -53,6 +53,17 @@ Feature: Adding new user
     And the response body should be valid according to JSON schema "user/get_user.json"
     # or URL with JSON schema
     And the response body should be valid according to JSON schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
+    # or raw schema definition
+    And the response body should be valid according to JSON schema:
+    """
+    {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "title": "create user",
+      "description": "Valid response from create user endpoint",
+      "type": "object"
+    }
+    """
+
     #---------------------------------------------------------------------------------------------------
     # Here, we check assertions against response body
     #

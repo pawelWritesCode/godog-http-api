@@ -1,6 +1,3 @@
-#bin_dir is path to directory with server binaries
-bin_dir=./bin
-
 #git_dir is path to default git folder with repository
 git_dir=./.git
 
@@ -28,7 +25,6 @@ download-dependencies:
 
 #clean removes directories with binaries, git repository, github actions workflow and test suite
 clean:
-	rm -rf ${bin_dir}
 	rm -rf ${git_dir}
 	rm -rf ${github_actions_dir}
 	rm -rf ${assets_dir}

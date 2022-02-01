@@ -15,8 +15,8 @@ Feature: Replacing single user.
   - age.
   and save it under provided key in scenario cache.
 
-    Given I generate a random ASCII word in the range from "5" to "15" and save it as "RANDOM_FIRST_NAME"
-    Given I generate a random UNICODE word in the range from "5" to "15" and save it as "RANDOM_LAST_NAME"
+    Given I generate a random word having from "5" to "15" ASCII characters and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random word having from "5" to "15" UNICODE characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Replace user
@@ -64,8 +64,8 @@ Feature: Replacing single user.
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
     And the JSON node "id" should be "int" of value "{{.USER_ID}}"
 
-    Given I generate a random ASCII word in the range from "5" to "15" and save it as "NEW_USER_RANDOM_FIRST_NAME"
-    Given I generate a random UNICODE word in the range from "5" to "15" and save it as "NEW_USER_RANDOM_LAST_NAME"
+    Given I generate a random word having from "5" to "15" ASCII characters and save it as "NEW_USER_RANDOM_FIRST_NAME"
+    Given I generate a random word having from "5" to "15" UNICODE characters and save it as "NEW_USER_RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "NEW_USER_RANDOM_AGE"
 
     #---------------------------------------------------------------------------------------------------
