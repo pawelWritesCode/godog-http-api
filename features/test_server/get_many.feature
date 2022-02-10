@@ -15,8 +15,8 @@ Feature: Fetching many users.
   - age.
   and save it under provided key in scenario cache.
 
-    Given I generate a random word having from "5" to "15" ASCII characters and save it as "RANDOM_FIRST_NAME"
-    Given I generate a random word having from "5" to "15" UNICODE characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random word having from "5" to "15" of "ASCII" characters and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random word having from "5" to "15" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Get users
@@ -47,8 +47,8 @@ Feature: Fetching many users.
 
     #---------------------------------------------------------------------------------------------------
     # We generate new user's data
-    Given I generate a random word having from "5" to "15" ASCII characters and save it as "RANDOM_FIRST_NAME2"
-    Given I generate a random word having from "5" to "15" UNICODE characters and save it as "RANDOM_LAST_NAME2"
+    Given I generate a random word having from "5" to "15" of "ASCII" characters and save it as "RANDOM_FIRST_NAME2"
+    Given I generate a random word having from "5" to "15" of "UNICODE" characters and save it as "RANDOM_LAST_NAME2"
     Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE2"
 
     #---------------------------------------------------------------------------------------------------

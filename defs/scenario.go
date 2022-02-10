@@ -1,8 +1,11 @@
 package defs
 
 import (
+	"fmt"
+
 	"github.com/cucumber/godog"
 	"github.com/pawelWritesCode/gdutils"
+	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
 )
 
 // Scenario represents Scenario unit in context of godog framework.
@@ -11,10 +14,18 @@ type Scenario struct {
 	State *gdutils.State
 }
 
-// IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs creates random runes generator func using provided charset.
-// return func creates runes from provided range and preserve it under given cacheKey
-func (s *Scenario) IGenerateARandomRunesOfLengthWithUnicodeCharactersAndSaveItAs(charset string) func(from, to int, cacheKey string) error {
-	return s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(charset)
+func (s *Scenario) IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs(from, to int, charset string, cacheKey string) error {
+	var generateWordFunc func(from, to int, cacheKey string) error
+	switch charset {
+	case "ASCII":
+		generateWordFunc = s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetASCII)
+	case "UNICODE":
+		generateWordFunc = s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetUnicode)
+	default:
+		return fmt.Errorf("unknown charset '%s'", charset)
+	}
+
+	return generateWordFunc(from, to, cacheKey)
 }
 
 // IGenerateARandomFloatInTheRangeToAndSaveItAs generates random float from provided range and preserve it under given name in cache.
@@ -27,9 +38,20 @@ func (s *Scenario) IGenerateARandomIntInTheRangeToAndSaveItAs(from, to int, cach
 	return s.State.IGenerateARandomIntInTheRangeToAndSaveItAs(from, to, cacheKey)
 }
 
-// IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs creates random sentence generator func
-func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(charset string, minWordLength, maxWordLength int) func(from, to int, cacheKey string) error {
-	return s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(charset, minWordLength, maxWordLength)
+func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minWordLength, maxWordLength int) func(from, to int, charset string, cacheKey string) error {
+	return func(from, to int, charset string, cacheKey string) error {
+		var generateSentenceFunc func(from, to int, cacheKey string) error
+		switch charset {
+		case "ASCII":
+			generateSentenceFunc = s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetASCII, minWordLength, maxWordLength)
+		case "UNICODE":
+			generateSentenceFunc = s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetUnicode, minWordLength, maxWordLength)
+		default:
+			return fmt.Errorf("unknown charset '%s'", charset)
+		}
+
+		return generateSentenceFunc(from, to, cacheKey)
+	}
 }
 
 /*
