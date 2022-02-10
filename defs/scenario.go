@@ -28,14 +28,15 @@ func (s *Scenario) IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs(from, 
 	return generateWordFunc(from, to, cacheKey)
 }
 
-// IGenerateARandomFloatInTheRangeToAndSaveItAs generates random float from provided range and preserve it under given name in cache.
-func (s *Scenario) IGenerateARandomFloatInTheRangeToAndSaveItAs(from, to int, cacheKey string) error {
-	return s.State.IGenerateARandomFloatInTheRangeToAndSaveItAs(from, to, cacheKey)
-}
-
-// IGenerateARandomIntInTheRangeToAndSaveItAs generates random integer from provided range and preserve it under given name in cache.
-func (s *Scenario) IGenerateARandomIntInTheRangeToAndSaveItAs(from, to int, cacheKey string) error {
-	return s.State.IGenerateARandomIntInTheRangeToAndSaveItAs(from, to, cacheKey)
+func (s *Scenario) IGenerateARandomNumberInTheRangeFromToAndSaveItAs(numberType string, from, to int, cacheKey string) error {
+	switch numberType {
+	case "float":
+		return s.State.IGenerateARandomFloatInTheRangeToAndSaveItAs(from, to, cacheKey)
+	case "int":
+		return s.State.IGenerateARandomIntInTheRangeToAndSaveItAs(from, to, cacheKey)
+	default:
+		return fmt.Errorf("unknown type %s, available: int, float", numberType)
+	}
 }
 
 func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minWordLength, maxWordLength int) func(from, to int, charset string, cacheKey string) error {
@@ -150,6 +151,11 @@ func (s *Scenario) TheResponseBodyShouldHaveType(dataType string) error {
 	return s.State.TheResponseBodyShouldHaveType(dataType)
 }
 
+// ISaveAs saves into cache arbitrary passed value
+func (s *Scenario) ISaveAs(value, cacheKey string) error {
+	return s.State.ISaveAs(value, cacheKey)
+}
+
 // ISaveFromTheLastResponseJSONNodeAs saves from last response json node under given cache key.
 func (s *Scenario) ISaveFromTheLastResponseJSONNodeAs(expr, cacheKey string) error {
 	return s.State.ISaveFromTheLastResponseJSONNodeAs(expr, cacheKey)
@@ -158,6 +164,13 @@ func (s *Scenario) ISaveFromTheLastResponseJSONNodeAs(expr, cacheKey string) err
 // IPrintLastResponseBody prints response body from last scenario request
 func (s *Scenario) IPrintLastResponseBody() error {
 	return s.State.IPrintLastResponseBody()
+}
+
+// TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo asserts that last HTTP request-response time
+// is <= than expected timeInterval.
+// timeInterval should be string acceptable by time.ParseDuration func
+func (s *Scenario) TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(timeInterval string) error {
+	return s.State.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(timeInterval)
 }
 
 /*

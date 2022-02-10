@@ -15,25 +15,23 @@ Feature: Adding new user
   - age.
   and save it under provided key in scenario cache.
 
-    # RANDOM_FIRST_NAME will be composed of only ASCII runes for example it may be: abc3@-
-    Given I generate a random word having from "5" to "15" of "ASCII" characters and save it as "RANDOM_FIRST_NAME"
+    Given I save "Adam" as "FIRST_NAME"
     # RANDOM_LAST_NAME will be composed of ASCII + UNICODE runes for example it may be: 💄x1ś⚥
     Given I generate a random word having from "5" to "15" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
-    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random "int" in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Create user v1
   As application user
   I would like to store random user's data
 
     #---------------------------------------------------------------------------------------------------
-    # We send HTTP(s) request with pre-generated data
-    # Notice, we use pre-generated values(from Background section above)
-    # using go templates syntax from text/template package.
+    # We send HTTP(s) request with pre-generated data (in Background section) to create new user.
+    # Accessing saved data from scenario cache is done through template syntax from text/template package.
     When I send "POST" request to "{{.MY_APP_URL}}/users" with body and headers:
     """
     {
         "body": {
-            "firstName": "{{.RANDOM_FIRST_NAME}}",
+            "firstName": "{{.FIRST_NAME}}",
             "lastName": "{{.RANDOM_LAST_NAME}}",
             "age": {{.RANDOM_AGE}}
         },
@@ -45,6 +43,7 @@ Feature: Adding new user
     Then the response status code should be 201
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have type "JSON"
+    And time between last request and response should be less than or equal to "2s"
 
     #---------------------------------------------------------------------------------------------------
     # We validate response body with json schema from assets/test_server/doc/schema/user/get_user.json
@@ -78,7 +77,7 @@ Feature: Adding new user
     # data type should be one of: string|int|float|bool
     #
     # node value may be fixed or obtained from cache using syntax from go text/template package
-    And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
+    And the JSON node "firstName" should be "string" of value "{{.FIRST_NAME}}"
     And the JSON node "$.lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
 
@@ -106,7 +105,7 @@ Feature: Adding new user
     Given I set following body for prepared request "CREATE_USER":
     """
         {
-            "firstName": "{{.RANDOM_FIRST_NAME}}",
+            "firstName": "{{.FIRST_NAME}}",
             "lastName": "{{.RANDOM_LAST_NAME}}",
             "age": {{.RANDOM_AGE}}
         }
@@ -120,6 +119,7 @@ Feature: Adding new user
     Then the response status code should be 201
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have type "JSON"
+    And time between last request and response should be less than or equal to "2s"
 
     #---------------------------------------------------------------------------------------------------
     # We validate response body with json schema from assets/test_server/doc/schema/user/get_user.json

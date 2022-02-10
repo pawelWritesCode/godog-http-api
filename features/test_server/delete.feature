@@ -17,7 +17,7 @@ Feature: Removing user
 
     Given I generate a random word having from "5" to "15" of "ASCII" characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random word having from "5" to "15" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
-    Given I generate a random int in the range from "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random "int" in the range from "18" to "48" and save it as "RANDOM_AGE"
 
   Scenario: Remove user
   As application user
@@ -39,8 +39,9 @@ Feature: Removing user
         }
     }
     """
-    And the response status code should be 201
-    Then the response body should have type "JSON"
+    Then the response status code should be 201
+    And the response body should have type "JSON"
+    And time between last request and response should be less than or equal to "2s"
     And the response body should be valid according to JSON schema "user/get_user.json"
     And I save from the last response JSON node "id" as "USER_ID"
 
@@ -58,6 +59,7 @@ Feature: Removing user
     Then the response status code should be 200
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have type "JSON"
+    And time between last request and response should be less than or equal to "2s"
     And the response body should be valid according to JSON schema "user/get_user.json"
     And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the JSON node "lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
@@ -76,6 +78,7 @@ Feature: Removing user
     }
     """
     And the response status code should be 204
+
 
     #---------------------------------------------------------------------------------------------------
     # We send HTTP(s) request to prove there is no more user of id "USER_ID"

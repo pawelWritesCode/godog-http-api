@@ -83,16 +83,14 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | This section contains utility methods for random data generation.
 	   | Those methods contains creation of
 	   | - random length runes of ASCII/UNICODE characters
-	   | - random length sentences of ASCII/UNICODE words
+	   | - random length sentence of ASCII/UNICODE words
 	   | - int/float from provided range.
 	   |
 	   | Every method saves its output in state's cache under provided key
 	*/
 	ctx.Step(`^I generate a random word having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE)" characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs)
 	ctx.Step(`^I generate a random sentence having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE)" words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(3, 10))
-
-	ctx.Step(`^I generate a random float in the range from "(\d+)" to "(\d+)" and save it as "([^"]*)"$`, scenario.IGenerateARandomFloatInTheRangeToAndSaveItAs)
-	ctx.Step(`^I generate a random int in the range from "(\d+)" to "(\d+)" and save it as "([^"]*)"$`, scenario.IGenerateARandomIntInTheRangeToAndSaveItAs)
+	ctx.Step(`^I generate a random "(int|float)" in the range from "(\d+)" to "(\d+)" and save it as "([^"]*)"$`, scenario.IGenerateARandomNumberInTheRangeFromToAndSaveItAs)
 
 	/*
 	   |--------------------------------------------------------------------------
@@ -136,6 +134,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | in scenario cache.
 	   | For example, after generating random string and saving it under "USER_NAME",
 	   | argument of this method may be: "{{.USER_NAME}}"
+	   |
+	   | Argument in method starting with 'time between ...' should be string valid for
+	   | golang standard library time.ParseDuration func, for example: 3s, 1h, 30ms
 	*/
 	ctx.Step(`^the response should have header "([^"]*)"$`, scenario.TheResponseShouldHaveHeader)
 	ctx.Step(`^the response should have header "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveHeaderOfValue)
@@ -155,6 +156,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the response body should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
 	ctx.Step(`^the response body should be valid according to JSON schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
 
+	ctx.Step(`^time between last request and response should be less than or equal to "([^"]*)"$`, scenario.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo)
+
 	/*
 	   |--------------------------------------------------------------------------
 	   | Preserving data
@@ -167,6 +170,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | https://github.com/pawelWritesCode/qjson
 	   | https://github.com/oliveagle/jsonpath
 	*/
+	ctx.Step(`^I save "([^"]*)" as "([^"]*)"$`, scenario.ISaveAs)
 	ctx.Step(`^I save from the last response JSON node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseJSONNodeAs)
 
 	/*
