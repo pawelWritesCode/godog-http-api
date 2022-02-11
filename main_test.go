@@ -71,35 +71,47 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 		// Here you can define more scenario-scoped values using scenario.State.Cache.Save() method
 		scenario.State.Cache.Save("MY_APP_URL", os.Getenv(envMyAppURL))
+		scenario.State.Cache.Save("NOW", time.Now().Format(time.RFC3339))
 
 		return ctx, nil
 	})
 
 	/*
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   | Random data generation
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains utility methods for random data generation.
 	   | Those methods contains creation of
-	   | - random length runes of ASCII/UNICODE characters
-	   | - random length sentence of ASCII/UNICODE words
+	   | - random length runes of ASCII/UNICODE/polish/english/russian characters
+	   | - random length sentence of ASCII/UNICODE/polish/english/russian words
 	   | - int/float from provided range.
 	   |
-	   | Every method saves its output in state's cache under provided key
+	   | Every method saves its output in state's cache under provided key.
 	*/
-	ctx.Step(`^I generate a random word having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE)" characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs)
-	ctx.Step(`^I generate a random sentence having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE)" words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(3, 10))
+	ctx.Step(`^I generate a random word having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs)
+	ctx.Step(`^I generate a random sentence having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(3, 10))
 	ctx.Step(`^I generate a random "(int|float)" in the range from "(\d+)" to "(\d+)" and save it as "([^"]*)"$`, scenario.IGenerateARandomNumberInTheRangeFromToAndSaveItAs)
 
 	/*
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   | Sending HTTP(s) requests
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains methods for preparing and sending HTTP(s) requests.
 	   |
-	   | Methods that start with "I set following ..." accept docstring in form of JSON.
+	   | You can use one of two ways to send HTTP(s) request:
+	   |
+	   | First, composed but less customisable:
+	   | Simply use step `I send "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" with body and headers:`
+	   | As last argument pass docstring in JSON or YAML format with keys "body" and "headers".
+	   | Internally, no matter which format you choose, data will be serialized to JSON and send in this format.
+	   |
+	   | Second, more customisable:
+	   | 	step `I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to ...`       - to prepare HTTP(s) request
+	   |	step `^I set following headers for prepared request "([^"]*)":$`             - setting headers (YAML|JSON)
+	   |	step `^I set following body for prepared request "([^"]*)":$`                - setting req body (any format)
+	   |	step `^I send request "([^"]*)"$`                                            - to send prepared request
 	*/
 
 	ctx.Step(`^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" and save it as "([^"]*)"$`, scenario.IPrepareNewRequestToAndSaveItAs)
@@ -107,19 +119,19 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I set following body for prepared request "([^"]*)":$`, scenario.ISetFollowingBodyForPreparedRequest)
 	ctx.Step(`^I send request "([^"]*)"$`, scenario.ISendRequest)
 
-	// this method accepts docstring in form of JSON with two keys: "body" and "headers"
 	ctx.Step(`^I send "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" with body and headers:$`, scenario.ISendRequestToWithBodyAndHeaders)
 
 	/*
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   | Assertions
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains assertions against last HTTP(s) responses.
 	   | Those include assertions against:
 	   | - response body JSON nodes,
 	   | - HTTP(s) headers,
-	   | - status code.
+	   | - status code,
+	   | - time between response - request.
 	   |
 	   | Every argument following immediately after word "node" or "nodes"
 	   | should have syntax acceptable by one of json-path libraries:
@@ -159,9 +171,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^time between last request and response should be less than or equal to "([^"]*)"$`, scenario.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo)
 
 	/*
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   | Preserving data
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains method for preserving data
 	   |
@@ -174,9 +186,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I save from the last response JSON node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseJSONNodeAs)
 
 	/*
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   | Debugging
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains methods that are useful during test creation
 	*/
@@ -186,9 +198,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I stop debug mode$`, scenario.IStopDebugMode)
 
 	/*
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   | Flow control
-	   |--------------------------------------------------------------------------
+	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains methods for control scenario flow
 	   |

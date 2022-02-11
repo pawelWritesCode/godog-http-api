@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/cucumber/godog v0.12.4
 	github.com/joho/godotenv v1.4.0
-	github.com/pawelWritesCode/gdutils v0.9.4
+	github.com/pawelWritesCode/gdutils v0.9.6
 	github.com/spf13/pflag v1.0.5
 )
 
@@ -22,4 +22,5 @@ require (
 	github.com/xeipuuv/gojsonpointer v0.0.0-20190905194746-02993c407bfb // indirect
 	github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415 // indirect
 	github.com/xeipuuv/gojsonschema v1.2.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

@@ -12,9 +12,12 @@ that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax
 utility methods** (for testing HTTP(s) API) in just few steps.
 
 Benefits:
-* **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) to writing** actual BDD tests (see demonstration gif below ⬇)
-* [25+ well-documented methods](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L78) useful for testing HTTP(s) API
-* methods are coupled in logical groups (data generation, assertions, sending HTTP(s) request, debugging, ...)
+* **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) to writing** actual E2E tests (see gif below ⬇),
+* [25+ well-documented, coupled in logical groups methods](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L78) useful for testing HTTP(s) API,
+* support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
+* support for querying JSON tree with two json-path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [qjson](https://github.com/pawelWritesCode/qjson)),
+* very customisable (ability to [inject](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) your own implementation of services),
+* friendly for custom steps development because of [exported internal services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
 
 ## Example
 
@@ -32,14 +35,14 @@ Feature: Adding new user
 
   Background:
   This section runs before every Scenario.
-  Its main purpose is to generate random:
+  Its main purpose is to generate:
   - first name,
   - last name,
   - age.
   and save it under provided key in scenario cache.
 
-    Given I save "Adam" as "FIRST_NAME"
-    # RANDOM_LAST_NAME will be composed of ASCII + UNICODE runes for example it may be: 💄x1ś⚥
+    Given I save "application/json" as "CONTENT_TYPE_JSON"
+    Given I generate a random word having from "5" to "10" of "russian" characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random word having from "5" to "15" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random "int" in the range from "18" to "48" and save it as "RANDOM_AGE"
 
@@ -50,32 +53,40 @@ Feature: Adding new user
     #---------------------------------------------------------------------------------------------------
     # We send HTTP(s) request with pre-generated data (in Background section) to create new user.
     # Accessing saved data from scenario cache is done through template syntax from text/template package.
+    # Docstring may be in YAML or JSON format and should have "body" and "headers" keys.
     When I send "POST" request to "{{.MY_APP_URL}}/users" with body and headers:
     """
     {
         "body": {
-            "firstName": "{{.FIRST_NAME}}",
+            "firstName": "{{.RANDOM_FIRST_NAME}}",
             "lastName": "{{.RANDOM_LAST_NAME}}",
             "age": {{.RANDOM_AGE}}
         },
         "headers": {
-            "Content-Type": "application/json"
+            "Content-Type": "{{.CONTENT_TYPE_JSON}}"
         }
     }
     """
     Then the response status code should be 201
-    And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
+    And the response should have header "Content-Length"
+    And the response should have header "Content-Type" of value "{{.CONTENT_TYPE_JSON}}; charset=UTF-8"
     And the response body should have type "JSON"
     And time between last request and response should be less than or equal to "2s"
+
+    # uncommenting next line will print last HTTP(s) response body to console
+#    Given I print last response body
+
+    # This waiting is unnecessary, just added for demonstration
+    And I wait "2ms"
 
     #---------------------------------------------------------------------------------------------------
     # We validate response body with json schema from assets/test_server/doc/schema/user/get_user.json
     # environment variable GODOG_JSON_SCHEMA_DIR from .env file should contain relative path to schemas dir,
-    # then step argument may be: relative/full OS path
+    # then step argument may be: relative or full OS path
     And the response body should be valid according to JSON schema "user/get_user.json"
-    # or URL with JSON schema
+    # or URL pointing at JSON schema
     And the response body should be valid according to JSON schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
-    # or raw schema definition
+    # or raw schema definition passed in Docstring
     And the response body should be valid according to JSON schema:
     """
     {
@@ -89,18 +100,18 @@ Feature: Adding new user
     #---------------------------------------------------------------------------------------------------
     # Here, we check assertions against response body
     #
-    # node argument should be pattern valid to one of following libraries:
+    # node expression should be pattern valid to one of following libraries:
     # https://github.com/pawelWritesCode/qjson
 	# https://github.com/oliveagle/jsonpath
 	#
-    # - data.user[0].firstName or $.data.user[0].firstName    - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
-    # - root[0].city[1].size                                  - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
-    # - firstName or $.firstName                              - {"firstName": "abc", "lastName": "cdf", age:30},
+    # - data.user[0].firstName or $.data.user[0].firstName  - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
+    # - root[0].city[1].size                                - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
+    # - firstName or $.firstName                            - {"firstName": "abc", "lastName": "cdf", age:30},
     #
     # data type should be one of: string|int|float|bool
     #
     # node value may be fixed or obtained from cache using syntax from go text/template package
-    And the JSON node "firstName" should be "string" of value "{{.FIRST_NAME}}"
+    And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the JSON node "$.lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
 ```

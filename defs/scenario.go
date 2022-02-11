@@ -2,6 +2,7 @@ package defs
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/cucumber/godog"
 	"github.com/pawelWritesCode/gdutils"
@@ -14,22 +15,33 @@ type Scenario struct {
 	State *gdutils.State
 }
 
+// IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs creates random runes generator func using provided charset.
+// Returned func creates runes from provided range and preserve it under given cacheKey in scenario cache.
 func (s *Scenario) IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs(from, to int, charset string, cacheKey string) error {
 	var generateWordFunc func(from, to int, cacheKey string) error
-	switch charset {
-	case "ASCII":
+
+	switch strings.ToLower(charset) {
+	case "ascii":
 		generateWordFunc = s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetASCII)
-	case "UNICODE":
+	case "unicode":
 		generateWordFunc = s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetUnicode)
+	case "polish":
+		generateWordFunc = s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetPolish)
+	case "english":
+		generateWordFunc = s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetEnglish)
+	case "russian":
+		generateWordFunc = s.State.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetRussian)
 	default:
-		return fmt.Errorf("unknown charset '%s'", charset)
+		return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian", charset)
 	}
 
 	return generateWordFunc(from, to, cacheKey)
 }
 
+// IGenerateARandomNumberInTheRangeFromToAndSaveItAs generates random number from provided range
+// and preserve it in scenario cache under provided cacheKey.
 func (s *Scenario) IGenerateARandomNumberInTheRangeFromToAndSaveItAs(numberType string, from, to int, cacheKey string) error {
-	switch numberType {
+	switch strings.ToLower(numberType) {
 	case "float":
 		return s.State.IGenerateARandomFloatInTheRangeToAndSaveItAs(from, to, cacheKey)
 	case "int":
@@ -39,16 +51,24 @@ func (s *Scenario) IGenerateARandomNumberInTheRangeFromToAndSaveItAs(numberType 
 	}
 }
 
+// IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs creates generator func for creating random sentences.
+// Each sentence has length from - to as provided in params and is saved in scenario cache under provided cacheKey.
 func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minWordLength, maxWordLength int) func(from, to int, charset string, cacheKey string) error {
 	return func(from, to int, charset string, cacheKey string) error {
 		var generateSentenceFunc func(from, to int, cacheKey string) error
-		switch charset {
-		case "ASCII":
+		switch strings.ToLower(charset) {
+		case "ascii":
 			generateSentenceFunc = s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetASCII, minWordLength, maxWordLength)
-		case "UNICODE":
+		case "unicode":
 			generateSentenceFunc = s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetUnicode, minWordLength, maxWordLength)
+		case "polish":
+			generateSentenceFunc = s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetPolish, minWordLength, maxWordLength)
+		case "english":
+			generateSentenceFunc = s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetEnglish, minWordLength, maxWordLength)
+		case "russian":
+			generateSentenceFunc = s.State.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetRussian, minWordLength, maxWordLength)
 		default:
-			return fmt.Errorf("unknown charset '%s'", charset)
+			return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian", charset)
 		}
 
 		return generateSentenceFunc(from, to, cacheKey)
@@ -56,10 +76,19 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 }
 
 /*
-	ISendRequestToWithBodyAndHeaders sends HTTP(s) request with provided body and headers.
-	Argument method indices HTTP(s) request method for example: "POST", "GET" etc.
-	Argument urlTemplate should be full url path. May include template values.
-	Argument bodyTemplate should be slice of bytes marshallable on bodyHeaders struct. May include template values
+	ISendRequestToWithBodyAndHeaders sends HTTP(s) requests with provided body and headers.
+
+	Argument "method" indices HTTP request method for example: "POST", "GET" etc.
+ 	Argument "urlTemplate" should be full valid URL. May include template values.
+	Argument "bodyTemplate" should contain data (may include template values) in format acceptable by Deserializer
+	with keys "body" and "headers". Internally method will marshal request body to JSON format and add it to request.
+
+	If you want to send request body in arbitrary data format, use step-by-step flow containing following methods:
+		IPrepareNewRequestToAndSaveItAs            - creates request object and save it to cache
+		ISetFollowingHeadersForPreparedRequest     - sets header for saved request
+		ISetFollowingBodyForPreparedRequest        - sets body for saved request
+		ISendRequest 							   - sends previously saved request
+	Because method ISetFollowingBodyForPreparedRequest pass any bytes to HTTP(s) request body without any mutation.
 */
 func (s *Scenario) ISendRequestToWithBodyAndHeaders(method, urlTemplate string, reqBody *godog.DocString) error {
 	return s.State.ISendRequestToWithBodyAndHeaders(method, urlTemplate, reqBody)
@@ -71,6 +100,7 @@ func (s Scenario) IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey 
 }
 
 // ISetFollowingHeadersForPreparedRequest sets provided headers for previously prepared request.
+// incoming data should be in format acceptable by injected s.State.Deserializer
 func (s Scenario) ISetFollowingHeadersForPreparedRequest(cacheKey string, headersTemplate *godog.DocString) error {
 	return s.State.ISetFollowingHeadersForPreparedRequest(cacheKey, headersTemplate)
 }
