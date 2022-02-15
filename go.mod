@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/cucumber/godog v0.12.4
 	github.com/joho/godotenv v1.4.0
-	github.com/pawelWritesCode/gdutils v0.9.6
+	github.com/pawelWritesCode/gdutils v0.10.0
 	github.com/spf13/pflag v1.0.5
 )
 

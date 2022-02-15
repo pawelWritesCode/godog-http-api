@@ -42,7 +42,7 @@ Feature: Fetching many users.
     """
     Then the response status code should be 201
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
-    And the response body should have type "JSON"
+    And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
     And the response body should be valid according to JSON schema "user/get_user.json"
 
@@ -69,7 +69,7 @@ Feature: Fetching many users.
     """
     Then the response status code should be 201
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
-    And the response body should have type "JSON"
+    And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
     And the response body should be valid according to JSON schema "user/get_user.json"
 
@@ -86,7 +86,7 @@ Feature: Fetching many users.
     """
     Then the response status code should be 200
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
-    And the response body should have type "JSON"
+    And the response body should have format "JSON"
     # here we only check only node type, not its exact value
     And the JSON node "root" should be "slice"
     And the JSON node "root" should not be "nil"

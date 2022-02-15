@@ -1,12 +1,16 @@
 package defs
 
 import (
+	"errors"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/cucumber/godog"
 	"github.com/pawelWritesCode/gdutils"
+	"github.com/pawelWritesCode/gdutils/pkg/dataformat"
 	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
+	"github.com/pawelWritesCode/gdutils/pkg/timeutils"
 )
 
 // Scenario represents Scenario unit in context of godog framework.
@@ -75,6 +79,17 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 	}
 }
 
+// IGenerateCurrentTimeAndTravelByAndSaveItAs creates current time object, move timeDuration in time and
+// save it in cache under given cacheKey.
+func (s *Scenario) IGenerateCurrentTimeAndTravelByAndSaveItAs(timeDirection, timeDuration, cacheKey string) error {
+	duration, err := time.ParseDuration(timeDuration)
+	if err != nil {
+		return err
+	}
+
+	return s.State.IGenerateCurrentTimeAndTravelByAndSaveItAs(timeutils.TimeDirection(timeDirection), duration, cacheKey)
+}
+
 /*
 	ISendRequestToWithBodyAndHeaders sends HTTP(s) requests with provided body and headers.
 
@@ -91,7 +106,7 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 	Because method ISetFollowingBodyForPreparedRequest pass any bytes to HTTP(s) request body without any mutation.
 */
 func (s *Scenario) ISendRequestToWithBodyAndHeaders(method, urlTemplate string, reqBody *godog.DocString) error {
-	return s.State.ISendRequestToWithBodyAndHeaders(method, urlTemplate, reqBody)
+	return s.State.ISendRequestToWithBodyAndHeaders(method, urlTemplate, reqBody.Content)
 }
 
 // IPrepareNewRequestToAndSaveItAs prepares new request and saves it in cache under cacheKey.
@@ -102,13 +117,13 @@ func (s Scenario) IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey 
 // ISetFollowingHeadersForPreparedRequest sets provided headers for previously prepared request.
 // incoming data should be in format acceptable by injected s.State.Deserializer
 func (s Scenario) ISetFollowingHeadersForPreparedRequest(cacheKey string, headersTemplate *godog.DocString) error {
-	return s.State.ISetFollowingHeadersForPreparedRequest(cacheKey, headersTemplate)
+	return s.State.ISetFollowingHeadersForPreparedRequest(cacheKey, headersTemplate.Content)
 }
 
 // ISetFollowingBodyForPreparedRequest sets body for previously prepared request.
 // bodyTemplate may be in any format and accepts template values.
 func (s Scenario) ISetFollowingBodyForPreparedRequest(cacheKey string, bodyTemplate *godog.DocString) error {
-	return s.State.ISetFollowingBodyForPreparedRequest(cacheKey, bodyTemplate)
+	return s.State.ISetFollowingBodyForPreparedRequest(cacheKey, bodyTemplate.Content)
 }
 
 // ISendRequest sends previously prepared HTTP(s) request.
@@ -175,10 +190,40 @@ func (s *Scenario) TheJSONResponseShouldHaveNodes(nodesExpr string) error {
 	return s.State.TheJSONResponseShouldHaveNodes(nodesExpr)
 }
 
-// TheResponseBodyShouldHaveType checks whether last response body has given data type
-// available data types are listed as package constants
-func (s *Scenario) TheResponseBodyShouldHaveType(dataType string) error {
-	return s.State.TheResponseBodyShouldHaveType(dataType)
+// TheResponseBodyShouldHaveFormat checks whether last response body has given data type
+// available data types are listed in dataformat package
+func (s *Scenario) TheResponseBodyShouldHaveFormat(dataType string) error {
+	return s.State.TheResponseBodyShouldHaveFormat(dataformat.DataFormat(dataType))
+}
+
+/*
+	IValidateLastResponseBodyWithSchema validates last response body against JSON schema under provided reference.
+	reference may be:
+		- full OS path to JSON schema
+		- relative path from JSON schema's dir which was passed in main_test to initialize *Scenario struct instance,
+		- URL
+*/
+func (s *Scenario) IValidateLastResponseBodyWithSchema(reference string) error {
+	return s.State.IValidateLastResponseBodyWithSchemaReference(reference)
+}
+
+// IValidateLastResponseBodyWithFollowingSchema validates last response body against JSON schema provided by user.
+func (s *Scenario) IValidateLastResponseBodyWithFollowingSchema(schemaBytes *godog.DocString) error {
+	return s.State.IValidateLastResponseBodyWithSchemaString(schemaBytes.Content)
+}
+
+/*
+	TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo asserts that last HTTP request-response time
+	is <= than expected timeInterval.
+	timeInterval should be string acceptable by time.ParseDuration func
+*/
+func (s *Scenario) TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(timeInterval string) error {
+	duration, err := time.ParseDuration(timeInterval)
+	if err != nil {
+		return err
+	}
+
+	return s.State.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(duration)
 }
 
 // ISaveAs saves into cache arbitrary passed value
@@ -196,20 +241,18 @@ func (s *Scenario) IPrintLastResponseBody() error {
 	return s.State.IPrintLastResponseBody()
 }
 
-// TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo asserts that last HTTP request-response time
-// is <= than expected timeInterval.
-// timeInterval should be string acceptable by time.ParseDuration func
-func (s *Scenario) TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(timeInterval string) error {
-	return s.State.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(timeInterval)
-}
-
 /*
 	IWait waits for provided time interval amount of time
 	timeInterval should be string valid for time.ParseDuration func,
 	for example: 3s, 1h, 30ms
 */
 func (s *Scenario) IWait(timeInterval string) error {
-	return s.State.IWait(timeInterval)
+	duration, err := time.ParseDuration(timeInterval)
+	if err != nil {
+		return err
+	}
+
+	return s.State.IWait(duration)
 }
 
 // IStartDebugMode starts debugging mode
@@ -222,18 +265,7 @@ func (s *Scenario) IStopDebugMode() error {
 	return s.State.IStopDebugMode()
 }
 
-/*
-	IValidateLastResponseBodyWithSchema validates last response body against JSON schema under provided reference.
-	reference may be:
-		- full OS path to JSON schema
-		- relative path from JSON schema's dir which was passed in main_test to initialize *Scenario struct instance,
-		- URL
-*/
-func (s *Scenario) IValidateLastResponseBodyWithSchema(reference string) error {
-	return s.State.IValidateLastResponseBodyWithSchemaReference(reference)
-}
-
-// IValidateLastResponseBodyWithFollowingSchema validates last response body against JSON schema provided by user.
-func (s *Scenario) IValidateLastResponseBodyWithFollowingSchema(schemaBytes *godog.DocString) error {
-	return s.State.IValidateLastResponseBodyWithSchemaString(schemaBytes)
+// IStopScenarioExecution stops scenario execution
+func (s *Scenario) IStopScenarioExecution() error {
+	return errors.New("scenario stopped")
 }
