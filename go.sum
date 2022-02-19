@@ -155,6 +155,8 @@ github.com/oliveagle/jsonpath v0.0.0-20180606110733-2e52cf6e6852/go.mod h1:eqOVx
 github.com/pascaldekloe/goe v0.0.0-20180627143212-57f6aae5913c/go.mod h1:lzWF7FIEvWOWxwDKqyGYQf6ZUaNfKdP144TG7ZOy1lc=
 github.com/pawelWritesCode/gdutils v0.10.0 h1:CMm4J/joXYw2Rk7P5S4bp5Yj40sFhpcvtneWZ+AZmqc=
 github.com/pawelWritesCode/gdutils v0.10.0/go.mod h1:odtA8JX/JW0nKXXvibhTqPXSZoZkMixYjHiuz1DWT6Y=
+github.com/pawelWritesCode/gdutils v0.11.0 h1:LCGt2cazzrgY68oiPn20vMuh2MKMMvD8e66R3Tdi+JU=
+github.com/pawelWritesCode/gdutils v0.11.0/go.mod h1:odtA8JX/JW0nKXXvibhTqPXSZoZkMixYjHiuz1DWT6Y=
 github.com/pawelWritesCode/qjson v1.0.1 h1:MreBuXjjQj2XROgrGK5e9rWDiwLzDO4TyMyo8IvYP9M=
 github.com/pawelWritesCode/qjson v1.0.1/go.mod h1:BBj5FLhYUYGE8lNCKdz+MjJab+2fFcs+s9NFDDFjjnk=
 github.com/pelletier/go-toml v1.2.0/go.mod h1:5z9KED0ma1S8pY6P1sdut58dfprrGBbd/94hg7ilaic=

@@ -61,8 +61,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		type of debugger.Debugger. Create your own struct, implement on it interface debugger.Debugger and then, use
 		proper setter method to inject it into scenario.State. In this example it would be: scenario.State.SetDebugger.
 
-		In another example you may want to use your own http.Client. So you have to create your own implementation of
-		httpctx.HttpContext interface with your custom http.Client and then inject it to State with scenario.State.SetHttpContext
+		In another example you may want to use your own http.Client. Then, create it and inject it to State with
+		scenario.State.SetRequestDoer setter.
 	*/
 	scenario := defs.Scenario{State: gdutils.NewDefaultState(isDebug, path.Join(wd, os.Getenv(envJsonSchemaDir)))}
 

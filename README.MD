@@ -102,11 +102,11 @@ Feature: Adding new user
     #
     # node expression should be pattern valid to one of following libraries:
     # https://github.com/pawelWritesCode/qjson
-	# https://github.com/oliveagle/jsonpath
-	#
-    # - data.user[0].firstName or $.data.user[0].firstName  - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
-    # - root[0].city[1].size                                - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
-    # - firstName or $.firstName                            - {"firstName": "abc", "lastName": "cdf", age:30},
+    # https://github.com/oliveagle/jsonpath
+    #
+    # - data[0].firstName or $.data[0].firstName  - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
+    # - root[0].size                              - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
+    # - firstName or $.firstName                  - {"firstName": "abc", "lastName": "cdf", age:30},
     #
     # data type should be one of: string|int|float|bool
     #
