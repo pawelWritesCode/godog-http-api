@@ -55,7 +55,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		Variable scenario represents godog scenario.
 		Scenario has State field with plenty of utility services useful to create godog steps.
 
-		If you would like to replace default state service with your own, do following:
+		If you would like to replace any of default state service with your own, do following:
 
 		Let's assume, you want to replace default debugger with your own. Field scenario.State.Debugger has interface
 		type of debugger.Debugger. Create your own struct, implement on it interface debugger.Debugger and then, use
@@ -76,6 +76,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		return ctx, nil
 	})
 
+	// Following code maps sentences to methods (define steps). To learn more on each step see
+	// https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps
+
 	/*
 	   |----------------------------------------------------------------------------------------------------------------
 	   | Random data generation
@@ -88,7 +91,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | - int/float from provided range,
 	   | - time object moved forward/backward in time.
 	   |
-	   | Every method saves its output in state's cache under provided key.
+	   | Every method saves its output in scenario's cache under provided key for future use through text/template syntax.
 	*/
 	ctx.Step(`^I generate a random word having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs)
 	ctx.Step(`^I generate a random sentence having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(3, 10))
@@ -110,14 +113,15 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | Internally, no matter which format you choose, data will be serialized to JSON and send in this format.
 	   |
 	   | Second, more customisable:
-	   | 	step `I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to ...`       - to prepare HTTP(s) request
+	   | 	step `^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to ...`      - to prepare HTTP(s) request
 	   |	step `^I set following headers for prepared request "([^"]*)":$`             - setting headers (YAML|JSON)
+	   |	step `^I set following cookies for prepared request "([^"]*)":`              - setting cookies (YAML|JSON)
 	   |	step `^I set following body for prepared request "([^"]*)":$`                - setting req body (any format)
 	   |	step `^I send request "([^"]*)"$`                                            - to send prepared request
 	*/
-
 	ctx.Step(`^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" and save it as "([^"]*)"$`, scenario.IPrepareNewRequestToAndSaveItAs)
 	ctx.Step(`^I set following headers for prepared request "([^"]*)":$`, scenario.ISetFollowingHeadersForPreparedRequest)
+	ctx.Step(`^I set following cookies for prepared request "([^"]*)":$`, scenario.ISetFollowingCookiesForPreparedRequest)
 	ctx.Step(`^I set following body for prepared request "([^"]*)":$`, scenario.ISetFollowingBodyForPreparedRequest)
 	ctx.Step(`^I send request "([^"]*)"$`, scenario.ISendRequest)
 
@@ -128,12 +132,12 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | Assertions
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
-	   | This section contains assertions against last HTTP(s) responses.
-	   | Those include assertions against:
+	   | This section contains assertions against last HTTP(s) responses, especially:
 	   | - response body JSON nodes,
 	   | - HTTP(s) headers,
-	   | - status code,
-	   | - time between response - request.
+	   | - HTTP(s) cookies,
+	   | - HTTP(s) status code,
+	   | - time between request - response.
 	   |
 	   | Every argument following immediately after word "node" or "nodes"
 	   | should have syntax acceptable by one of json-path libraries:
@@ -154,6 +158,9 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	*/
 	ctx.Step(`^the response should have header "([^"]*)"$`, scenario.TheResponseShouldHaveHeader)
 	ctx.Step(`^the response should have header "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveHeaderOfValue)
+
+	ctx.Step(`^the response should have cookie "([^"]*)"$`, scenario.TheResponseShouldHaveCookie)
+	ctx.Step(`^the response should have cookie "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveCookieOfValue)
 
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
 
@@ -177,7 +184,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | Preserving data
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
-	   | This section contains method for preserving data
+	   | This section contains method for preserving data in scenario cache
 	   |
 	   | Argument following immediately after word "node"
 	   | should have syntax acceptable by one of json-path libraries:
@@ -192,7 +199,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | Debugging
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
-	   | This section contains methods that are useful during test creation
+	   | This section contains methods that are useful for debugging during test creation phase.
 	*/
 	ctx.Step(`^I stop scenario execution$`, scenario.IStopScenarioExecution)
 

@@ -120,6 +120,12 @@ func (s Scenario) ISetFollowingHeadersForPreparedRequest(cacheKey string, header
 	return s.State.ISetFollowingHeadersForPreparedRequest(cacheKey, headersTemplate.Content)
 }
 
+// ISetFollowingCookiesForPreparedRequest sets cookies for previously prepared request
+// cookies template should be YAML or JSON deserializable on []http.Cookie
+func (s Scenario) ISetFollowingCookiesForPreparedRequest(cacheKey string, cookies *godog.DocString) error {
+	return s.State.ISetFollowingCookiesForPreparedRequest(cacheKey, cookies.Content)
+}
+
 // ISetFollowingBodyForPreparedRequest sets body for previously prepared request.
 // bodyTemplate may be in any format and accepts template values.
 func (s Scenario) ISetFollowingBodyForPreparedRequest(cacheKey string, bodyTemplate *godog.DocString) error {
@@ -224,6 +230,16 @@ func (s *Scenario) TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(t
 	}
 
 	return s.State.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(duration)
+}
+
+// TheResponseShouldHaveCookie checks whether last HTTP(s) response has cookie of given name.
+func (s *Scenario) TheResponseShouldHaveCookie(name string) error {
+	return s.State.TheResponseShouldHaveCookie(name)
+}
+
+// TheResponseShouldHaveCookieOfValue checks whether last HTTP(s) response has cookie of given name and value.
+func (s *Scenario) TheResponseShouldHaveCookieOfValue(name, valueTemplate string) error {
+	return s.State.TheResponseShouldHaveCookieOfValue(name, valueTemplate)
 }
 
 // ISaveAs saves into cache arbitrary passed value

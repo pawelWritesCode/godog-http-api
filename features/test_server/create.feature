@@ -107,6 +107,19 @@ Feature: Adding new user
     """
 
     #---------------------------------------------------------------------------------------------------
+    # Next, we set csrf_token cookie for "CREATE_USER" request.
+    # Docstring may be in YAML or JSON format
+    Given I set following cookies for prepared request "CREATE_USER":
+    """
+    [
+      {
+        "name": "csrf_token",
+        "value": "this_cookie_is_unnecessary_just_added_for_demonstration"
+      }
+    ]
+    """
+
+    #---------------------------------------------------------------------------------------------------
     # Lastly, we define request body for "CREATE_USER" request
     # Notice, we use pre-generated values(from Background section above)
     # using go templates syntax from text/template package.
