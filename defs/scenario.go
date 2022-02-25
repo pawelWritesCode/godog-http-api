@@ -242,6 +242,16 @@ func (s *Scenario) TheResponseShouldHaveCookieOfValue(name, valueTemplate string
 	return s.State.TheResponseShouldHaveCookieOfValue(name, valueTemplate)
 }
 
+// IValidateJSONNodeWithSchemaReference validates last response body JSON node against jsonSchema as provided in reference
+func (s *Scenario) IValidateJSONNodeWithSchemaReference(expr, reference string) error {
+	return s.State.IValidateJSONNodeWithSchemaReference(expr, reference)
+}
+
+// IValidateJSONNodeWithSchemaString validates last response body JSON node against jsonSchema
+func (s *Scenario) IValidateJSONNodeWithSchemaString(expr string, jsonSchema *godog.DocString) error {
+	return s.State.IValidateJSONNodeWithSchemaString(expr, jsonSchema.Content)
+}
+
 // ISaveAs saves into cache arbitrary passed value
 func (s *Scenario) ISaveAs(value, cacheKey string) error {
 	return s.State.ISaveAs(value, cacheKey)

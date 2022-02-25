@@ -8,8 +8,8 @@ This repository contains skeleton that allow to write End-2-End tests with use o
 that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax using step library [gdutils](https://github.com/pawelWritesCode/gdutils).
 
 ## Why ?
-**No more** need for long and time-consuming framework setup. This project **cuts initial time** & allows setting up e2e test framework with **plenty of
-utility methods** (for testing HTTP(s) API) in just few steps.
+**No more** need for long and time-consuming framework setup. This project **cuts initial time** & allows set up e2e test framework with **plenty of
+utility methods** (_for testing HTTP(s) API_) in just few steps.
 
 Benefits:
 * **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) to writing** actual E2E tests (see gif below ⬇),
@@ -21,7 +21,7 @@ Benefits:
 
 ## Example
 
-#### [Test suite](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/)
+#### [Click here 👆 to see more tests](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/)
 
 ```cucumber
 Feature: Adding new user
@@ -51,7 +51,7 @@ Feature: Adding new user
   I would like to store random user's data
 
     #---------------------------------------------------------------------------------------------------
-    # We send HTTP(s) request with pre-generated data (in Background section) to create new user.
+    # We send HTTP(s) request using pre-generated data to create new user.
     # Accessing saved data from scenario cache is done through template syntax from text/template package.
     # Docstring may be in YAML or JSON format and should have "body" and "headers" keys.
     When I send "POST" request to "{{.MY_APP_URL}}/users" with body and headers:
@@ -81,8 +81,7 @@ Feature: Adding new user
 
     #---------------------------------------------------------------------------------------------------
     # We validate response body with json schema from assets/test_server/doc/schema/user/get_user.json
-    # environment variable GODOG_JSON_SCHEMA_DIR from .env file should contain relative path to schemas dir,
-    # then step argument may be: relative or full OS path
+    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR) or full OS path
     And the response body should be valid according to JSON schema "user/get_user.json"
     # or URL pointing at JSON schema
     And the response body should be valid according to JSON schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
@@ -96,21 +95,30 @@ Feature: Adding new user
       "type": "object"
     }
     """
+    # also JSON nodes may be validated against JSON schema
+    And the JSON node "firstName" should be valid according to JSON schema:
+    """
+    {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "first name",
+        "type": "string"
+    }
+    """
 
     #---------------------------------------------------------------------------------------------------
     # Here, we check assertions against response body
     #
     # node expression should be pattern valid to one of following libraries:
     # https://github.com/pawelWritesCode/qjson
-    # https://github.com/oliveagle/jsonpath
-    #
+	# https://github.com/oliveagle/jsonpath
+	#
     # - data[0].firstName or $.data[0].firstName  - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
     # - root[0].size                              - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
     # - firstName or $.firstName                  - {"firstName": "abc", "lastName": "cdf", age:30},
     #
     # data type should be one of: string|int|float|bool
     #
-    # node value may be fixed or obtained from cache using syntax from go text/template package
+    # node value may be fixed or obtained from scenario cache with syntax from go text/template package
     And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the JSON node "$.lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
