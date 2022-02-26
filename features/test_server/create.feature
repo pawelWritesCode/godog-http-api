@@ -33,7 +33,7 @@ Feature: Adding new user
     {
         "body": {
             "firstName": "{{.RANDOM_FIRST_NAME}}",
-            "lastName": "{{.RANDOM_LAST_NAME}}",
+            "lastName": "doe-{{.RANDOM_LAST_NAME}}",
             "age": {{.RANDOM_AGE}}
         },
         "headers": {
@@ -84,8 +84,8 @@ Feature: Adding new user
     #
     # node expression should be pattern valid to one of following libraries:
     # https://github.com/pawelWritesCode/qjson
-	# https://github.com/oliveagle/jsonpath
-	#
+    # https://github.com/oliveagle/jsonpath
+    #
     # - data[0].firstName or $.data[0].firstName  - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
     # - root[0].size                              - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
     # - firstName or $.firstName                  - {"firstName": "abc", "lastName": "cdf", age:30},
@@ -94,8 +94,10 @@ Feature: Adding new user
     #
     # node value may be fixed or obtained from scenario cache with syntax from go text/template package
     And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    And the JSON node "$.lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
+    And the JSON node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
+    # we can also check whether JSON node match provided regExp
+    And the JSON node "lastName" should match regExp "doe-.*"
 
   Scenario: Create new user v2.
   As application user

@@ -89,6 +89,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | - random length runes of ASCII/UNICODE/polish/english/russian characters,
 	   | - random length sentence of ASCII/UNICODE/polish/english/russian words,
 	   | - int/float from provided range,
+	   | - random bool value,
 	   | - time object moved forward/backward in time.
 	   |
 	   | Every method saves its output in scenario's cache under provided key for future use through text/template syntax.
@@ -96,6 +97,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^I generate a random word having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs)
 	ctx.Step(`^I generate a random sentence having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(3, 10))
 	ctx.Step(`^I generate a random "(int|float)" in the range from "(\d+)" to "(\d+)" and save it as "([^"]*)"$`, scenario.IGenerateARandomNumberInTheRangeFromToAndSaveItAs)
+	ctx.Step(`^I generate a random bool value and save it as "([^"]*)"$`, scenario.IGenerateRandomBoolValueAndSaveItAs)
 	ctx.Step(`^I generate current time and travel "(backward|forward)" "([^"]*)" in time and save it as "([^"]*)"$`, scenario.IGenerateCurrentTimeAndTravelByAndSaveItAs)
 
 	/*
@@ -173,6 +175,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the JSON node "([^"]*)" should be slice of length "(\d+)"$`, scenario.TheJSONNodeShouldBeSliceOfLength)
 	ctx.Step(`^the JSON node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldBe)
 	ctx.Step(`^the JSON node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldNotBe)
+	ctx.Step(`^the JSON node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheJSONNodeShouldMatchRegExp)
 
 	ctx.Step(`^the JSON node "([^"]*)" should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateJSONNodeWithSchemaReference)
 	ctx.Step(`^the JSON node "([^"]*)" should be valid according to JSON schema:$`, scenario.IValidateJSONNodeWithSchemaString)

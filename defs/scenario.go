@@ -3,6 +3,7 @@ package defs
 import (
 	"errors"
 	"fmt"
+	"math/rand"
 	"strings"
 	"time"
 
@@ -77,6 +78,13 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 
 		return generateSentenceFunc(from, to, cacheKey)
 	}
+}
+
+//
+func (s *Scenario) IGenerateRandomBoolValueAndSaveItAs(cacheKey string) error {
+	s.State.Cache.Save(cacheKey, rand.Intn(2) == 0)
+
+	return nil
 }
 
 // IGenerateCurrentTimeAndTravelByAndSaveItAs creates current time object, move timeDuration in time and
@@ -194,6 +202,11 @@ func (s *Scenario) TheJSONNodeShouldNotBe(expr, goType string) error {
 // nodeExpr should be valid according to qjson library expressions separated by comma (,)
 func (s *Scenario) TheJSONResponseShouldHaveNodes(nodesExpr string) error {
 	return s.State.TheJSONResponseShouldHaveNodes(nodesExpr)
+}
+
+// TheJSONNodeShouldMatchRegExp checks whether JSON node matches provided regExp
+func (s *Scenario) TheJSONNodeShouldMatchRegExp(expr, regExpTemplate string) error {
+	return s.State.TheJSONNodeShouldMatchRegExp(expr, regExpTemplate)
 }
 
 // TheResponseBodyShouldHaveFormat checks whether last response body has given data type
