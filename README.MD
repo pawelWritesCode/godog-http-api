@@ -13,7 +13,7 @@ utility methods** (_for testing HTTP(s) API_) in just few steps.
 
 Benefits:
 * **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) to writing** actual E2E tests (see gif below ⬇),
-* [30+ well-documented, coupled in logical groups methods](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
+* [35+ well-documented, coupled in logical groups methods](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
 * support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
 * support for querying JSON tree with two json-path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [qjson](https://github.com/pawelWritesCode/qjson)),
 * very customisable (ability to [inject](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) your own implementation of services),
@@ -126,8 +126,13 @@ Feature: Adding new user
     And the JSON node "lastName" should match regExp "doe-.*"
 ```
 
-## Documentation & installation(setup)
+## Documentation
 
 See project **⭆** [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki) **⭅**
 
-![Usage example](assets/gifs/usage_0.gif)
+* [Overview](https://github.com/pawelWritesCode/godog-example-setup/wiki/Overview) - general information about repository,
+* [Project structure](https://github.com/pawelWritesCode/godog-example-setup/wiki/Project-structure) - describes folder structure of repository,
+* [Set up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up) - guide how to bootstrap repository on your machine,
+* [Steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) - describes each available step and how to use it in tests,
+* [Steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) - how to create custom steps using internal services,
+* [Usage](https://github.com/pawelWritesCode/godog-example-setup/wiki/Usage) - how to use repository (run tests).

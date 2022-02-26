@@ -166,8 +166,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
 
-	ctx.Step(`^the response body should have format "(JSON)"$`, scenario.TheResponseBodyShouldHaveFormat)
-
 	ctx.Step(`^the JSON response should have nodes "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
 	ctx.Step(`^the JSON response should have node "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
 
@@ -176,11 +174,12 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the JSON node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldBe)
 	ctx.Step(`^the JSON node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldNotBe)
 	ctx.Step(`^the JSON node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheJSONNodeShouldMatchRegExp)
-
 	ctx.Step(`^the JSON node "([^"]*)" should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateJSONNodeWithSchemaReference)
 	ctx.Step(`^the JSON node "([^"]*)" should be valid according to JSON schema:$`, scenario.IValidateJSONNodeWithSchemaString)
+
 	ctx.Step(`^the response body should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
 	ctx.Step(`^the response body should be valid according to JSON schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
+	ctx.Step(`^the response body should have format "(JSON)"$`, scenario.TheResponseBodyShouldHaveFormat)
 
 	ctx.Step(`^time between last request and response should be less than or equal to "([^"]*)"$`, scenario.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo)
 
