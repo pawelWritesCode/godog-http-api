@@ -4,20 +4,21 @@
 
 ## Overview:
 
-This repository contains skeleton that allow to write End-2-End tests with use of framework [godog](https://github.com/cucumber/godog)
+This repository contains skeleton that allow to write End-2-End tests for HTTP API with use of framework [godog](https://github.com/cucumber/godog)
 that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax using step library [gdutils](https://github.com/pawelWritesCode/gdutils).
 
 ## Why ?
-**No more** need for long and time-consuming framework setup. This project **cuts initial time** & allows set up e2e test framework with **plenty of
-utility methods** (_for testing HTTP(s) API_) in just few steps.
+**No more** long and time-consuming framework setup. This project **cuts initial time** & allows bootstrap e2e test framework with **plenty of
+utility methods** (_for testing HTTP(s) API_) in just few steps. Just grab it and write tests right away.
 
 Benefits:
-* **short time** from **[set-up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) to writing** actual E2E tests,
+* **short time** from **[setup](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) - to writing** actual E2E tests,
 * [35+ well-documented, coupled in logical groups methods](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
 * support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
 * support for querying JSON tree with two json-path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [qjson](https://github.com/pawelWritesCode/qjson)),
-* very customisable (ability to [inject](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) your own implementation of services),
-* friendly for custom [steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) because of [exported internal services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
+* rich debugging possibilities - various ways to debug tests,
+* very customisable (ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) internal services with your own implementation),
+* friendly for custom [steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) because of [exported utility services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
 
 ## Example
 
@@ -128,11 +129,11 @@ Feature: Adding new user
 
 ## Documentation
 
-See project **⭆** [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki) **⭅**
+See project ![hand pointing right](assets/gifs/hand-pointing-right.gif)  [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki)  ![hand pointing left](assets/gifs/hand-pointing-left.gif)
 
-* [Overview](https://github.com/pawelWritesCode/godog-example-setup/wiki/Overview) - general information about repository,
-* [Project structure](https://github.com/pawelWritesCode/godog-example-setup/wiki/Project-structure) - describes folder structure of repository,
-* [Set up](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up) - guide how to bootstrap repository on your machine,
+* [Overview](https://github.com/pawelWritesCode/godog-example-setup/wiki/Overview) - general information about project,
+* [Project structure](https://github.com/pawelWritesCode/godog-example-setup/wiki/Project-structure) - describes repository folder structure,
+* [Setup](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up) - guide how to bootstrap repository on your machine,
 * [Steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) - describes each available step and how to use it in tests,
 * [Steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) - how to create custom steps using internal services,
-* [Usage](https://github.com/pawelWritesCode/godog-example-setup/wiki/Usage) - how to use repository (run tests).
+* [Usage](https://github.com/pawelWritesCode/godog-example-setup/wiki/Usage) - how to run tests.
