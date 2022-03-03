@@ -44,7 +44,7 @@ Feature: Fetching many users.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to JSON schema "user/get_user.json"
+    And the response body should be valid according to schema "user/get_user.json"
 
     #---------------------------------------------------------------------------------------------------
     # We generate new user's data
@@ -71,7 +71,7 @@ Feature: Fetching many users.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to JSON schema "user/get_user.json"
+    And the response body should be valid according to schema "user/get_user.json"
 
     #---------------------------------------------------------------------------------------------------
     # We send HTTP(s) request to fetch all users.
@@ -88,5 +88,5 @@ Feature: Fetching many users.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     # here we only check only node type, not its exact value
-    And the JSON node "root" should be "slice"
-    And the JSON node "root" should not be "nil"
+    And the "JSON" node "root" should be "slice"
+    And the "JSON" node "root" should not be "nil"

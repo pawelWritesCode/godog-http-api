@@ -112,7 +112,6 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | First, composed but less customisable:
 	   | Simply use step `I send "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" with body and headers:`
 	   | As last argument pass docstring in JSON or YAML format with keys "body" and "headers".
-	   | Internally, no matter which format you choose, data will be serialized to JSON and send in this format.
 	   |
 	   | Second, more customisable:
 	   | 	step `^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to ...`      - to prepare HTTP(s) request
@@ -143,10 +142,11 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Every argument following immediately after word "node" or "nodes"
 	   | should have syntax acceptable by one of json-path libraries:
-	   | https://github.com/pawelWritesCode/qjson
-	   | https://github.com/oliveagle/jsonpath
+	   | https://github.com/pawelWritesCode/qjson (JSON)
+	   | https://github.com/oliveagle/jsonpath (JSON)
+	   | https://github.com/goccy/go-yaml (YAML)
 	   |
-	   | Method "the JSON response should have nodes" accepts list of nodes,
+	   | Method "the response should have nodes" accepts list of nodes,
 	   | separated with comma ",". For example: "data[0].user, $.data[1].user, data".
 	   |
 	   | Every method, that ends with 'of value "([^"]*)"' accepts fixed values or
@@ -166,20 +166,20 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
 
-	ctx.Step(`^the JSON response should have nodes "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
-	ctx.Step(`^the JSON response should have node "([^"]*)"$`, scenario.TheJSONResponseShouldHaveNodes)
+	ctx.Step(`^the "(JSON|YAML)" response should have nodes "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
+	ctx.Step(`^the "(JSON|YAML)" response should have node "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
 
-	ctx.Step(`^the JSON node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheJSONNodeShouldBeOfValue)
-	ctx.Step(`^the JSON node "([^"]*)" should be slice of length "(\d+)"$`, scenario.TheJSONNodeShouldBeSliceOfLength)
-	ctx.Step(`^the JSON node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldBe)
-	ctx.Step(`^the JSON node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheJSONNodeShouldNotBe)
-	ctx.Step(`^the JSON node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheJSONNodeShouldMatchRegExp)
-	ctx.Step(`^the JSON node "([^"]*)" should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateJSONNodeWithSchemaReference)
-	ctx.Step(`^the JSON node "([^"]*)" should be valid according to JSON schema:$`, scenario.IValidateJSONNodeWithSchemaString)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be slice of length "(\d+)"$`, scenario.TheNodeShouldBeSliceOfLength)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldBe)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldNotBe)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheNodeShouldMatchRegExp)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be valid according to schema "([^"]*)"$`, scenario.IValidateNodeWithSchemaReference)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be valid according to schema:$`, scenario.IValidateNodeWithSchemaString)
 
-	ctx.Step(`^the response body should be valid according to JSON schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
-	ctx.Step(`^the response body should be valid according to JSON schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
-	ctx.Step(`^the response body should have format "(JSON)"$`, scenario.TheResponseBodyShouldHaveFormat)
+	ctx.Step(`^the response body should be valid according to schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
+	ctx.Step(`^the response body should be valid according to schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
+	ctx.Step(`^the response body should have format "(JSON|YAML|plain text)"$`, scenario.TheResponseBodyShouldHaveFormat)
 
 	ctx.Step(`^time between last request and response should be less than or equal to "([^"]*)"$`, scenario.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo)
 
@@ -191,12 +191,13 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | This section contains method for preserving data in scenario cache
 	   |
 	   | Argument following immediately after word "node"
-	   | should have syntax acceptable by one of json-path libraries:
-	   | https://github.com/pawelWritesCode/qjson
-	   | https://github.com/oliveagle/jsonpath
+	   | should have syntax acceptable by one of path libraries:
+	   | https://github.com/pawelWritesCode/qjson (JSON)
+	   | https://github.com/oliveagle/jsonpath (JSON)
+	   | https://github.com/goccy/go-yaml (YAML)
 	*/
 	ctx.Step(`^I save "([^"]*)" as "([^"]*)"$`, scenario.ISaveAs)
-	ctx.Step(`^I save from the last response JSON node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseJSONNodeAs)
+	ctx.Step(`^I save from the last response "(JSON|YAML)" node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseNodeAs)
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------

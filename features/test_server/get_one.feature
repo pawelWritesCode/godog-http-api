@@ -43,8 +43,8 @@ Feature: Fetching single user.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to JSON schema "user/get_user.json"
-    And I save from the last response JSON node "id" as "USER_ID"
+    And the response body should be valid according to schema "user/get_user.json"
+    And I save from the last response "JSON" node "id" as "USER_ID"
 
     #---------------------------------------------------------------------------------------------------
     # We send HTTP(s) request to obtain previously created user
@@ -61,8 +61,8 @@ Feature: Fetching single user.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to JSON schema "user/get_user.json"
-    And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    And the JSON node "lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
-    And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
-    And the JSON node "id" should be "int" of value "{{.USER_ID}}"
+    And the response body should be valid according to schema "user/get_user.json"
+    And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
+    And the "JSON" node "lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
+    And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
+    And the "JSON" node "id" should be "int" of value "{{.USER_ID}}"

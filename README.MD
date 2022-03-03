@@ -9,13 +9,13 @@ that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax
 
 ## Why ?
 **No more** long and time-consuming framework setup. This project **cuts initial time** & allows bootstrap e2e test framework with **plenty of
-utility methods** (_for testing HTTP(s) API_) in just few steps. Just grab it and write tests right away.
+utility methods** (_for testing HTTP(s) API using JSON/YAML_) in just few steps. Just grab it and write tests right away.
 
 Benefits:
 * **short time** from **[setup](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) - to writing** actual E2E tests,
-* [35+ well-documented, coupled in logical groups methods](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
+* [35+ well-documented, coupled in logical groups steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
 * support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
-* support for querying JSON tree with two json-path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [qjson](https://github.com/pawelWritesCode/qjson)),
+* support for querying JSON/YAML tree with different path engines ([oliveagle - JSON](https://github.com/oliveagle/jsonpath), [qjson - JSON](https://github.com/pawelWritesCode/qjson), [go-yaml - YAML](https://github.com/goccy/go-yaml)),
 * rich debugging possibilities - various ways to debug tests,
 * very customisable (ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) internal services with your own implementation),
 * friendly for custom [steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) because of [exported utility services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
@@ -81,13 +81,13 @@ Feature: Adding new user
     And I wait "2ms"
 
     #---------------------------------------------------------------------------------------------------
-    # We validate response body with json schema from assets/test_server/doc/schema/user/get_user.json
+    # We validate response body with schema from assets/test_server/doc/schema/user/get_user.json
     # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR) or full OS path
-    And the response body should be valid according to JSON schema "user/get_user.json"
-    # or URL pointing at JSON schema
-    And the response body should be valid according to JSON schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
+    And the response body should be valid according to schema "user/get_user.json"
+    # or URL pointing at schema
+    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
     # or raw schema definition passed in Docstring
-    And the response body should be valid according to JSON schema:
+    And the response body should be valid according to schema:
     """
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -96,8 +96,8 @@ Feature: Adding new user
       "type": "object"
     }
     """
-    # also JSON nodes may be validated against JSON schema
-    And the JSON node "firstName" should be valid according to JSON schema:
+    # also nodes may be validated against schema
+    And the "JSON" node "firstName" should be valid according to schema:
     """
     {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -105,26 +105,12 @@ Feature: Adding new user
         "type": "string"
     }
     """
-
-    #---------------------------------------------------------------------------------------------------
-    # Here, we check assertions against response body
-    #
-    # node expression should be pattern valid to one of following libraries:
-    # https://github.com/pawelWritesCode/qjson
-    # https://github.com/oliveagle/jsonpath
-    #
-    # - data[0].firstName or $.data[0].firstName  - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
-    # - root[0].size                              - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
-    # - firstName or $.firstName                  - {"firstName": "abc", "lastName": "cdf", age:30},
-    #
-    # data type should be one of: string|int|float|bool
-    #
-    # node value may be fixed or obtained from scenario cache with syntax from go text/template package
-    And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    And the JSON node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
-    And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
-    # we can also check whether JSON node match provided regExp
-    And the JSON node "lastName" should match regExp "doe-.*"
+    And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
+    # here is used qjson "json-path" syntax to find JSON node
+    And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
+    # here is used oliveagle "json-path" syntax to find JSON node
+    And the "JSON" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
+    And the "JSON" node "lastName" should match regExp "doe-.*"
 ```
 
 ## Documentation

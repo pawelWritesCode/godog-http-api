@@ -54,13 +54,13 @@ Feature: Adding new user
     And I wait "2ms"
 
     #---------------------------------------------------------------------------------------------------
-    # We validate response body with json schema from assets/test_server/doc/schema/user/get_user.json
+    # We validate response body with schema from assets/test_server/doc/schema/user/get_user.json
     # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR) or full OS path
-    And the response body should be valid according to JSON schema "user/get_user.json"
-    # or URL pointing at JSON schema
-    And the response body should be valid according to JSON schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
+    And the response body should be valid according to schema "user/get_user.json"
+    # or URL pointing at schema
+    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
     # or raw schema definition passed in Docstring
-    And the response body should be valid according to JSON schema:
+    And the response body should be valid according to schema:
     """
     {
       "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -69,8 +69,8 @@ Feature: Adding new user
       "type": "object"
     }
     """
-    # also JSON nodes may be validated against JSON schema
-    And the JSON node "firstName" should be valid according to JSON schema:
+    # also nodes may be validated against schema
+    And the "JSON" node "firstName" should be valid according to schema:
     """
     {
         "$schema": "https://json-schema.org/draft/2020-12/schema",
@@ -78,26 +78,12 @@ Feature: Adding new user
         "type": "string"
     }
     """
-
-    #---------------------------------------------------------------------------------------------------
-    # Here, we check assertions against response body
-    #
-    # node expression should be pattern valid to one of following libraries:
-    # https://github.com/pawelWritesCode/qjson
-    # https://github.com/oliveagle/jsonpath
-    #
-    # - data[0].firstName or $.data[0].firstName  - {"data": [{"firstName": "abc", "lastName": "cdf", age:30}, {...}]}
-    # - root[0].size                              - [{"name": "Lublin", "size": 10000}, {"name": "Warsaw", "size": 20000}]
-    # - firstName or $.firstName                  - {"firstName": "abc", "lastName": "cdf", age:30},
-    #
-    # data type should be one of: string|int|float|bool
-    #
-    # node value may be fixed or obtained from scenario cache with syntax from go text/template package
-    And the JSON node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    And the JSON node "age" should be "int" of value "{{.RANDOM_AGE}}"
-    And the JSON node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
-    # we can also check whether JSON node match provided regExp
-    And the JSON node "lastName" should match regExp "doe-.*"
+    And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
+    # here is used qjson "json-path" syntax to find JSON node
+    And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
+    # here is used oliveagle "json-path" syntax to find JSON node
+    And the "JSON" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
+    And the "JSON" node "lastName" should match regExp "doe-.*"
 
   Scenario: Create new user v2.
   As application user
@@ -155,4 +141,4 @@ Feature: Adding new user
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to JSON schema "user/get_user.json"
+    And the response body should be valid according to schema "user/get_user.json"

@@ -9,7 +9,7 @@ import (
 
 	"github.com/cucumber/godog"
 	"github.com/pawelWritesCode/gdutils"
-	"github.com/pawelWritesCode/gdutils/pkg/dataformat"
+	"github.com/pawelWritesCode/gdutils/pkg/format"
 	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
 	"github.com/pawelWritesCode/gdutils/pkg/timeutils"
 )
@@ -99,19 +99,12 @@ func (s *Scenario) IGenerateCurrentTimeAndTravelByAndSaveItAs(timeDirection, tim
 }
 
 /*
-	ISendRequestToWithBodyAndHeaders sends HTTP(s) requests with provided body and headers.
+	ISendRequestToWithFormatBodyAndHeaders sends HTTP(s) requests with provided body and headers.
 
 	Argument "method" indices HTTP request method for example: "POST", "GET" etc.
  	Argument "urlTemplate" should be full valid URL. May include template values.
-	Argument "bodyTemplate" should contain data (may include template values) in format acceptable by Deserializer
-	with keys "body" and "headers". Internally method will marshal request body to JSON format and add it to request.
-
-	If you want to send request body in arbitrary data format, use step-by-step flow containing following methods:
-		IPrepareNewRequestToAndSaveItAs            - creates request object and save it to cache
-		ISetFollowingHeadersForPreparedRequest     - sets header for saved request
-		ISetFollowingBodyForPreparedRequest        - sets body for saved request
-		ISendRequest 							   - sends previously saved request
-	Because method ISetFollowingBodyForPreparedRequest pass any bytes to HTTP(s) request body without any mutation.
+	Argument "bodyTemplate" should contain data (may include template values)
+	in JSON or YAML format with keys "body" and "headers".
 */
 func (s *Scenario) ISendRequestToWithBodyAndHeaders(method, urlTemplate string, reqBody *godog.DocString) error {
 	return s.State.ISendRequestToWithBodyAndHeaders(method, urlTemplate, reqBody.Content)
@@ -160,59 +153,54 @@ func (s *Scenario) TheResponseStatusCodeShouldBe(code int) error {
 	return s.State.TheResponseStatusCodeShouldBe(code)
 }
 
-// TheJSONResponseShouldHaveNode checks whether last response body contains given JSON node.
-func (s *Scenario) TheJSONResponseShouldHaveNode(expr string) error {
-	return s.State.TheJSONResponseShouldHaveNode(expr)
+// TheResponseShouldHaveNode checks whether last response body contains given node.
+// expr should be valid according to injected PathFinder for given data format
+func (s *Scenario) TheResponseShouldHaveNode(dataFormat, expr string) error {
+	return s.State.TheResponseShouldHaveNode(format.DataFormat(dataFormat), expr)
 }
 
-/*
-	TheJSONNodeShouldBeOfValue finds JSON node from provided expression and compares it to,
-	expected by user value of given by user type,
-	available data types are listed in switch section in each case directive.
-*/
-func (s *Scenario) TheJSONNodeShouldBeOfValue(expr, dataType, dataValue string) error {
-	return s.State.TheJSONNodeShouldBeOfValue(expr, dataType, dataValue)
+// TheNodeShouldBeOfValue compares json node value from expression to expected by user dataValue of given by user dataType
+// Available data types are listed in switch section in each case directive.
+// expr should be valid according to injected PathFinder for provided dataFormat.
+func (s *Scenario) TheNodeShouldBeOfValue(dataFormat, expr, dataType, dataValue string) error {
+	return s.State.TheNodeShouldBeOfValue(format.DataFormat(dataFormat), expr, dataType, dataValue)
 }
 
-// TheJSONNodeShouldBeSliceOfLength finds JSON node from provided expression and
-// checks whether given JSON node is slice and has given length.
-func (s *Scenario) TheJSONNodeShouldBeSliceOfLength(expr string, length int) error {
-	return s.State.TheJSONNodeShouldBeSliceOfLength(expr, length)
+// TheNodeShouldBeSliceOfLength checks whether given key is slice and has given length
+// expr should be valid according to injected PathFinder for provided dataFormat
+func (s *Scenario) TheNodeShouldBeSliceOfLength(dataFormat, expr string, length int) error {
+	return s.State.TheNodeShouldBeSliceOfLength(format.DataFormat(dataFormat), expr, length)
 }
 
-/*
-	TheJSONNodeShouldBe checks whether JSON node from last response body is of provided type.
-	goType may be one of: nil, string, int, float, bool, map, slice.
-	node should be expression acceptable by qjson package against JSON node from last response body.
-*/
-func (s *Scenario) TheJSONNodeShouldBe(expr, goType string) error {
-	return s.State.TheJSONNodeShouldBe(expr, goType)
+// TheNodeShouldBe checks whether node from last response body is of provided type
+// goType may be one of: nil, string, int, float, bool, map, slice
+// expr should be valid according to injected PathResolver
+func (s *Scenario) TheNodeShouldBe(dataFormat, expr, goType string) error {
+	return s.State.TheNodeShouldBe(format.DataFormat(dataFormat), expr, goType)
 }
 
-/*
-	TheJSONNodeShouldNotBe checks whether JSON node from last response body is not of provided type.
-	goType may be one of: nil, string, int, float, bool, map, slice.
-	node should be expression acceptable by qjson package against JSON node from last response body.
-*/
-func (s *Scenario) TheJSONNodeShouldNotBe(expr, goType string) error {
-	return s.State.TheJSONNodeShouldNotBe(expr, goType)
+// TheNodeShouldNotBe checks whether node from last response body is not of provided type.
+// goType may be one of: nil, string, int, float, bool, map, slice,
+// expr should be valid according to injected PathFinder for given data format.
+func (s *Scenario) TheNodeShouldNotBe(dataFormat, expr, goType string) error {
+	return s.State.TheNodeShouldNotBe(format.DataFormat(dataFormat), expr, goType)
 }
 
-// TheJSONResponseShouldHaveNodes checks whether last request body has keys defined in string separated by comma
-// nodeExpr should be valid according to qjson library expressions separated by comma (,)
-func (s *Scenario) TheJSONResponseShouldHaveNodes(nodesExpr string) error {
-	return s.State.TheJSONResponseShouldHaveNodes(nodesExpr)
+// TheResponseShouldHaveNodes checks whether last request body has keys defined in string separated by comma
+// nodeExprs should be valid according to injected PathFinder expressions separated by comma (,)
+func (s *Scenario) TheResponseShouldHaveNodes(dataFormat, nodesExpr string) error {
+	return s.State.TheResponseShouldHaveNodes(format.DataFormat(dataFormat), nodesExpr)
 }
 
-// TheJSONNodeShouldMatchRegExp checks whether JSON node matches provided regExp
-func (s *Scenario) TheJSONNodeShouldMatchRegExp(expr, regExpTemplate string) error {
-	return s.State.TheJSONNodeShouldMatchRegExp(expr, regExpTemplate)
+// TheNodeShouldMatchRegExp checks whether last response body node matches provided regExp.
+func (s *Scenario) TheNodeShouldMatchRegExp(dataFormat, expr, regExpTemplate string) error {
+	return s.State.TheNodeShouldMatchRegExp(format.DataFormat(dataFormat), expr, regExpTemplate)
 }
 
-// TheResponseBodyShouldHaveFormat checks whether last response body has given data type
-// available data types are listed in dataformat package
-func (s *Scenario) TheResponseBodyShouldHaveFormat(dataType string) error {
-	return s.State.TheResponseBodyShouldHaveFormat(dataformat.DataFormat(dataType))
+// TheResponseBodyShouldHaveFormat checks whether last response body has given data format.
+// Available data formats are listed in format package.
+func (s *Scenario) TheResponseBodyShouldHaveFormat(dataFormat string) error {
+	return s.State.TheResponseBodyShouldHaveFormat(format.DataFormat(dataFormat))
 }
 
 /*
@@ -255,14 +243,14 @@ func (s *Scenario) TheResponseShouldHaveCookieOfValue(name, valueTemplate string
 	return s.State.TheResponseShouldHaveCookieOfValue(name, valueTemplate)
 }
 
-// IValidateJSONNodeWithSchemaReference validates last response body JSON node against jsonSchema as provided in reference
-func (s *Scenario) IValidateJSONNodeWithSchemaReference(expr, reference string) error {
-	return s.State.IValidateJSONNodeWithSchemaReference(expr, reference)
+// IValidateNodeWithSchemaReference validates last response body node against schema as provided in reference
+func (s *Scenario) IValidateNodeWithSchemaReference(dataFormat, expr, reference string) error {
+	return s.State.IValidateNodeWithSchemaReference(format.DataFormat(dataFormat), expr, reference)
 }
 
-// IValidateJSONNodeWithSchemaString validates last response body JSON node against jsonSchema
-func (s *Scenario) IValidateJSONNodeWithSchemaString(expr string, jsonSchema *godog.DocString) error {
-	return s.State.IValidateJSONNodeWithSchemaString(expr, jsonSchema.Content)
+// IValidateNodeWithSchemaString validates last response body JSON node against schema
+func (s *Scenario) IValidateNodeWithSchemaString(dataFormat, expr string, jsonSchema *godog.DocString) error {
+	return s.State.IValidateNodeWithSchemaString(format.DataFormat(dataFormat), expr, jsonSchema.Content)
 }
 
 // ISaveAs saves into cache arbitrary passed value
@@ -270,9 +258,9 @@ func (s *Scenario) ISaveAs(value, cacheKey string) error {
 	return s.State.ISaveAs(value, cacheKey)
 }
 
-// ISaveFromTheLastResponseJSONNodeAs saves from last response json node under given cache key.
-func (s *Scenario) ISaveFromTheLastResponseJSONNodeAs(expr, cacheKey string) error {
-	return s.State.ISaveFromTheLastResponseJSONNodeAs(expr, cacheKey)
+// ISaveFromTheLastResponseNodeAs saves from last response json node under given cache key.
+func (s *Scenario) ISaveFromTheLastResponseNodeAs(dataFormat, expr, cacheKey string) error {
+	return s.State.ISaveFromTheLastResponseNodeAs(format.DataFormat(dataFormat), expr, cacheKey)
 }
 
 // IPrintLastResponseBody prints response body from last scenario request
