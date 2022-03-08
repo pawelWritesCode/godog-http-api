@@ -55,8 +55,10 @@ Feature: Adding new user
 
     #---------------------------------------------------------------------------------------------------
     # We validate response body with schema from assets/test_server/doc/schema/user/get_user.json
-    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR) or full OS path
+    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR)
     And the response body should be valid according to schema "user/get_user.json"
+    # or full OS path
+    And the response body should be valid according to schema "{{.CWD}}/assets/test_server/doc/schema/user/get_user.json"
     # or URL pointing at schema
     And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
     # or raw schema definition passed in Docstring

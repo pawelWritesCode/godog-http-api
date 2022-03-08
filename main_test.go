@@ -72,6 +72,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		// Here you can define more scenario-scoped values using scenario.State.Cache.Save() method
 		scenario.State.Cache.Save("MY_APP_URL", os.Getenv(envMyAppURL))
 		scenario.State.Cache.Save("NOW", time.Now().Format(time.RFC3339))
+		scenario.State.Cache.Save("CWD", wd)
 
 		return ctx, nil
 	})
@@ -167,7 +168,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
 
 	ctx.Step(`^the "(JSON|YAML)" response should have nodes "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
-	ctx.Step(`^the "(JSON|YAML)" response should have node "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
+	ctx.Step(`^the "(JSON|YAML)" response should have node "([^"]*)"$`, scenario.TheResponseShouldHaveNode)
 
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be slice of length "(\d+)"$`, scenario.TheNodeShouldBeSliceOfLength)
