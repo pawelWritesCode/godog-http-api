@@ -28,5 +28,6 @@ jobs:
         run: |
           make download-dependencies
           make env
+          TMPDIR="/"
           echo $TMPDIR
           godog --concurrency=2 --format=progress --random
