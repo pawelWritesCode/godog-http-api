@@ -127,6 +127,15 @@ func (s Scenario) ISetFollowingCookiesForPreparedRequest(cacheKey string, cookie
 	return s.State.ISetFollowingCookiesForPreparedRequest(cacheKey, cookies.Content)
 }
 
+/*
+	ISetFollowingFormForPreparedRequest sets form for previously prepared request.
+	Internally method sets proper Content-Type: multipart/form-data header.
+	formTemplate should be YAML or JSON deserializable on map[string]string.
+*/
+func (s Scenario) ISetFollowingFormForPreparedRequest(cacheKey string, formTemplate *godog.DocString) error {
+	return s.State.ISetFollowingFormForPreparedRequest(cacheKey, formTemplate.Content)
+}
+
 // ISetFollowingBodyForPreparedRequest sets body for previously prepared request.
 // bodyTemplate may be in any format and accepts template values.
 func (s Scenario) ISetFollowingBodyForPreparedRequest(cacheKey string, bodyTemplate *godog.DocString) error {
