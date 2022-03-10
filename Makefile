@@ -16,7 +16,7 @@ assets_dir=./assets
 #env creates .env file and populates it with default values
 env:
 	touch .env
-	echo "GODOG_DEBUG=true\nGODOG_MY_APP_URL=http://localhost:1234\nGODOG_JSON_SCHEMA_DIR=./assets/test_server/doc/schema" >> .env
+	echo "GODOG_DEBUG=false\nGODOG_MY_APP_URL=http://localhost:1234\nGODOG_JSON_SCHEMA_DIR=./assets/test_server/doc/schema" >> .env
 
 #download-dependencies download go packages and godog binary
 download-dependencies:
