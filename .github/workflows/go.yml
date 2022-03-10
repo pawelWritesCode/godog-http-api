@@ -10,6 +10,8 @@ jobs:
 
   e2e-tests:
     runs-on: ubuntu-latest
+    env:
+      TMPDIR: /
     steps:
       - uses: actions/checkout@v2
 
