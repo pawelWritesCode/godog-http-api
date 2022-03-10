@@ -60,7 +60,7 @@ Feature: Adding new user
     # or full OS path
     And the response body should be valid according to schema "{{.CWD}}/assets/test_server/doc/schema/user/user.json"
     # or URL pointing at schema
-#    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/user.json"
+    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/user.json"
     # or raw schema definition passed in Docstring
     And the response body should be valid according to schema:
     """
