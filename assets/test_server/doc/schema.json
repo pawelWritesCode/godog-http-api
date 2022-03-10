@@ -61,7 +61,13 @@
                     },
                     "400": {
                         "description": "Error",
-                        "content": {}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -84,10 +90,6 @@
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Error",
-                        "content": {}
                     }
                 }
             }
@@ -121,9 +123,15 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Error",
-                        "content": {}
+                    "404": {
+                        "description": "user of given userId not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -163,7 +171,13 @@
                     },
                     "400": {
                         "description": "Error",
-                        "content": {}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -192,7 +206,85 @@
                     },
                     "400": {
                         "description": "error",
-                        "content": {}
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}/avatar": {
+            "post": {
+                "tags": ["user"],
+                "summary": "Send avatar for user",
+                "operationId": "post_avatar",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "description": "Id of user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "my-photo.png"
+                                    },
+                                    "avatar": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successfully added avatar"
+                    },
+                    "400": {
+                        "description": "bad request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "user of given userId was not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -201,10 +293,13 @@
     "components": {
         "schemas": {
             "GETUser": {
-                "$ref": "./schema/user/get_user.json"
+                "$ref": "./schema/user/user.json"
             },
             "POSTUser": {
                 "$ref": "./schema/user/post_user.json"
+            },
+            "general_error": {
+                "$ref": "./schema/general_error.json"
             }
         }
     }

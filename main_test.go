@@ -117,13 +117,15 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | Second, more customisable:
 	   | 	step `^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to ...`      - to prepare HTTP(s) request
 	   |	step `^I set following headers for prepared request "([^"]*)":$`             - setting headers (YAML|JSON)
-	   |	step `^I set following cookies for prepared request "([^"]*)":`              - setting cookies (YAML|JSON)
+	   |	step `^I set following cookies for prepared request "([^"]*)":$`             - setting cookies (YAML|JSON)
+	   |	step `^I set following form for prepared request "([^"]*)":$`                - setting form (YAML|JSON)
 	   |	step `^I set following body for prepared request "([^"]*)":$`                - setting req body (any format)
 	   |	step `^I send request "([^"]*)"$`                                            - to send prepared request
 	*/
 	ctx.Step(`^I prepare new "(GET|POST|PUT|PATCH|DELETE|HEAD)" request to "([^"]*)" and save it as "([^"]*)"$`, scenario.IPrepareNewRequestToAndSaveItAs)
 	ctx.Step(`^I set following headers for prepared request "([^"]*)":$`, scenario.ISetFollowingHeadersForPreparedRequest)
 	ctx.Step(`^I set following cookies for prepared request "([^"]*)":$`, scenario.ISetFollowingCookiesForPreparedRequest)
+	ctx.Step(`^I set following form for prepared request "([^"]*)":$`, scenario.ISetFollowingFormForPreparedRequest)
 	ctx.Step(`^I set following body for prepared request "([^"]*)":$`, scenario.ISetFollowingBodyForPreparedRequest)
 	ctx.Step(`^I send request "([^"]*)"$`, scenario.ISendRequest)
 

@@ -16,6 +16,7 @@ Benefits:
 * [35+ well-documented, coupled in logical groups steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
 * support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
 * support for querying JSON/YAML tree with different path engines ([oliveagle - JSON](https://github.com/oliveagle/jsonpath), [qjson - JSON](https://github.com/pawelWritesCode/qjson), [go-yaml - YAML](https://github.com/goccy/go-yaml)),
+* support for sending _multipart/form-data_ forms with file in it, 
 * rich debugging possibilities - various ways to debug tests,
 * very customisable (ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) internal services with your own implementation),
 * friendly for custom [steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) because of [exported utility services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
@@ -26,30 +27,28 @@ Benefits:
 
 ```cucumber
 Feature: Adding new user
-  User's CRUD API binary and it's documentation can be found in assets/test_server/ directory.
-  It is simple web server with endpoints:
-  - POST    /users            - creates new user
-  - GET     /users            - retrieve all users
-  - GET     /users/{user_id}  - retrieve user by user_id
-  - PUT     /users/{user_id}  - replace user by user_id
-  - DELETE  /users/{user_id}  - delete user by user_id
+  User's CRUD API binary and it's documentation can be found in assets/test_server/ dir. It is web server with endpoints
+  - POST    /users                  - creates new user
+  - GET     /users                  - retrieve all users
+  - GET     /users/{user_id}        - retrieve user by user_id
+  - PUT     /users/{user_id}        - replace user by user_id
+  - DELETE  /users/{user_id}        - delete user by user_id
+  - POST    /users/{user_id}/avatar - add avatar for user of user_id
 
   Background:
-  This section runs before every Scenario.
-  Its main purpose is to generate:
-  - first name,
-  - last name,
-  - age.
+  This section runs before every Scenario. Its main purpose is to generate random user data
   and save it under provided key in scenario cache.
 
-    Given I save "application/json" as "CONTENT_TYPE_JSON"
-    Given I generate a random word having from "5" to "10" of "russian" characters and save it as "RANDOM_FIRST_NAME"
-    Given I generate a random word having from "5" to "15" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random word having from "5" to "10" of "polish" characters and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random word having from "3" to "7" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random sentence having from "3" to "4" of "english" words and save it as "RANDOM_DESCRIPTION"
     Given I generate a random "int" in the range from "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate current time and travel "backward" "240h" in time and save it as "MEET_DATE"
+    Given I save "application/json" as "CONTENT_TYPE_JSON"
 
-  Scenario: Create user v1
+  Scenario: Successfully create user v1
   As application user
-  I would like to store random user's data
+  I would like to create new account
 
     #---------------------------------------------------------------------------------------------------
     # We send HTTP(s) request using pre-generated data to create new user.
@@ -61,7 +60,9 @@ Feature: Adding new user
         "body": {
             "firstName": "{{.RANDOM_FIRST_NAME}}",
             "lastName": "doe-{{.RANDOM_LAST_NAME}}",
-            "age": {{.RANDOM_AGE}}
+            "age": {{.RANDOM_AGE}},
+            "description": "{{.RANDOM_DESCRIPTION}}",
+            "friendSince": "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
         },
         "headers": {
             "Content-Type": "{{.CONTENT_TYPE_JSON}}"
@@ -81,19 +82,21 @@ Feature: Adding new user
     And I wait "2ms"
 
     #---------------------------------------------------------------------------------------------------
-    # We validate response body with schema from assets/test_server/doc/schema/user/get_user.json
-    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR) or full OS path
-    And the response body should be valid according to schema "user/get_user.json"
+    # We validate response body with schema from assets/test_server/doc/schema/user/user.json
+    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR)
+    And the response body should be valid according to schema "user/user.json"
+    # or full OS path
+    And the response body should be valid according to schema "{{.CWD}}/assets/test_server/doc/schema/user/user.json"
     # or URL pointing at schema
-    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/get_user.json"
+#    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/user.json"
     # or raw schema definition passed in Docstring
     And the response body should be valid according to schema:
     """
     {
-      "$schema": "https://json-schema.org/draft/2020-12/schema",
-      "title": "create user",
-      "description": "Valid response from create user endpoint",
-      "type": "object"
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "title": "create user",
+        "description": "Valid response from create user endpoint",
+        "type": "object"
     }
     """
     # also nodes may be validated against schema
@@ -105,12 +108,16 @@ Feature: Adding new user
         "type": "string"
     }
     """
-    And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     # here is used qjson "json-path" syntax to find JSON node
-    And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
+    And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     # here is used oliveagle "json-path" syntax to find JSON node
     And the "JSON" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
+    # here is used regExp acceptable by standard go package "regExp"
     And the "JSON" node "lastName" should match regExp "doe-.*"
+    And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
+    And the "JSON" node "description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
+    # here date is formatted according to one of available formats from standard go package "time"
+    And the "JSON" node "friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 ```
 
 ## Documentation
