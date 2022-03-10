@@ -30,4 +30,5 @@ jobs:
           make env
           TMPDIR="/"
           echo $TMPDIR
-          godog --concurrency=2 --format=progress --random
+          godog features/test_server/avatar.feature
+#          godog --concurrency=2 --format=progress --random
