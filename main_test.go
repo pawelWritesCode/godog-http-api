@@ -71,8 +71,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 		// Here you can define more scenario-scoped values using scenario.State.Cache.Save() method
 		scenario.State.Cache.Save("MY_APP_URL", os.Getenv(envMyAppURL))
-		scenario.State.Cache.Save("NOW", time.Now().Format(time.RFC3339))
-		scenario.State.Cache.Save("CWD", wd)
+		scenario.State.Cache.Save("CWD", wd) // current working directory - full OS path to this file
 
 		return ctx, nil
 	})
@@ -137,7 +136,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains assertions against last HTTP(s) responses, especially:
-	   | - response body JSON nodes,
+	   | - response body nodes,
 	   | - HTTP(s) headers,
 	   | - HTTP(s) cookies,
 	   | - HTTP(s) status code,
@@ -148,6 +147,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | https://github.com/pawelWritesCode/qjson (JSON)
 	   | https://github.com/oliveagle/jsonpath (JSON)
 	   | https://github.com/goccy/go-yaml (YAML)
+	   | https://github.com/antchfx/xmlquery (XML)
 	   |
 	   | Method "the response should have nodes" accepts list of nodes,
 	   | separated with comma ",". For example: "data[0].user, $.data[1].user, data".
@@ -169,20 +169,20 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
 
-	ctx.Step(`^the "(JSON|YAML)" response should have nodes "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
-	ctx.Step(`^the "(JSON|YAML)" response should have node "([^"]*)"$`, scenario.TheResponseShouldHaveNode)
+	ctx.Step(`^the "(JSON|YAML|XML)" response should have nodes "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
+	ctx.Step(`^the "(JSON|YAML|XML)" response should have node "([^"]*)"$`, scenario.TheResponseShouldHaveNode)
 
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be slice of length "(\d+)"$`, scenario.TheNodeShouldBeSliceOfLength)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should be slice of length "(\d+)"$`, scenario.TheNodeShouldBeSliceOfLength)
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldBe)
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldNotBe)
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheNodeShouldMatchRegExp)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheNodeShouldMatchRegExp)
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be valid according to schema "([^"]*)"$`, scenario.IValidateNodeWithSchemaReference)
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be valid according to schema:$`, scenario.IValidateNodeWithSchemaString)
 
 	ctx.Step(`^the response body should be valid according to schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
 	ctx.Step(`^the response body should be valid according to schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
-	ctx.Step(`^the response body should have format "(JSON|YAML|plain text)"$`, scenario.TheResponseBodyShouldHaveFormat)
+	ctx.Step(`^the response body should have format "(JSON|YAML|XML|plain text)"$`, scenario.TheResponseBodyShouldHaveFormat)
 
 	ctx.Step(`^time between last request and response should be less than or equal to "([^"]*)"$`, scenario.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo)
 
@@ -198,9 +198,10 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | https://github.com/pawelWritesCode/qjson (JSON)
 	   | https://github.com/oliveagle/jsonpath (JSON)
 	   | https://github.com/goccy/go-yaml (YAML)
+	   | https://github.com/antchfx/xmlquery (XML)
 	*/
 	ctx.Step(`^I save "([^"]*)" as "([^"]*)"$`, scenario.ISaveAs)
-	ctx.Step(`^I save from the last response "(JSON|YAML)" node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseNodeAs)
+	ctx.Step(`^I save from the last response "(JSON|YAML|XML)" node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseNodeAs)
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------

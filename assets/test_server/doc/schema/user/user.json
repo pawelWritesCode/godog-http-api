@@ -4,6 +4,9 @@
     "description": "get user",
     "type": "object",
     "additionalProperties": false,
+    "xml": {
+        "name": "user"
+    },
     "properties": {
         "id": {
             "type": "integer",

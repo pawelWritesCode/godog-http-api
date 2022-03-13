@@ -35,6 +35,17 @@
                     "user"
                 ],
                 "summary": "Create user",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "response body format",
+                        "required": false,
+                        "schema": {
+                            "enum": ["json", "xml", "yaml"]
+                        }
+                    }
+                ],
                 "description": "Creation of new user.",
                 "operationId": "create_user",
                 "requestBody": {
@@ -52,7 +63,17 @@
                     "200": {
                         "description": "Successfully created user",
                         "content": {
-                            "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GETUser"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GETUser"
+                                }
+                            },
+                            "application/x-yaml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/GETUser"
                                 }
@@ -63,6 +84,16 @@
                         "description": "Error",
                         "content": {
                             "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error_xml"
+                                }
+                            },
+                            "application/x-yaml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/general_error"
                                 }
@@ -77,11 +108,42 @@
                 ],
                 "summary": "Get user by user name",
                 "operationId": "get_users_list",
+                "parameters": [
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "response body format",
+                        "required": false,
+                        "schema": {
+                            "enum": ["json", "xml", "yaml"]
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "successful operation",
                         "content": {
                             "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/GETUser"
+                                    }
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "type": "array",
+                                    "xml": {
+                                        "wrapped": true,
+                                        "name": "users"
+                                    },
+                                    "items": {
+                                        "$ref": "#/components/schemas/GETUser"
+                                    }
+                                }
+                            },
+                            "application/x-yaml": {
                                 "schema": {
                                     "type": "array",
                                     "items": {
@@ -110,6 +172,15 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "response body format",
+                        "required": false,
+                        "schema": {
+                            "enum": ["json", "xml", "yaml"]
+                        }
                     }
                 ],
                 "responses": {
@@ -117,6 +188,16 @@
                         "description": "successful operation",
                         "content": {
                             "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GETUser"
+                                }
+                            },
+                            "application/x-yaml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GETUser"
+                                }
+                            },
+                            "application/xml": {
                                 "schema": {
                                     "$ref": "#/components/schemas/GETUser"
                                 }
@@ -129,6 +210,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/x-yaml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error_xml"
                                 }
                             }
                         }
@@ -150,6 +241,15 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "response body format",
+                        "required": false,
+                        "schema": {
+                            "enum": ["json", "xml", "yaml"]
                         }
                     }
                 ],
@@ -176,6 +276,16 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/general_error"
                                 }
+                            },
+                            "application/x-yaml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error_xml"
+                                }
                             }
                         }
                     }
@@ -197,6 +307,15 @@
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "response body format",
+                        "required": false,
+                        "schema": {
+                            "enum": ["json", "xml", "yaml"]
+                        }
                     }
                 ],
                 "responses": {
@@ -210,6 +329,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/x-yaml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error_xml"
                                 }
                             }
                         }
@@ -230,6 +359,15 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "response body format",
+                        "required": false,
+                        "schema": {
+                            "enum": ["json", "xml", "yaml"]
                         }
                     }
                 ],
@@ -263,6 +401,16 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/general_error"
                                 }
+                            },
+                            "application/x-yaml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error_xml"
+                                }
                             }
                         }
                     },
@@ -273,6 +421,16 @@
                                 "schema": {
                                     "$ref": "#/components/schemas/general_error"
                                 }
+                            },
+                            "application/x-yaml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error_xml"
+                                }
                             }
                         }
                     },
@@ -282,6 +440,16 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/x-yaml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/general_error_xml"
                                 }
                             }
                         }
@@ -300,6 +468,9 @@
             },
             "general_error": {
                 "$ref": "./schema/general_error.json"
+            },
+            "general_error_xml": {
+                "$ref": "./schema/general_error_xml.json"
             }
         }
     }
