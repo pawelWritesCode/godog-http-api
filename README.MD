@@ -9,21 +9,21 @@ that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax
 
 ## Why ?
 **No more** long and time-consuming framework setup. This project **cuts initial time** & allows bootstrap e2e test framework with **plenty of
-utility methods** (_for testing HTTP(s) API using JSON/YAML_) in just few steps. Just grab it and write tests right away.
+utility methods** (_for testing HTTP(s) API using JSON/YAML/XML_) in just few steps. Just grab it and write tests right away.
 
 Benefits:
 * **short time** from **[setup](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) - to writing** actual E2E tests,
 * [35+ well-documented, coupled in logical groups steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
 * support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
-* support for querying JSON/YAML tree with different path engines ([oliveagle - JSON](https://github.com/oliveagle/jsonpath), [qjson - JSON](https://github.com/pawelWritesCode/qjson), [go-yaml - YAML](https://github.com/goccy/go-yaml)),
+* support for querying nodes with different path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [qjson](https://github.com/pawelWritesCode/qjson) - JSON, [go-yaml](https://github.com/goccy/go-yaml) - YAML, [antchfx](https://github.com/antchfx/xmlquery) - XML),
 * support for sending _multipart/form-data_ forms with file in it, 
 * rich debugging possibilities - various ways to debug tests,
-* very customisable (ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) internal services with your own implementation),
-* friendly for custom [steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) because of [exported utility services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
+* customisable - ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) utility services with your own implementations,
+* supports custom [steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) through [exported utility services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
 
 ## Example
 
-#### [Click here 👆 to see more tests](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/)
+#### [Click here 👆 to see more tests using JSON/YAML/XML](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/test_server)
 
 ```cucumber
 Feature: Adding new user
@@ -128,5 +128,6 @@ See project ![hand pointing right](assets/gifs/hand-pointing-right.gif)  [wiki](
 * [Project structure](https://github.com/pawelWritesCode/godog-example-setup/wiki/Project-structure) - describes repository folder structure,
 * [Setup](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up) - guide how to bootstrap repository on your machine,
 * [Steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) - describes each available step and how to use it in tests,
-* [Steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) - how to create custom steps using internal services,
+* [Steps debugging](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-debugging) - how to debug tests,
+* [Steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) - how to create custom steps using utility services,
 * [Usage](https://github.com/pawelWritesCode/godog-example-setup/wiki/Usage) - how to run tests.
