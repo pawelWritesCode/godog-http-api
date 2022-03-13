@@ -2,8 +2,6 @@ module github.com/pawelWritesCode/godog-example-setup
 
 go 1.17
 
-replace github.com/pawelWritesCode/gdutils => /Users/pawel.chmielewski/projects/pawelWritesCode/gdutils
-
 require (
 	github.com/cucumber/godog v0.12.4
 	github.com/joho/godotenv v1.4.0
