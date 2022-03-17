@@ -40,7 +40,6 @@ func init() {
 func TestMain(m *testing.M) {
 	pflag.Parse()
 	opt.Paths = pflag.Args()
-
 	status := godog.TestSuite{Name: "godogs", ScenarioInitializer: InitializeScenario, Options: &opt}.Run()
 
 	os.Exit(status)
@@ -177,8 +176,8 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldBe)
 	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldNotBe)
 	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheNodeShouldMatchRegExp)
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be valid according to schema "([^"]*)"$`, scenario.IValidateNodeWithSchemaReference)
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be valid according to schema:$`, scenario.IValidateNodeWithSchemaString)
+	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema "([^"]*)"$`, scenario.IValidateNodeWithSchemaReference)
+	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema:$`, scenario.IValidateNodeWithSchemaString)
 
 	ctx.Step(`^the response body should be valid according to schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
 	ctx.Step(`^the response body should be valid according to schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
@@ -210,10 +209,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | This section contains methods that are useful for debugging during test creation phase.
 	*/
-	ctx.Step(`^I stop scenario execution$`, scenario.IStopScenarioExecution)
-
 	ctx.Step(`^I print last response body$`, scenario.IPrintLastResponseBody)
-
 	ctx.Step(`^I start debug mode$`, scenario.IStartDebugMode)
 	ctx.Step(`^I stop debug mode$`, scenario.IStopDebugMode)
 
@@ -228,6 +224,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | golang standard library time.ParseDuration func, for example: 3s, 1h, 30ms
 	*/
 	ctx.Step(`^I wait "([^"]*)"`, scenario.IWait)
+	ctx.Step(`^I stop scenario execution$`, scenario.IStopScenarioExecution)
 }
 
 // checkErr checks error and log if found.

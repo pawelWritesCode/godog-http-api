@@ -84,8 +84,6 @@ Feature: Replacing single user account.
     }
     """
     Then the response status code should be 200
-    And the response should have header "Content-Type" of value "application/x-yaml"
-    And the response body should have format "YAML"
     And time between last request and response should be less than or equal to "2s"
 
     #---------------------------------------------------------------------------------------------------

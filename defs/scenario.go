@@ -164,35 +164,35 @@ func (s *Scenario) TheResponseStatusCodeShouldBe(code int) error {
 
 // TheResponseShouldHaveNode checks whether last response body contains given node.
 // expr should be valid according to injected PathFinder for given data format
-func (s *Scenario) TheResponseShouldHaveNode(dataFormat, expr string) error {
-	return s.State.TheResponseShouldHaveNode(format.DataFormat(dataFormat), expr)
+func (s *Scenario) TheResponseShouldHaveNode(dataFormat, exprTemplate string) error {
+	return s.State.TheResponseShouldHaveNode(format.DataFormat(dataFormat), exprTemplate)
 }
 
 // TheNodeShouldBeOfValue compares json node value from expression to expected by user dataValue of given by user dataType
 // Available data types are listed in switch section in each case directive.
 // expr should be valid according to injected PathFinder for provided dataFormat.
-func (s *Scenario) TheNodeShouldBeOfValue(dataFormat, expr, dataType, dataValue string) error {
-	return s.State.TheNodeShouldBeOfValue(format.DataFormat(dataFormat), expr, dataType, dataValue)
+func (s *Scenario) TheNodeShouldBeOfValue(dataFormat, exprTemplate, dataType, dataValue string) error {
+	return s.State.TheNodeShouldBeOfValue(format.DataFormat(dataFormat), exprTemplate, dataType, dataValue)
 }
 
 // TheNodeShouldBeSliceOfLength checks whether given key is slice and has given length
 // expr should be valid according to injected PathFinder for provided dataFormat
-func (s *Scenario) TheNodeShouldBeSliceOfLength(dataFormat, expr string, length int) error {
-	return s.State.TheNodeShouldBeSliceOfLength(format.DataFormat(dataFormat), expr, length)
+func (s *Scenario) TheNodeShouldBeSliceOfLength(dataFormat, exprTemplate string, length int) error {
+	return s.State.TheNodeShouldBeSliceOfLength(format.DataFormat(dataFormat), exprTemplate, length)
 }
 
 // TheNodeShouldBe checks whether node from last response body is of provided type
 // goType may be one of: nil, string, int, float, bool, map, slice
 // expr should be valid according to injected PathResolver
-func (s *Scenario) TheNodeShouldBe(dataFormat, expr, goType string) error {
-	return s.State.TheNodeShouldBe(format.DataFormat(dataFormat), expr, goType)
+func (s *Scenario) TheNodeShouldBe(dataFormat, exprTemplate, goType string) error {
+	return s.State.TheNodeShouldBe(format.DataFormat(dataFormat), exprTemplate, goType)
 }
 
 // TheNodeShouldNotBe checks whether node from last response body is not of provided type.
 // goType may be one of: nil, string, int, float, bool, map, slice,
 // expr should be valid according to injected PathFinder for given data format.
-func (s *Scenario) TheNodeShouldNotBe(dataFormat, expr, goType string) error {
-	return s.State.TheNodeShouldNotBe(format.DataFormat(dataFormat), expr, goType)
+func (s *Scenario) TheNodeShouldNotBe(dataFormat, exprTemplate, goType string) error {
+	return s.State.TheNodeShouldNotBe(format.DataFormat(dataFormat), exprTemplate, goType)
 }
 
 // TheResponseShouldHaveNodes checks whether last request body has keys defined in string separated by comma
@@ -202,8 +202,8 @@ func (s *Scenario) TheResponseShouldHaveNodes(dataFormat, nodesExpr string) erro
 }
 
 // TheNodeShouldMatchRegExp checks whether last response body node matches provided regExp.
-func (s *Scenario) TheNodeShouldMatchRegExp(dataFormat, expr, regExpTemplate string) error {
-	return s.State.TheNodeShouldMatchRegExp(format.DataFormat(dataFormat), expr, regExpTemplate)
+func (s *Scenario) TheNodeShouldMatchRegExp(dataFormat, exprTemplate, regExpTemplate string) error {
+	return s.State.TheNodeShouldMatchRegExp(format.DataFormat(dataFormat), exprTemplate, regExpTemplate)
 }
 
 // TheResponseBodyShouldHaveFormat checks whether last response body has given data format.
@@ -219,8 +219,8 @@ func (s *Scenario) TheResponseBodyShouldHaveFormat(dataFormat string) error {
 		- relative path from JSON schema's dir which was passed in main_test to initialize *Scenario struct instance,
 		- URL
 */
-func (s *Scenario) IValidateLastResponseBodyWithSchema(reference string) error {
-	return s.State.IValidateLastResponseBodyWithSchemaReference(reference)
+func (s *Scenario) IValidateLastResponseBodyWithSchema(referenceTemplate string) error {
+	return s.State.IValidateLastResponseBodyWithSchemaReference(referenceTemplate)
 }
 
 // IValidateLastResponseBodyWithFollowingSchema validates last response body against JSON schema provided by user.
@@ -258,18 +258,18 @@ func (s *Scenario) IValidateNodeWithSchemaReference(dataFormat, expr, reference 
 }
 
 // IValidateNodeWithSchemaString validates last response body JSON node against schema
-func (s *Scenario) IValidateNodeWithSchemaString(dataFormat, expr string, jsonSchema *godog.DocString) error {
-	return s.State.IValidateNodeWithSchemaString(format.DataFormat(dataFormat), expr, jsonSchema.Content)
+func (s *Scenario) IValidateNodeWithSchemaString(dataFormat, exprTemplate string, jsonSchema *godog.DocString) error {
+	return s.State.IValidateNodeWithSchemaString(format.DataFormat(dataFormat), exprTemplate, jsonSchema.Content)
 }
 
 // ISaveAs saves into cache arbitrary passed value
-func (s *Scenario) ISaveAs(value, cacheKey string) error {
-	return s.State.ISaveAs(value, cacheKey)
+func (s *Scenario) ISaveAs(valueTemplate, cacheKey string) error {
+	return s.State.ISaveAs(valueTemplate, cacheKey)
 }
 
 // ISaveFromTheLastResponseNodeAs saves from last response json node under given cache key.
-func (s *Scenario) ISaveFromTheLastResponseNodeAs(dataFormat, expr, cacheKey string) error {
-	return s.State.ISaveFromTheLastResponseNodeAs(format.DataFormat(dataFormat), expr, cacheKey)
+func (s *Scenario) ISaveFromTheLastResponseNodeAs(dataFormat, exprTemplate, cacheKey string) error {
+	return s.State.ISaveFromTheLastResponseNodeAs(format.DataFormat(dataFormat), exprTemplate, cacheKey)
 }
 
 // IPrintLastResponseBody prints response body from last scenario request
