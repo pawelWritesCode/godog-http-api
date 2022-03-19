@@ -1,29 +1,28 @@
 ![godog-example-setup](https://github.com/pawelWritesCode/godog-example-setup/actions/workflows/go.yml/badge.svg)
 
-# Example godog framework setup with step library gdutils
+# Godog framework developed to test HTTP(s) API.
 
 ## Overview:
 
-This repository contains skeleton that allow to write End-2-End tests for HTTP API with use of framework [godog](https://github.com/cucumber/godog)
-that implements 🥒[gherkin/cucumber](https://cucumber.io/docs/gherkin/) syntax using step library [gdutils](https://github.com/pawelWritesCode/gdutils).
+This repository contains skeleton that allow to write End-2-End tests for HTTP(s) API with use of framework [godog](https://github.com/cucumber/godog)
+that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax using step library [gdutils](https://github.com/pawelWritesCode/gdutils).
 
 ## Why ?
-**No more** long and time-consuming framework setup. This project **cuts initial time** & allows bootstrap e2e test framework with **plenty of
-utility methods** (_for testing HTTP(s) API using JSON/YAML/XML_) in just few steps. Just grab it and write tests right away.
+This project **cuts initial time** & allows bootstrap e2e test framework with **plenty of
+utility methods** in just few steps. Just grab it and write tests right away!
 
 Benefits:
-* **short time** from **[setup](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up#clone-repository) - to writing** actual E2E tests,
 * [35+ well-documented, coupled in logical groups steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
 * support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
 * support for querying nodes with different path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [qjson](https://github.com/pawelWritesCode/qjson) - JSON, [go-yaml](https://github.com/goccy/go-yaml) - YAML, [antchfx](https://github.com/antchfx/xmlquery) - XML),
-* support for sending _multipart/form-data_ forms with file in it, 
-* rich debugging possibilities - various ways to debug tests,
-* customisable - ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) utility services with your own implementations,
-* supports custom [steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) through [exported utility services](https://github.com/pawelWritesCode/gdutils/blob/master/state.go#L18).
+* support for sending _multipart/form-data_ forms with file in it,
+* developed with debugging in mind,
+* customisable through ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) utility services with your own implementations,
+* supports [custom steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development).
 
 ## Example
 
-#### [Click here 👆 to see more tests using JSON/YAML/XML](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/test_server)
+#### [👆 Click here to see more tests using JSON/YAML/XML](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/test_server)
 
 ```cucumber
 Feature: Adding new user

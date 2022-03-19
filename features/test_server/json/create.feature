@@ -18,7 +18,6 @@ Feature: Adding new user
     Given I generate current time and travel "backward" "240h" in time and save it as "MEET_DATE"
     Given I save "application/json" as "CONTENT_TYPE_JSON"
 
-    @wip
   Scenario: Successfully create user v1
   As application user
   I would like to create new account
