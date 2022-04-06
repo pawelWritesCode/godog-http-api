@@ -146,28 +146,27 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Most of the methods accepts template values in their arguments.
 	*/
-	ctx.Step(`^the response should have header "([^"]*)"$`, scenario.TheResponseShouldHaveHeader)
+	ctx.Step(`^the response should (not )?have header "([^"]*)"$`, scenario.TheResponseShouldOrShouldNotHaveHeader)
 	ctx.Step(`^the response should have header "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveHeaderOfValue)
 
-	ctx.Step(`^the response should have cookie "([^"]*)"$`, scenario.TheResponseShouldHaveCookie)
+	ctx.Step(`^the response should (not )?have cookie "([^"]*)"$`, scenario.TheResponseShouldOrShouldNotHaveCookie)
 	ctx.Step(`^the response should have cookie "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveCookieOfValue)
 
-	ctx.Step(`^the response status code should be (\d+)$`, scenario.TheResponseStatusCodeShouldBe)
+	ctx.Step(`^the response status code should (not )?be (\d+)$`, scenario.TheResponseStatusCodeShouldOrShouldNotBe)
 
 	ctx.Step(`^the "(JSON|YAML|XML)" response should have nodes "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
-	ctx.Step(`^the "(JSON|YAML|XML)" response should have node "([^"]*)"$`, scenario.TheResponseShouldHaveNode)
+	ctx.Step(`^the "(JSON|YAML|XML)" response should (not )?have node "([^"]*)"$`, scenario.TheResponseShouldOrShouldNotHaveNode)
 
 	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
-	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should be slice of length "(\d+)"$`, scenario.TheNodeShouldBeSliceOfLength)
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldBe)
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should not be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldNotBe)
-	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should match regExp "([^"]*)"$`, scenario.TheNodeShouldMatchRegExp)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?be slice of length "(\d+)"$`, scenario.TheNodeShouldOrShouldNotBeSliceOfLength)
+	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should (not )?be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldOrShouldNotBe)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?match regExp "([^"]*)"$`, scenario.TheNodeShouldOrShouldNotMatchRegExp)
 	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema "([^"]*)"$`, scenario.IValidateNodeWithSchemaReference)
 	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema:$`, scenario.IValidateNodeWithSchemaString)
 
 	ctx.Step(`^the response body should be valid according to schema "([^"]*)"$`, scenario.IValidateLastResponseBodyWithSchema)
 	ctx.Step(`^the response body should be valid according to schema:$`, scenario.IValidateLastResponseBodyWithFollowingSchema)
-	ctx.Step(`^the response body should have format "(JSON|YAML|XML|plain text)"$`, scenario.TheResponseBodyShouldHaveFormat)
+	ctx.Step(`^the response body should (not )?have format "(JSON|YAML|XML|plain text)"$`, scenario.TheResponseBodyShouldOrShouldNotHaveFormat)
 
 	ctx.Step(`^time between last request and response should be less than or equal to "([^"]*)"$`, scenario.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo)
 
@@ -186,6 +185,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	*/
 	ctx.Step(`^I save "([^"]*)" as "([^"]*)"$`, scenario.ISaveAs)
 	ctx.Step(`^I save from the last response "(JSON|YAML|XML)" node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseNodeAs)
+	ctx.Step(`^I save from the last response header "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseHeaderAs)
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------

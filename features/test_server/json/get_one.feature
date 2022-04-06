@@ -77,6 +77,7 @@ Feature: Fetching single user.
         }
     }
     """
-    Then the response status code should be 404
+    Then the response status code should not be 200
+    But the response status code should be 404
     And the response body should have format "JSON"
     And the response body should be valid according to schema "general_error.json"

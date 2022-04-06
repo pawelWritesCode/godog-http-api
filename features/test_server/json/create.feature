@@ -11,7 +11,7 @@ Feature: Adding new user
   This section runs before every Scenario. Its main purpose is to generate random user data
   and save it under provided key in scenario cache.
 
-    Given I generate a random word having from "5" to "10" of "polish" characters and save it as "RANDOM_FIRST_NAME"
+    Given I generate a random word having from "5" to "10" of "ASCII" characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random word having from "3" to "7" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random sentence having from "3" to "4" of "english" words and save it as "RANDOM_DESCRIPTION"
     Given I generate a random "int" in the range from "18" to "48" and save it as "RANDOM_AGE"
@@ -41,10 +41,13 @@ Feature: Adding new user
         }
     }
     """
-    Then the response status code should be 201
-    And the response should have header "Content-Length"
+    Then the response status code should not be 200
+    But the response status code should be 201
+    And the response should not have header "Set-Cookie"
+    But the response should have header "Content-Length"
     And the response should have header "Content-Type" of value "{{.CONTENT_TYPE_JSON}}; charset=UTF-8"
-    And the response body should have format "JSON"
+    And the response body should not have format "plain text"
+    But the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
 
     # uncommenting next line will print last HTTP(s) response body to console
@@ -85,7 +88,10 @@ Feature: Adding new user
     # here is used oliveagle "json-path" syntax to find JSON node
     And the "JSON" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
     # here is used regExp acceptable by standard go package "regExp"
-    And the "JSON" node "lastName" should match regExp "doe-.*"
+    And the "JSON" node "lastName" should not match regExp "smith-.*"
+    But the "JSON" node "lastName" should match regExp "doe-.*"
+    And the "JSON" node "age" should not be "string"
+    But the "JSON" node "$.age" should be "int"
     And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
     And the "JSON" node "description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
     # here date is formatted according to one of available formats from standard go package "time"
@@ -172,6 +178,7 @@ Feature: Adding new user
         }
     }
     """
-    Then the response status code should be 400
+    Then the response status code should not be 201
+    But the response status code should be 400
     And the response body should have format "JSON"
     And the response body should be valid according to schema "general_error.json"

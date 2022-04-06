@@ -23,7 +23,7 @@ env:
 # download-dependencies download go packages and godog binary
 download-dependencies:
 	go mod download
-	go install github.com/cucumber/godog/cmd/godog@v0.12.4
+	go install github.com/cucumber/godog/cmd/godog@v0.12.5
 
 # clean removes directories with binaries, git repository, github actions workflow and test suite
 clean:
