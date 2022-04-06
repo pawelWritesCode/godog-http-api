@@ -48,6 +48,7 @@ Feature: Removing user
     }
     """
     Then the response status code should be 200
+    But the response status code should not be 404
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
@@ -64,7 +65,8 @@ Feature: Removing user
         }
     }
     """
-    And the response status code should be 204
+    Then the response status code should be 204
+    And the response status code should not be 404
 
 
     #---------------------------------------------------------------------------------------------------
@@ -98,8 +100,9 @@ Feature: Removing user
         }
     }
     """
-    And the response status code should be 400
-    Then the response body should have format "JSON"
+    Then the response status code should not be 204
+    But the response status code should be 400
+    And the response body should have format "JSON"
     And the response body should be valid according to schema "general_error.json"
     And the "JSON" response should have node "error"
     And the "JSON" node "error" should match regExp "could not find in database user of id .*"
