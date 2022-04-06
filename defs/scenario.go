@@ -27,15 +27,15 @@ func (s *Scenario) IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs(from, 
 
 	switch strings.ToLower(charset) {
 	case "ascii":
-		generateWordFunc = s.APIContext.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetASCII)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetASCII)
 	case "unicode":
-		generateWordFunc = s.APIContext.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetUnicode)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetUnicode)
 	case "polish":
-		generateWordFunc = s.APIContext.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetPolish)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetPolish)
 	case "english":
-		generateWordFunc = s.APIContext.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetEnglish)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetEnglish)
 	case "russian":
-		generateWordFunc = s.APIContext.IGenerateARandomRunesInTheRangeToAndSaveItAs(stringutils.CharsetRussian)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetRussian)
 	default:
 		return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian", charset)
 	}
@@ -45,12 +45,12 @@ func (s *Scenario) IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs(from, 
 
 // IGenerateARandomNumberInTheRangeFromToAndSaveItAs generates random number from provided range
 // and preserve it in scenario cache under provided cacheKey.
-func (s *Scenario) IGenerateARandomNumberInTheRangeFromToAndSaveItAs(numberType string, from, to int, cacheKey string) error {
+func (s *Scenario) IGenerateARandomNumberInTheRangeFromToAndSaveItAs(numberType string, from, to float64, cacheKey string) error {
 	switch strings.ToLower(numberType) {
 	case "float":
-		return s.APIContext.IGenerateARandomFloatInTheRangeToAndSaveItAs(from, to, cacheKey)
+		return s.APIContext.GenerateFloat64(from, to, cacheKey)
 	case "int":
-		return s.APIContext.IGenerateARandomIntInTheRangeToAndSaveItAs(from, to, cacheKey)
+		return s.APIContext.GenerateRandomInt(int(from), int(to), cacheKey)
 	default:
 		return fmt.Errorf("unknown type %s, available: int, float", numberType)
 	}
@@ -63,15 +63,15 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 		var generateSentenceFunc func(from, to int, cacheKey string) error
 		switch strings.ToLower(charset) {
 		case "ascii":
-			generateSentenceFunc = s.APIContext.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetASCII, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetASCII, minWordLength, maxWordLength)
 		case "unicode":
-			generateSentenceFunc = s.APIContext.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetUnicode, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetUnicode, minWordLength, maxWordLength)
 		case "polish":
-			generateSentenceFunc = s.APIContext.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetPolish, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetPolish, minWordLength, maxWordLength)
 		case "english":
-			generateSentenceFunc = s.APIContext.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetEnglish, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetEnglish, minWordLength, maxWordLength)
 		case "russian":
-			generateSentenceFunc = s.APIContext.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(stringutils.CharsetRussian, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetRussian, minWordLength, maxWordLength)
 		default:
 			return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian", charset)
 		}
@@ -80,7 +80,7 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 	}
 }
 
-//
+// IGenerateRandomBoolValueAndSaveItAs generates random boolean value and save it in cache under given key
 func (s *Scenario) IGenerateRandomBoolValueAndSaveItAs(cacheKey string) error {
 	s.APIContext.Cache.Save(cacheKey, rand.Intn(2) == 0)
 
@@ -95,7 +95,7 @@ func (s *Scenario) IGenerateCurrentTimeAndTravelByAndSaveItAs(timeDirection, tim
 		return err
 	}
 
-	return s.APIContext.IGenerateCurrentTimeAndTravelByAndSaveItAs(timeutils.TimeDirection(timeDirection), duration, cacheKey)
+	return s.APIContext.GenerateTimeAndTravel(timeutils.TimeDirection(timeDirection), duration, cacheKey)
 }
 
 /*
@@ -107,24 +107,24 @@ func (s *Scenario) IGenerateCurrentTimeAndTravelByAndSaveItAs(timeDirection, tim
 	in JSON or YAML format with keys "body" and "headers".
 */
 func (s *Scenario) ISendRequestToWithBodyAndHeaders(method, urlTemplate string, reqBody *godog.DocString) error {
-	return s.APIContext.ISendRequestToWithBodyAndHeaders(method, urlTemplate, reqBody.Content)
+	return s.APIContext.RequestSendWithBodyAndHeaders(method, urlTemplate, reqBody.Content)
 }
 
 // IPrepareNewRequestToAndSaveItAs prepares new request and saves it in cache under cacheKey.
 func (s Scenario) IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey string) error {
-	return s.APIContext.IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey)
+	return s.APIContext.RequestPrepare(method, urlTemplate, cacheKey)
 }
 
 // ISetFollowingHeadersForPreparedRequest sets provided headers for previously prepared request.
 // incoming data should be in format acceptable by injected s.APIContext.Deserializer
 func (s Scenario) ISetFollowingHeadersForPreparedRequest(cacheKey string, headersTemplate *godog.DocString) error {
-	return s.APIContext.ISetFollowingHeadersForPreparedRequest(cacheKey, headersTemplate.Content)
+	return s.APIContext.RequestSetHeaders(cacheKey, headersTemplate.Content)
 }
 
 // ISetFollowingCookiesForPreparedRequest sets cookies for previously prepared request
 // cookies template should be YAML or JSON deserializable on []http.Cookie
 func (s Scenario) ISetFollowingCookiesForPreparedRequest(cacheKey string, cookies *godog.DocString) error {
-	return s.APIContext.ISetFollowingCookiesForPreparedRequest(cacheKey, cookies.Content)
+	return s.APIContext.RequestSetCookies(cacheKey, cookies.Content)
 }
 
 /*
@@ -133,83 +133,104 @@ func (s Scenario) ISetFollowingCookiesForPreparedRequest(cacheKey string, cookie
 	formTemplate should be YAML or JSON deserializable on map[string]string.
 */
 func (s Scenario) ISetFollowingFormForPreparedRequest(cacheKey string, formTemplate *godog.DocString) error {
-	return s.APIContext.ISetFollowingFormForPreparedRequest(cacheKey, formTemplate.Content)
+	return s.APIContext.RequestSetForm(cacheKey, formTemplate.Content)
 }
 
 // ISetFollowingBodyForPreparedRequest sets body for previously prepared request.
 // bodyTemplate may be in any format and accepts template values.
 func (s Scenario) ISetFollowingBodyForPreparedRequest(cacheKey string, bodyTemplate *godog.DocString) error {
-	return s.APIContext.ISetFollowingBodyForPreparedRequest(cacheKey, bodyTemplate.Content)
+	return s.APIContext.RequestSetBody(cacheKey, bodyTemplate.Content)
 }
 
 // ISendRequest sends previously prepared HTTP(s) request.
 func (s Scenario) ISendRequest(cacheKey string) error {
-	return s.APIContext.ISendRequest(cacheKey)
+	return s.APIContext.RequestSend(cacheKey)
 }
 
-// TheResponseShouldHaveHeader checks whether last HTTP response has given header.
-func (s *Scenario) TheResponseShouldHaveHeader(name string) error {
-	return s.APIContext.TheResponseShouldHaveHeader(name)
+// TheResponseShouldOrShouldNotHaveHeader checks whether last HTTP response has/hasn't given header.
+func (s *Scenario) TheResponseShouldOrShouldNotHaveHeader(not, name string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertResponseHeaderNotExists(name)
+	}
+
+	return s.APIContext.AssertResponseHeaderExists(name)
 }
 
 // TheResponseShouldHaveHeaderOfValue checks whether last HTTP response has given header with provided value.
 func (s *Scenario) TheResponseShouldHaveHeaderOfValue(name, value string) error {
-	return s.APIContext.TheResponseShouldHaveHeaderOfValue(name, value)
+	return s.APIContext.AssertResponseHeaderValueIs(name, value)
 }
 
-// TheResponseStatusCodeShouldBe checks last response status code.
-func (s *Scenario) TheResponseStatusCodeShouldBe(code int) error {
-	return s.APIContext.TheResponseStatusCodeShouldBe(code)
+// TheResponseStatusCodeShouldOrShouldNotBe checks last response status code.
+func (s *Scenario) TheResponseStatusCodeShouldOrShouldNotBe(not string, code int) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertStatusCodeIsNot(code)
+	}
+
+	return s.APIContext.AssertStatusCodeIs(code)
 }
 
-// TheResponseShouldHaveNode checks whether last response body contains given node.
+// TheResponseShouldOrShouldNotHaveNode checks whether last response body contains or doesn't contain given node.
 // expr should be valid according to injected PathFinder for given data format
-func (s *Scenario) TheResponseShouldHaveNode(dataFormat, exprTemplate string) error {
-	return s.APIContext.TheResponseShouldHaveNode(format.DataFormat(dataFormat), exprTemplate)
+func (s *Scenario) TheResponseShouldOrShouldNotHaveNode(dataFormat, not, exprTemplate string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertNodeNotExists(format.DataFormat(dataFormat), exprTemplate)
+	}
+
+	return s.APIContext.AssertNodeExists(format.DataFormat(dataFormat), exprTemplate)
 }
 
 // TheNodeShouldBeOfValue compares json node value from expression to expected by user dataValue of given by user dataType
 // Available data types are listed in switch section in each case directive.
 // expr should be valid according to injected PathFinder for provided dataFormat.
 func (s *Scenario) TheNodeShouldBeOfValue(dataFormat, exprTemplate, dataType, dataValue string) error {
-	return s.APIContext.TheNodeShouldBeOfValue(format.DataFormat(dataFormat), exprTemplate, dataType, dataValue)
+	return s.APIContext.AssertNodeIsTypeAndValue(format.DataFormat(dataFormat), exprTemplate, dataType, dataValue)
 }
 
-// TheNodeShouldBeSliceOfLength checks whether given key is slice and has given length
+// TheNodeShouldOrShouldNotBeSliceOfLength checks whether given key is slice and has/hasn't given length
 // expr should be valid according to injected PathFinder for provided dataFormat
-func (s *Scenario) TheNodeShouldBeSliceOfLength(dataFormat, exprTemplate string, length int) error {
-	return s.APIContext.TheNodeShouldBeSliceOfLength(format.DataFormat(dataFormat), exprTemplate, length)
+func (s *Scenario) TheNodeShouldOrShouldNotBeSliceOfLength(dataFormat, exprTemplate, not string, length int) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertNodeSliceLengthIsNot(format.DataFormat(dataFormat), exprTemplate, length)
+	}
+
+	return s.APIContext.AssertNodeSliceLengthIs(format.DataFormat(dataFormat), exprTemplate, length)
 }
 
-// TheNodeShouldBe checks whether node from last response body is of provided type
+// TheNodeShouldOrShouldNotBe checks whether node from last response body is/is not of provided type
 // goType may be one of: nil, string, int, float, bool, map, slice
 // expr should be valid according to injected PathResolver
-func (s *Scenario) TheNodeShouldBe(dataFormat, exprTemplate, goType string) error {
-	return s.APIContext.TheNodeShouldBe(format.DataFormat(dataFormat), exprTemplate, goType)
-}
+func (s *Scenario) TheNodeShouldOrShouldNotBe(dataFormat, exprTemplate, not, goType string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertNodeIsNotType(format.DataFormat(dataFormat), exprTemplate, goType)
+	}
 
-// TheNodeShouldNotBe checks whether node from last response body is not of provided type.
-// goType may be one of: nil, string, int, float, bool, map, slice,
-// expr should be valid according to injected PathFinder for given data format.
-func (s *Scenario) TheNodeShouldNotBe(dataFormat, exprTemplate, goType string) error {
-	return s.APIContext.TheNodeShouldNotBe(format.DataFormat(dataFormat), exprTemplate, goType)
+	return s.APIContext.AssertNodeIsType(format.DataFormat(dataFormat), exprTemplate, goType)
 }
 
 // TheResponseShouldHaveNodes checks whether last request body has keys defined in string separated by comma
-// nodeExprs should be valid according to injected PathFinder expressions separated by comma (,)
+// nodeExpr should be valid according to injected PathFinder expressions separated by comma (,)
 func (s *Scenario) TheResponseShouldHaveNodes(dataFormat, nodesExpr string) error {
-	return s.APIContext.TheResponseShouldHaveNodes(format.DataFormat(dataFormat), nodesExpr)
+	return s.APIContext.AssertNodesExist(format.DataFormat(dataFormat), nodesExpr)
 }
 
-// TheNodeShouldMatchRegExp checks whether last response body node matches provided regExp.
-func (s *Scenario) TheNodeShouldMatchRegExp(dataFormat, exprTemplate, regExpTemplate string) error {
-	return s.APIContext.TheNodeShouldMatchRegExp(format.DataFormat(dataFormat), exprTemplate, regExpTemplate)
+// TheNodeShouldOrShouldNotMatchRegExp checks whether last response body node matches or doesn't match provided regExp.
+func (s *Scenario) TheNodeShouldOrShouldNotMatchRegExp(dataFormat, exprTemplate, not, regExpTemplate string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertNodeNotMatchesRegExp(format.DataFormat(dataFormat), exprTemplate, regExpTemplate)
+	}
+
+	return s.APIContext.AssertNodeMatchesRegExp(format.DataFormat(dataFormat), exprTemplate, regExpTemplate)
 }
 
-// TheResponseBodyShouldHaveFormat checks whether last response body has given data format.
+// TheResponseBodyShouldOrShouldNotHaveFormat checks whether last response body has given data format.
 // Available data formats are listed in format package.
-func (s *Scenario) TheResponseBodyShouldHaveFormat(dataFormat string) error {
-	return s.APIContext.TheResponseBodyShouldHaveFormat(format.DataFormat(dataFormat))
+func (s *Scenario) TheResponseBodyShouldOrShouldNotHaveFormat(not, dataFormat string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertResponseFormatIsNot(format.DataFormat(dataFormat))
+	}
+
+	return s.APIContext.AssertResponseFormatIs(format.DataFormat(dataFormat))
 }
 
 /*
@@ -220,12 +241,12 @@ func (s *Scenario) TheResponseBodyShouldHaveFormat(dataFormat string) error {
 		- URL
 */
 func (s *Scenario) IValidateLastResponseBodyWithSchema(referenceTemplate string) error {
-	return s.APIContext.IValidateLastResponseBodyWithSchemaReference(referenceTemplate)
+	return s.APIContext.AssertResponseMatchesSchemaByReference(referenceTemplate)
 }
 
 // IValidateLastResponseBodyWithFollowingSchema validates last response body against JSON schema provided by user.
 func (s *Scenario) IValidateLastResponseBodyWithFollowingSchema(schemaBytes *godog.DocString) error {
-	return s.APIContext.IValidateLastResponseBodyWithSchemaString(schemaBytes.Content)
+	return s.APIContext.AssertResponseMatchesSchemaByString(schemaBytes.Content)
 }
 
 /*
@@ -239,42 +260,51 @@ func (s *Scenario) TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(t
 		return err
 	}
 
-	return s.APIContext.TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(duration)
+	return s.APIContext.AssertTimeBetweenRequestAndResponseIs(duration)
 }
 
-// TheResponseShouldHaveCookie checks whether last HTTP(s) response has cookie of given name.
-func (s *Scenario) TheResponseShouldHaveCookie(name string) error {
-	return s.APIContext.TheResponseShouldHaveCookie(name)
+// TheResponseShouldOrShouldNotHaveCookie checks whether last HTTP(s) response has cookie of given name.
+func (s *Scenario) TheResponseShouldOrShouldNotHaveCookie(not, name string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertResponseCookieNotExists(name)
+	}
+
+	return s.APIContext.AssertResponseCookieExists(name)
 }
 
 // TheResponseShouldHaveCookieOfValue checks whether last HTTP(s) response has cookie of given name and value.
 func (s *Scenario) TheResponseShouldHaveCookieOfValue(name, valueTemplate string) error {
-	return s.APIContext.TheResponseShouldHaveCookieOfValue(name, valueTemplate)
+	return s.APIContext.AssertResponseCookieValueIs(name, valueTemplate)
 }
 
 // IValidateNodeWithSchemaReference validates last response body node against schema as provided in reference
 func (s *Scenario) IValidateNodeWithSchemaReference(dataFormat, exprTemplate, referenceTemplate string) error {
-	return s.APIContext.IValidateNodeWithSchemaReference(format.DataFormat(dataFormat), exprTemplate, referenceTemplate)
+	return s.APIContext.AssertNodeMatchesSchemaByReference(format.DataFormat(dataFormat), exprTemplate, referenceTemplate)
 }
 
 // IValidateNodeWithSchemaString validates last response body JSON node against schema
 func (s *Scenario) IValidateNodeWithSchemaString(dataFormat, exprTemplate string, schemaTemplate *godog.DocString) error {
-	return s.APIContext.IValidateNodeWithSchemaString(format.DataFormat(dataFormat), exprTemplate, schemaTemplate.Content)
+	return s.APIContext.AssertNodeMatchesSchemaByString(format.DataFormat(dataFormat), exprTemplate, schemaTemplate.Content)
 }
 
 // ISaveAs saves into cache arbitrary passed value
 func (s *Scenario) ISaveAs(valueTemplate, cacheKey string) error {
-	return s.APIContext.ISaveAs(valueTemplate, cacheKey)
+	return s.APIContext.Save(valueTemplate, cacheKey)
 }
 
 // ISaveFromTheLastResponseNodeAs saves from last response json node under given cache key.
 func (s *Scenario) ISaveFromTheLastResponseNodeAs(dataFormat, exprTemplate, cacheKey string) error {
-	return s.APIContext.ISaveFromTheLastResponseNodeAs(format.DataFormat(dataFormat), exprTemplate, cacheKey)
+	return s.APIContext.SaveNode(format.DataFormat(dataFormat), exprTemplate, cacheKey)
+}
+
+// ISaveFromTheLastResponseHeaderAs saves from last response header value under given cache key
+func (s *Scenario) ISaveFromTheLastResponseHeaderAs(headerName, cacheKey string) error {
+	return s.APIContext.SaveHeader(headerName, cacheKey)
 }
 
 // IPrintLastResponseBody prints response body from last scenario request
 func (s *Scenario) IPrintLastResponseBody() error {
-	return s.APIContext.IPrintLastResponseBody()
+	return s.APIContext.DebugPrintResponseBody()
 }
 
 /*
@@ -288,17 +318,17 @@ func (s *Scenario) IWait(timeInterval string) error {
 		return err
 	}
 
-	return s.APIContext.IWait(duration)
+	return s.APIContext.Wait(duration)
 }
 
 // IStartDebugMode starts debugging mode
 func (s *Scenario) IStartDebugMode() error {
-	return s.APIContext.IStartDebugMode()
+	return s.APIContext.DebugStart()
 }
 
 // IStopDebugMode stops debugging mode
 func (s *Scenario) IStopDebugMode() error {
-	return s.APIContext.IStopDebugMode()
+	return s.APIContext.DebugStop()
 }
 
 // IStopScenarioExecution stops scenario execution

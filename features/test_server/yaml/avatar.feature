@@ -5,7 +5,7 @@ Feature: Send avatar file using multipart/form-data in HTTP(s) request.
   Background:
     Given I save "application/x-yaml" as "CONTENT_TYPE_YAML"
     Given I generate a random word having from "5" to "10" of "russian" characters and save it as "RANDOM_FIRST_NAME"
-    Given I generate a random word having from "5" to "15" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
+    Given I generate a random word having from "5" to "15" of "polish" characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random "int" in the range from "18" to "48" and save it as "RANDOM_AGE"
     Given I generate a random sentence having from "2" to "4" of "english" words and save it as "RANDOM_DESCRIPTION"
     Given I generate current time and travel "backward" "240h" in time and save it as "MEET_DATE"

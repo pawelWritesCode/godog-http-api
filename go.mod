@@ -1,11 +1,11 @@
 module github.com/pawelWritesCode/godog-example-setup
 
-go 1.17
+go 1.18
 
 require (
 	github.com/cucumber/godog v0.12.4
 	github.com/joho/godotenv v1.4.0
-	github.com/pawelWritesCode/gdutils v0.14.1
+	github.com/pawelWritesCode/gdutils v1.0.0
 	github.com/spf13/pflag v1.0.5
 )
 
