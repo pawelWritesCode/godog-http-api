@@ -19,13 +19,13 @@ import (
 )
 
 const (
-	//envDebug describes environment variable responsible for debug mode - (true/false)
+	//envDebug describes environment variable responsible for debug mode - (true/false).
 	envDebug = "GODOG_DEBUG"
 
-	// envMyAppURL describes URL to "My app" - should be valid URL
+	// envMyAppURL describes URL to "My app" - should be valid URL.
 	envMyAppURL = "GODOG_MY_APP_URL"
 
-	// envJsonSchemaDir path to JSON schemas dir - relative path from project root
+	// envJsonSchemaDir path to JSON schemas dir - relative path from this file's directory.
 	envJsonSchemaDir = "GODOG_JSON_SCHEMA_DIR"
 )
 
@@ -54,7 +54,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 		scenario is entity that contains utility services and holds methods used behind godog steps.
 
 		If you would like to replace any of default state's utility services with your own, read:
-		https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development#utilityServices
+		https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-development#utilityServices
 	*/
 	scenario := defs.Scenario{APIContext: gdutils.NewDefaultAPIContext(isDebug, path.Join(wd, os.Getenv(envJsonSchemaDir)))}
 
@@ -69,11 +69,11 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	})
 
 	// Following declarations maps sentences to methods (define steps). To learn more on each step see
-	// https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps
+	// https://github.com/pawelWritesCode/godog-http-api/wiki/Steps
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------
-	   | Random data generation - https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps#data-generation
+	   | Random data generation - https://github.com/pawelWritesCode/godog-http-api/wiki/Steps#dataGeneration
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains utility methods for random data generation. Those methods contain creation of
@@ -93,7 +93,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------
-	   | Sending HTTP(s) requests - https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps#sending-https-requests
+	   | Sending HTTP(s) requests - https://github.com/pawelWritesCode/godog-http-api/wiki/Steps#httpRequest
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains methods for preparing and sending HTTP(s) requests.
@@ -122,7 +122,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------
-	   | Assertions - https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps#assertions
+	   | Assertions - https://github.com/pawelWritesCode/godog-http-api/wiki/Steps#assertions
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains assertions against last HTTP(s) responses, especially:
@@ -172,7 +172,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------
-	   | Preserving data - https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps#preserving-data
+	   | Preserving data - https://github.com/pawelWritesCode/godog-http-api/wiki/Steps#preservingData
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains method for preserving data in scenario cache
@@ -189,7 +189,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------
-	   | Debugging - https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps#debugging
+	   | Debugging - https://github.com/pawelWritesCode/godog-http-api/wiki/Steps#debugging
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains methods that are useful for debugging during test creation phase.
@@ -200,7 +200,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	/*
 	   |----------------------------------------------------------------------------------------------------------------
-	   | Flow control - https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps#flow-control
+	   | Flow control - https://github.com/pawelWritesCode/godog-http-api/wiki/Steps#flowControl
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains methods for control scenario flow.

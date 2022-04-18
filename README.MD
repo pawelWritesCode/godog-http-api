@@ -1,28 +1,28 @@
-![godog-example-setup](https://github.com/pawelWritesCode/godog-example-setup/actions/workflows/go.yml/badge.svg)
+![godog-example-setup](https://github.com/pawelWritesCode/godog-http-api/actions/workflows/go.yml/badge.svg)
 
 # Godog framework developed to test HTTP(s) API.
 
 ## Overview:
 
 This repository contains skeleton that allow to write End-2-End tests for HTTP(s) API with use of framework [godog](https://github.com/cucumber/godog)
-that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax using step library [gdutils](https://github.com/pawelWritesCode/gdutils).
+that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax using testing library [gdutils](https://github.com/pawelWritesCode/gdutils).
 
 ## Why ?
 This project **cuts initial time** & allows bootstrap e2e test framework with **plenty of
 utility methods** in just few steps. Just grab it and write tests right away!
 
 Benefits:
-* [35+ well-documented, coupled in logical groups steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) useful for testing HTTP(s) API,
+* [35+ well-documented, coupled in logical groups steps](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps) useful for testing HTTP(s) API,
 * support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
 * support for querying nodes with different path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [qjson](https://github.com/pawelWritesCode/qjson) - JSON, [go-yaml](https://github.com/goccy/go-yaml) - YAML, [antchfx](https://github.com/antchfx/xmlquery) - XML),
 * support for sending _multipart/form-data_ forms with file in it,
 * developed with debugging in mind,
-* customisable through ability to [replace](https://github.com/pawelWritesCode/godog-example-setup/blob/main/main_test.go#L58) utility services with your own implementations,
-* supports [custom steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development).
+* customisable through ability to [replace](https://github.com/pawelWritesCode/godog-http-api/blob/main/main_test.go#L53) utility services with your own implementations,
+* supports [custom steps development](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-development).
 
 ## Example
 
-#### [👆 Click here to see more tests using JSON/YAML/XML](https://github.com/pawelWritesCode/godog-example-setup/blob/main/features/test_server)
+#### [👆 Click here to see more tests using JSON/YAML/XML](https://github.com/pawelWritesCode/godog-http-api/blob/main/features/test_server)
 
 ```cucumber
 Feature: Adding new user
@@ -90,7 +90,7 @@ Feature: Adding new user
     # or full OS path
     And the response body should be valid according to schema "{{.CWD}}/assets/test_server/doc/schema/user/user.json"
     # or URL pointing at schema
-    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-example-setup/main/assets/test_server/doc/schema/user/user.json"
+    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-http-api/main/assets/test_server/doc/schema/user/user.json"
     # or raw schema definition passed in Docstring
     And the response body should be valid according to schema:
     """
@@ -127,12 +127,12 @@ Feature: Adding new user
 
 ## Documentation
 
-See project ![hand pointing right](assets/gifs/hand-pointing-right.gif)  [wiki](https://github.com/pawelWritesCode/godog-example-setup/wiki)  ![hand pointing left](assets/gifs/hand-pointing-left.gif)
+See project ![hand pointing right](assets/gifs/hand-pointing-right.gif)  [wiki](https://github.com/pawelWritesCode/godog-http-api/wiki)  ![hand pointing left](assets/gifs/hand-pointing-left.gif)
 
-* [Overview](https://github.com/pawelWritesCode/godog-example-setup/wiki/Overview) - general information about project,
-* [Project structure](https://github.com/pawelWritesCode/godog-example-setup/wiki/Project-structure) - describes repository folder structure,
-* [Setup](https://github.com/pawelWritesCode/godog-example-setup/wiki/Set-up) - guide how to bootstrap repository on your machine,
-* [Steps](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps) - describes each available step and how to use it in tests,
-* [Steps debugging](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-debugging) - how to debug tests,
-* [Steps development](https://github.com/pawelWritesCode/godog-example-setup/wiki/Steps-development) - how to create custom steps using utility services,
-* [Usage](https://github.com/pawelWritesCode/godog-example-setup/wiki/Usage) - how to run tests.
+* [Overview](https://github.com/pawelWritesCode/godog-http-api/wiki/Overview) - general information about project,
+* [Project structure](https://github.com/pawelWritesCode/godog-http-api/wiki/Project-structure) - describes repository folder structure,
+* [Setup](https://github.com/pawelWritesCode/godog-http-api/wiki/Set-up) - guide how to bootstrap repository on your machine,
+* [Steps](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps) - describes each available step and how to use it in tests,
+* [Steps debugging](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-debugging) - how to debug tests,
+* [Steps development](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-development) - how to create custom steps using utility services,
+* [Usage](https://github.com/pawelWritesCode/godog-http-api/wiki/Usage) - how to run tests.
