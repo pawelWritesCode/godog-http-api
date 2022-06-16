@@ -52,11 +52,11 @@ Feature: Fetching single user.
     And the response body should have format "YAML"
     And time between last request and response should be less than or equal to "2s"
     And the "YAML" node "$.firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    And the "YAML" node "$.lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
+    And the "YAML" node "$.lastName" should be "scalar" of value "{{.RANDOM_LAST_NAME}}"
     And the "YAML" node "$.age" should be "int" of value "{{.RANDOM_AGE}}"
-    And the "YAML" node "$.id" should be "int" of value "{{.USER_ID}}"
-    And the "YAML" node "$.description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
-    And the "YAML" node "$.friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
+    And the "YAML" node "$.id" should be "scalar" of value "{{.USER_ID}}"
+    And the "YAML" node "$.description" should be "scalar" of value "{{.RANDOM_DESCRIPTION}}"
+    And the "YAML" node "$.friendSince" should be "scalar" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 
   Scenario: Unsuccessful attempt to fetch not existing user
     As application user

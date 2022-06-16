@@ -14,7 +14,7 @@ Feature: Adding new user
     Given I generate a random word having from "5" to "10" of "ASCII" characters and save it as "RANDOM_FIRST_NAME"
     Given I generate a random word having from "3" to "7" of "UNICODE" characters and save it as "RANDOM_LAST_NAME"
     Given I generate a random sentence having from "3" to "4" of "english" words and save it as "RANDOM_DESCRIPTION"
-    Given I generate a random "int" in the range from "18" to "48" and save it as "RANDOM_AGE"
+    Given I generate a random "int" in the range from "18" to "20" and save it as "RANDOM_AGE"
     Given I generate current time and travel "backward" "240h" in time and save it as "MEET_DATE"
     Given I save "application/json" as "CONTENT_TYPE_JSON"
 
@@ -50,21 +50,19 @@ Feature: Adding new user
     But the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
 
-    # uncommenting next line will print last HTTP(s) response body to console
+    # uncommenting next line will print data to console
 #    Given I print last response body
+#    Given I print cache data
 
     # This waiting is unnecessary, just added for demonstration
     And I wait "2ms"
 
     #---------------------------------------------------------------------------------------------------
     # We validate response body with schema from assets/test_server/doc/schema/user/user.json
-    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR)
+    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR), full OS path, URL or raw schema definition
     And the response body should be valid according to schema "user/user.json"
-    # or full OS path
     And the response body should be valid according to schema "{{.CWD}}/assets/test_server/doc/schema/user/user.json"
-    # or URL pointing at schema
     And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-http-api/main/assets/test_server/doc/schema/user/user.json"
-    # or raw schema definition passed in Docstring
     And the response body should be valid according to schema:
     """
     {
@@ -83,17 +81,28 @@ Feature: Adding new user
         "type": "string"
     }
     """
-    # here is used qjson "json-path" syntax to find JSON node
+    # here are used two different json-path engines (gjson & oliveagle) to find JSON nodes
     And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    # here is used oliveagle "json-path" syntax to find JSON node
     And the "JSON" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
+
+    # here we look for substrings
+    And the "JSON" node "$.lastName" should not contain sub string "smith"
+    But the "JSON" node "$.lastName" should contain sub string "doe"
+
     # here is used regExp acceptable by standard go package "regExp"
     And the "JSON" node "lastName" should not match regExp "smith-.*"
     But the "JSON" node "lastName" should match regExp "doe-.*"
+
+    # assertion may be based on one of JSON data types: array, boolean, null, number, object
     And the "JSON" node "age" should not be "string"
+    But the "JSON" node "$.age" should be "number"
+    And the "JSON" node "$.age" should be "number" and contain one of values "18, 19, 20"
+
+    # or on one of Go-like data types: bool, float, int, map, slice, string
     But the "JSON" node "$.age" should be "int"
     And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
     And the "JSON" node "description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
+
     # here date is formatted according to one of available formats from standard go package "time"
     And the "JSON" node "friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 

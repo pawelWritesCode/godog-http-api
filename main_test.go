@@ -77,16 +77,16 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |----------------------------------------------------------------------------------------------------------------
 	   |
 	   | This section contains utility methods for random data generation. Those methods contain creation of
-	   | - random length runes of ASCII/UNICODE/polish/english/russian characters,
-	   | - random length sentence of ASCII/UNICODE/polish/english/russian words,
+	   | - random length runes of ASCII/UNICODE/polish/english/russian/japanese/emoji characters,
+	   | - random length sentence of ASCII/UNICODE/polish/english/russian/japanese/emoji words,
 	   | - int/float from provided range,
 	   | - random bool value,
 	   | - time object moved forward/backward in time.
 	   |
 	   | Every method saves its output in scenario's cache under provided key for future use through text/template syntax.
 	*/
-	ctx.Step(`^I generate a random word having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs)
-	ctx.Step(`^I generate a random sentence having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian)" words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(3, 10))
+	ctx.Step(`^I generate a random word having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian|japanese|emoji)" characters and save it as "([^"]*)"$`, scenario.IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs)
+	ctx.Step(`^I generate a random sentence having from "(\d+)" to "(\d+)" of "(ASCII|UNICODE|polish|english|russian|japanese|emoji)" words and save it as "([^"]*)"$`, scenario.IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(3, 10))
 	ctx.Step(`^I generate a random "(int|float)" in the range from "([^"]*)" to "([^"]*)" and save it as "([^"]*)"$`, scenario.IGenerateARandomNumberInTheRangeFromToAndSaveItAs)
 	ctx.Step(`^I generate a random bool value and save it as "([^"]*)"$`, scenario.IGenerateRandomBoolValueAndSaveItAs)
 	ctx.Step(`^I generate current time and travel "(backward|forward)" "([^"]*)" in time and save it as "([^"]*)"$`, scenario.IGenerateCurrentTimeAndTravelByAndSaveItAs)
@@ -134,12 +134,12 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Every argument following immediately after word "node" or "nodes"
 	   | should have syntax acceptable by one of json-path libraries and may contain template values:
-	   | https://github.com/pawelWritesCode/qjson or https://github.com/oliveagle/jsonpath (JSON)
+	   | https://github.com/tidwall/gjson or https://github.com/oliveagle/jsonpath (JSON)
 	   | https://github.com/goccy/go-yaml (YAML)
 	   | https://github.com/antchfx/xmlquery (XML)
 	   |
 	   | Method "the response should have nodes" accepts list of nodes,
-	   | separated with comma ",". For example: "data[0].user, $.data[1].user, data".
+	   | separated with comma ",". For example: "data.0.user, $.data.1.user, data".
 	   |
 	   | Argument in method starting with 'time between ...' should be string valid for
 	   | golang standard library time.ParseDuration func, for example: 3s, 1h, 30ms
@@ -151,15 +151,18 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 
 	ctx.Step(`^the response should (not )?have cookie "([^"]*)"$`, scenario.TheResponseShouldOrShouldNotHaveCookie)
 	ctx.Step(`^the response should have cookie "([^"]*)" of value "([^"]*)"$`, scenario.TheResponseShouldHaveCookieOfValue)
+	ctx.Step(`^the response cookie  "([^"]*)" should (not )?match regExp "([^"]*)"$`, scenario.TheResponseCookieShouldOrShouldNotMatchRegExp)
 
 	ctx.Step(`^the response status code should (not )?be (\d+)$`, scenario.TheResponseStatusCodeShouldOrShouldNotBe)
 
 	ctx.Step(`^the "(JSON|YAML|XML)" response should have nodes "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
 	ctx.Step(`^the "(JSON|YAML|XML)" response should (not )?have node "([^"]*)"$`, scenario.TheResponseShouldOrShouldNotHaveNode)
 
-	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should be "(string|int|float|bool)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should be "(bool|boolean|float|int|integer|number|scalar|string)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should be "(bool|boolean|float|int|integer|number|scalar|string)" and contain one of values "([^"]*)"$`, scenario.TheNodeShouldBeOfValues)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?contain sub string "([^"]*)"$`, scenario.TheNodeShouldOrShouldNotContainSubString)
 	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?be slice of length "(\d+)"$`, scenario.TheNodeShouldOrShouldNotBeSliceOfLength)
-	ctx.Step(`^the "(JSON|YAML)" node "([^"]*)" should (not )?be "(nil|string|int|float|bool|map|slice)"$`, scenario.TheNodeShouldOrShouldNotBe)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?be "(array|bool|boolean|float|int|integer|map|mapping|nil|null|number|object|sequence|scalar|slice|string)"$`, scenario.TheNodeShouldOrShouldNotBe)
 	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?match regExp "([^"]*)"$`, scenario.TheNodeShouldOrShouldNotMatchRegExp)
 	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema "([^"]*)"$`, scenario.IValidateNodeWithSchemaReference)
 	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema:$`, scenario.IValidateNodeWithSchemaString)
@@ -179,7 +182,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Argument following immediately after word "node"
 	   | should have syntax acceptable by one of path libraries and may contain template values:
-	   | https://github.com/pawelWritesCode/qjson or https://github.com/oliveagle/jsonpath (JSON)
+	   | https://github.com/tidwall/gjson or https://github.com/oliveagle/jsonpath (JSON)
 	   | https://github.com/goccy/go-yaml (YAML)
 	   | https://github.com/antchfx/xmlquery (XML)
 	*/
@@ -195,6 +198,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | This section contains methods that are useful for debugging during test creation phase.
 	*/
 	ctx.Step(`^I print last response body$`, scenario.IPrintLastResponseBody)
+	ctx.Step(`^I print cache data$`, scenario.IPrintCacheData)
 	ctx.Step(`^I start debug mode$`, scenario.IStartDebugMode)
 	ctx.Step(`^I stop debug mode$`, scenario.IStopDebugMode)
 

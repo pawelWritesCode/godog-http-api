@@ -12,6 +12,7 @@ import (
 	"github.com/pawelWritesCode/gdutils/pkg/format"
 	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
 	"github.com/pawelWritesCode/gdutils/pkg/timeutils"
+	"github.com/pawelWritesCode/gdutils/pkg/types"
 )
 
 // Scenario is entity that contains utility services and holds methods used behind godog steps.
@@ -36,8 +37,12 @@ func (s *Scenario) IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs(from, 
 		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetEnglish)
 	case "russian":
 		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetRussian)
+	case "japanese":
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetJapanese)
+	case "emoji":
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetEmoji)
 	default:
-		return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian", charset)
+		return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian, japanese, emoji", charset)
 	}
 
 	return generateWordFunc(from, to, cacheKey)
@@ -72,8 +77,12 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetEnglish, minWordLength, maxWordLength)
 		case "russian":
 			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetRussian, minWordLength, maxWordLength)
+		case "japanese":
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetJapanese, minWordLength, maxWordLength)
+		case "emoji":
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetEmoji, minWordLength, maxWordLength)
 		default:
-			return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian", charset)
+			return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian, japanese, emoji", charset)
 		}
 
 		return generateSentenceFunc(from, to, cacheKey)
@@ -180,11 +189,28 @@ func (s *Scenario) TheResponseShouldOrShouldNotHaveNode(dataFormat, not, exprTem
 	return s.APIContext.AssertNodeExists(format.DataFormat(dataFormat), exprTemplate)
 }
 
-// TheNodeShouldBeOfValue compares json node value from expression to expected by user dataValue of given by user dataType
+// TheNodeShouldBeOfValue compares node value from expression to expected by user dataValue of given by user dataType
 // Available data types are listed in switch section in each case directive.
 // expr should be valid according to injected PathFinder for provided dataFormat.
 func (s *Scenario) TheNodeShouldBeOfValue(dataFormat, exprTemplate, dataType, dataValue string) error {
-	return s.APIContext.AssertNodeIsTypeAndValue(format.DataFormat(dataFormat), exprTemplate, dataType, dataValue)
+	return s.APIContext.AssertNodeIsTypeAndValue(format.DataFormat(dataFormat), exprTemplate, types.DataType(dataType), dataValue)
+}
+
+// TheNodeShouldBeOfValues compares node value from expression to expected by user one of values of given by user dataType
+// Available data types are listed in switch section in each case directive.
+// expr should be valid according to injected PathFinder for provided dataFormat.
+func (s *Scenario) TheNodeShouldBeOfValues(dataFormat, exprTemplate, dataType, valuesTemplates string) error {
+	return s.APIContext.AssertNodeIsTypeAndHasOneOfValues(format.DataFormat(dataFormat), exprTemplate, types.DataType(dataType), valuesTemplates)
+}
+
+// TheNodeShouldOrShouldNotContainSubString checks whether value of last HTTP response node, obtained using exprTemplate
+// is string type and contains/doesn't contain given substring
+func (s *Scenario) TheNodeShouldOrShouldNotContainSubString(dataFormat, exprTemplate, not, subTemplate string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertNodeNotContainsSubString(format.DataFormat(dataFormat), exprTemplate, subTemplate)
+	}
+
+	return s.APIContext.AssertNodeContainsSubString(format.DataFormat(dataFormat), exprTemplate, subTemplate)
 }
 
 // TheNodeShouldOrShouldNotBeSliceOfLength checks whether given key is slice and has/hasn't given length
@@ -202,10 +228,10 @@ func (s *Scenario) TheNodeShouldOrShouldNotBeSliceOfLength(dataFormat, exprTempl
 // expr should be valid according to injected PathResolver
 func (s *Scenario) TheNodeShouldOrShouldNotBe(dataFormat, exprTemplate, not, goType string) error {
 	if len(not) > 0 {
-		return s.APIContext.AssertNodeIsNotType(format.DataFormat(dataFormat), exprTemplate, goType)
+		return s.APIContext.AssertNodeIsNotType(format.DataFormat(dataFormat), exprTemplate, types.DataType(goType))
 	}
 
-	return s.APIContext.AssertNodeIsType(format.DataFormat(dataFormat), exprTemplate, goType)
+	return s.APIContext.AssertNodeIsType(format.DataFormat(dataFormat), exprTemplate, types.DataType(goType))
 }
 
 // TheResponseShouldHaveNodes checks whether last request body has keys defined in string separated by comma
@@ -277,6 +303,16 @@ func (s *Scenario) TheResponseShouldHaveCookieOfValue(name, valueTemplate string
 	return s.APIContext.AssertResponseCookieValueIs(name, valueTemplate)
 }
 
+// TheResponseCookieShouldOrShouldNotMatchRegExp checks whether last HTTP(s) response has cookie of given name and value
+// matches/doesn't match provided regExp.
+func (s *Scenario) TheResponseCookieShouldOrShouldNotMatchRegExp(name, not, regExpTemplate string) error {
+	if len(not) > 0 {
+		return s.APIContext.AssertResponseCookieValueNotMatchesRegExp(name, regExpTemplate)
+	}
+
+	return s.APIContext.AssertResponseCookieValueMatchesRegExp(name, regExpTemplate)
+}
+
 // IValidateNodeWithSchemaReference validates last response body node against schema as provided in reference
 func (s *Scenario) IValidateNodeWithSchemaReference(dataFormat, exprTemplate, referenceTemplate string) error {
 	return s.APIContext.AssertNodeMatchesSchemaByReference(format.DataFormat(dataFormat), exprTemplate, referenceTemplate)
@@ -305,6 +341,13 @@ func (s *Scenario) ISaveFromTheLastResponseHeaderAs(headerName, cacheKey string)
 // IPrintLastResponseBody prints response body from last scenario request
 func (s *Scenario) IPrintLastResponseBody() error {
 	return s.APIContext.DebugPrintResponseBody()
+}
+
+// IPrintCacheData prints all current scenario cache data.
+func (s *Scenario) IPrintCacheData() error {
+	fmt.Printf("%#v", s.APIContext.Cache.All())
+
+	return nil
 }
 
 /*

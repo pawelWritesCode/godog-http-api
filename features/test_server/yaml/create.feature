@@ -48,9 +48,10 @@ Feature: Adding new user
     And the response body should have format "YAML"
     And time between last request and response should be less than or equal to "2s"
     And the "YAML" node "$.firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    And the "YAML" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
+    And the "YAML" node "$.lastName" should be "scalar" of value "doe-{{.RANDOM_LAST_NAME}}"
     And the "YAML" node "$.lastName" should match regExp "doe-.*"
     And the "YAML" node "$.age" should be "int" of value "{{.RANDOM_AGE}}"
+    And the "YAML" node "$.age" should be "scalar" of value "{{.RANDOM_AGE}}"
     And the "YAML" node "$.description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
     And the "YAML" node "$.friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 

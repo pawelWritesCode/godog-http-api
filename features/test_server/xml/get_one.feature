@@ -54,7 +54,7 @@ Feature: Fetching single user.
     And the "XML" node "//firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the "XML" node "//lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the "XML" node "//age" should be "int" of value "{{.RANDOM_AGE}}"
-    And the "XML" node "//id" should be "int" of value "{{.USER_ID}}"
+    And the "XML" node "//id" should be "integer" of value "{{.USER_ID}}"
     And the "XML" node "//description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
     And the "XML" node "//friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 
