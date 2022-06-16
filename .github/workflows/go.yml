@@ -1,4 +1,4 @@
-name: godog-example-setup
+name: godog-http-api
 
 on:
   push:
