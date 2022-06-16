@@ -100,12 +100,12 @@ Feature: Replacing single user account.
     Then the response status code should be 200
     And the response should have header "Content-Type" of value "application/x-yaml"
     And the response body should have format "YAML"
-    And the "YAML" node "$.firstName" should be "string" of value "{{.NEW_USER_RANDOM_FIRST_NAME}}"
-    And the "YAML" node "$.lastName" should be "string" of value "{{.NEW_USER_RANDOM_LAST_NAME}}"
-    And the "YAML" node "$.age" should be "int" of value "{{.NEW_USER_RANDOM_AGE}}"
-    And the "YAML" node "$.id" should be "int" of value "{{.USER_ID}}"
-    And the "YAML" node "$.description" should be "string" of value "{{.NEW_USER_RANDOM_DESCRIPTION}}"
-    And the "YAML" node "$.friendSince" should be "string" of value "{{.NEW_USER_MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
+    And the "YAML" node "$.firstName" should be "scalar" of value "{{.NEW_USER_RANDOM_FIRST_NAME}}"
+    And the "YAML" node "$.lastName" should be "scalar" of value "{{.NEW_USER_RANDOM_LAST_NAME}}"
+    And the "YAML" node "$.age" should be "scalar" of value "{{.NEW_USER_RANDOM_AGE}}"
+    And the "YAML" node "$.id" should be "scalar" of value "{{.USER_ID}}"
+    And the "YAML" node "$.description" should be "scalar" of value "{{.NEW_USER_RANDOM_DESCRIPTION}}"
+    And the "YAML" node "$.friendSince" should be "scalar" of value "{{.NEW_USER_MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 
   Scenario: Unsuccessful attempt to replace user account with invalid data
     As application user
@@ -174,12 +174,12 @@ Feature: Replacing single user account.
     Then the response status code should be 200
     And the response should have header "Content-Type" of value "application/x-yaml"
     And the response body should have format "YAML"
-    And the "YAML" node "$.firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
-    And the "YAML" node "$.lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
-    And the "YAML" node "$.age" should be "int" of value "{{.RANDOM_AGE}}"
-    And the "YAML" node "$.id" should be "int" of value "{{.USER_ID}}"
-    And the "YAML" node "$.description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
-    And the "YAML" node "$.friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
+    And the "YAML" node "$.firstName" should be "scalar" of value "{{.RANDOM_FIRST_NAME}}"
+    And the "YAML" node "$.lastName" should be "scalar" of value "{{.RANDOM_LAST_NAME}}"
+    And the "YAML" node "$.age" should be "scalar" of value "{{.RANDOM_AGE}}"
+    And the "YAML" node "$.id" should be "scalar" of value "{{.USER_ID}}"
+    And the "YAML" node "$.description" should be "scalar" of value "{{.RANDOM_DESCRIPTION}}"
+    And the "YAML" node "$.friendSince" should be "scalar" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 
   Scenario: Unsuccessful attempt to replace not existing user
   As application user

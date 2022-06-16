@@ -83,6 +83,7 @@ Feature: Fetching many users.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     # here we only check only node type, not its exact value
-    And the "JSON" node "root" should be "slice"
-    But the "JSON" node "root" should not be slice of length "0"
-    And the "JSON" node "root" should not be "nil"
+    And the "JSON" node "@this" should be "slice"
+    But the "JSON" node "@this" should not be slice of length "0"
+    And the "JSON" node "@this" should not be "nil"
+    And the "JSON" node "@this" should not be "null"

@@ -81,4 +81,7 @@ Feature: Fetching many users.
     And the response should have header "Content-Type" of value "application/x-yaml"
     And the response body should have format "YAML"
     # here we only check only node type, not its exact value
-    And the "YAML" node "$." should be "slice"
+    # in terms of YAML
+    And the "YAML" node "$[1].id" should be "scalar"
+    # in terms of Go
+    And the "YAML" node "$[1].id" should be "int"
