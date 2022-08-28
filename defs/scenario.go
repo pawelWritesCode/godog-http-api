@@ -108,51 +108,51 @@ func (s *Scenario) IGenerateCurrentTimeAndTravelByAndSaveItAs(timeDirection, tim
 }
 
 /*
-	ISendRequestToWithFormatBodyAndHeaders sends HTTP(s) requests with provided body and headers.
+		ISendRequestToWithFormatBodyAndHeaders sends HTTP(s) requests with provided body and headers.
 
-	Argument "method" indices HTTP request method for example: "POST", "GET" etc.
- 	Argument "urlTemplate" should be full valid URL. May include template values.
-	Argument "bodyTemplate" should contain data (may include template values)
-	in JSON or YAML format with keys "body" and "headers".
+		Argument "method" indices HTTP request method for example: "POST", "GET" etc.
+	 	Argument "urlTemplate" should be full valid URL. May include template values.
+		Argument "bodyTemplate" should contain data (may include template values)
+		in JSON or YAML format with keys "body" and "headers".
 */
 func (s *Scenario) ISendRequestToWithBodyAndHeaders(method, urlTemplate string, reqBody *godog.DocString) error {
 	return s.APIContext.RequestSendWithBodyAndHeaders(method, urlTemplate, reqBody.Content)
 }
 
 // IPrepareNewRequestToAndSaveItAs prepares new request and saves it in cache under cacheKey.
-func (s Scenario) IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey string) error {
+func (s *Scenario) IPrepareNewRequestToAndSaveItAs(method, urlTemplate, cacheKey string) error {
 	return s.APIContext.RequestPrepare(method, urlTemplate, cacheKey)
 }
 
 // ISetFollowingHeadersForPreparedRequest sets provided headers for previously prepared request.
 // incoming data should be in format acceptable by injected s.APIContext.Deserializer
-func (s Scenario) ISetFollowingHeadersForPreparedRequest(cacheKey string, headersTemplate *godog.DocString) error {
+func (s *Scenario) ISetFollowingHeadersForPreparedRequest(cacheKey string, headersTemplate *godog.DocString) error {
 	return s.APIContext.RequestSetHeaders(cacheKey, headersTemplate.Content)
 }
 
 // ISetFollowingCookiesForPreparedRequest sets cookies for previously prepared request
 // cookies template should be YAML or JSON deserializable on []http.Cookie
-func (s Scenario) ISetFollowingCookiesForPreparedRequest(cacheKey string, cookies *godog.DocString) error {
+func (s *Scenario) ISetFollowingCookiesForPreparedRequest(cacheKey string, cookies *godog.DocString) error {
 	return s.APIContext.RequestSetCookies(cacheKey, cookies.Content)
 }
 
 /*
-	ISetFollowingFormForPreparedRequest sets form for previously prepared request.
-	Internally method sets proper Content-Type: multipart/form-data header.
-	formTemplate should be YAML or JSON deserializable on map[string]string.
+ISetFollowingFormForPreparedRequest sets form for previously prepared request.
+Internally method sets proper Content-Type: multipart/form-data header.
+formTemplate should be YAML or JSON deserializable on map[string]string.
 */
-func (s Scenario) ISetFollowingFormForPreparedRequest(cacheKey string, formTemplate *godog.DocString) error {
+func (s *Scenario) ISetFollowingFormForPreparedRequest(cacheKey string, formTemplate *godog.DocString) error {
 	return s.APIContext.RequestSetForm(cacheKey, formTemplate.Content)
 }
 
 // ISetFollowingBodyForPreparedRequest sets body for previously prepared request.
 // bodyTemplate may be in any format and accepts template values.
-func (s Scenario) ISetFollowingBodyForPreparedRequest(cacheKey string, bodyTemplate *godog.DocString) error {
+func (s *Scenario) ISetFollowingBodyForPreparedRequest(cacheKey string, bodyTemplate *godog.DocString) error {
 	return s.APIContext.RequestSetBody(cacheKey, bodyTemplate.Content)
 }
 
 // ISendRequest sends previously prepared HTTP(s) request.
-func (s Scenario) ISendRequest(cacheKey string) error {
+func (s *Scenario) ISendRequest(cacheKey string) error {
 	return s.APIContext.RequestSend(cacheKey)
 }
 
@@ -260,11 +260,11 @@ func (s *Scenario) TheResponseBodyShouldOrShouldNotHaveFormat(not, dataFormat st
 }
 
 /*
-	IValidateLastResponseBodyWithSchema validates last response body against JSON schema under provided reference.
-	reference may be:
-		- full OS path to JSON schema
-		- relative path from JSON schema's dir which was passed in main_test to initialize *Scenario struct instance,
-		- URL
+IValidateLastResponseBodyWithSchema validates last response body against JSON schema under provided reference.
+reference may be:
+  - full OS path to JSON schema
+  - relative path from JSON schema's dir which was passed in main_test to initialize *Scenario struct instance,
+  - URL
 */
 func (s *Scenario) IValidateLastResponseBodyWithSchema(referenceTemplate string) error {
 	return s.APIContext.AssertResponseMatchesSchemaByReference(referenceTemplate)
@@ -276,9 +276,9 @@ func (s *Scenario) IValidateLastResponseBodyWithFollowingSchema(schemaBytes *god
 }
 
 /*
-	TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo asserts that last HTTP request-response time
-	is <= than expected timeInterval.
-	timeInterval should be string acceptable by time.ParseDuration func
+TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo asserts that last HTTP request-response time
+is <= than expected timeInterval.
+timeInterval should be string acceptable by time.ParseDuration func
 */
 func (s *Scenario) TimeBetweenLastHTTPRequestResponseShouldBeLessThanOrEqualTo(timeInterval string) error {
 	duration, err := time.ParseDuration(timeInterval)
@@ -351,9 +351,9 @@ func (s *Scenario) IPrintCacheData() error {
 }
 
 /*
-	IWait waits for provided time interval amount of time
-	timeInterval should be string valid for time.ParseDuration func,
-	for example: 3s, 1h, 30ms
+IWait waits for provided time interval amount of time
+timeInterval should be string valid for time.ParseDuration func,
+for example: 3s, 1h, 30ms
 */
 func (s *Scenario) IWait(timeInterval string) error {
 	duration, err := time.ParseDuration(timeInterval)

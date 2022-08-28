@@ -11,7 +11,7 @@ require (
 
 require (
 	github.com/antchfx/xmlquery v1.3.9 // indirect
-	github.com/antchfx/xpath v1.2.0 // indirect
+	github.com/antchfx/xpath v1.2.1 // indirect
 	github.com/cucumber/gherkin-go/v19 v19.0.3 // indirect
 	github.com/cucumber/messages-go/v16 v16.0.1 // indirect
 	github.com/fatih/color v1.13.0 // indirect
