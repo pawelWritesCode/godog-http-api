@@ -22,7 +22,7 @@ Benefits:
 
 ## Example
 
-#### [👆 Click here to see more tests using JSON/YAML/XML](https://github.com/pawelWritesCode/godog-http-api/blob/main/features/test_server)
+#### [👆 Click here](https://github.com/pawelWritesCode/godog-http-api/blob/main/features) to see more tests using JSON/YAML/XML.
 
 ```cucumber
 Feature: Adding new user
