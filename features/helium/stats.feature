@@ -3,6 +3,15 @@ Feature: Tests related to stats
 
   Background:
     Given I save "https://api.helium.io/v1" as "HELIUM_V1_API"
+    Given I save as "DEFAULT_HEADERS_AND_BODY":
+    """
+    {
+        "body": {},
+        "headers": {
+            "User-Agent": "godog-http-api/2.1.0"
+        }
+    }
+    """
 
   Scenario: Successfully fetch blockchain stats
     As API user,
@@ -11,12 +20,7 @@ Feature: Tests related to stats
 
     When I send "GET" request to "{{.HELIUM_V1_API}}/stats" with body and headers:
     """
-    {
-        "body": {},
-        "headers": {
-            "User-Agent": "godog-http-api/2.1.0"
-        }
-    }
+    {{.DEFAULT_HEADERS_AND_BODY}}
     """
     Then the response status code should be 200
     And the response body should have format "JSON"
@@ -35,12 +39,7 @@ Feature: Tests related to stats
 
     When I send "GET" request to "{{.HELIUM_V1_API}}/stats/token_supply" with body and headers:
     """
-    {
-        "body": {},
-        "headers": {
-            "User-Agent": "godog-http-api/2.1.0"
-        }
-    }
+    {{.DEFAULT_HEADERS_AND_BODY}}
     """
     Then the response status code should be 200
     And the response body should have format "JSON"

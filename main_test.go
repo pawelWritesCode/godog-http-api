@@ -187,6 +187,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   | https://github.com/antchfx/xmlquery (XML)
 	*/
 	ctx.Step(`^I save "([^"]*)" as "([^"]*)"$`, scenario.ISaveAs)
+	ctx.Step(`^I save as "([^"]*)":$`, scenario.ISaveFollowingAs)
 	ctx.Step(`^I save from the last response "(JSON|YAML|XML)" node "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseNodeAs)
 	ctx.Step(`^I save from the last response header "([^"]*)" as "([^"]*)"$`, scenario.ISaveFromTheLastResponseHeaderAs)
 

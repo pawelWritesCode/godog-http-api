@@ -328,6 +328,11 @@ func (s *Scenario) ISaveAs(valueTemplate, cacheKey string) error {
 	return s.APIContext.Save(valueTemplate, cacheKey)
 }
 
+// ISaveFollowingAs saves into cache arbitrary passed data. Data may be multiline.
+func (s *Scenario) ISaveFollowingAs(cacheKey string, data *godog.DocString) error {
+	return s.ISaveAs(data.Content, cacheKey)
+}
+
 // ISaveFromTheLastResponseNodeAs saves from last response json node under given cache key.
 func (s *Scenario) ISaveFromTheLastResponseNodeAs(dataFormat, exprTemplate, cacheKey string) error {
 	return s.APIContext.SaveNode(format.DataFormat(dataFormat), exprTemplate, cacheKey)
