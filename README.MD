@@ -4,21 +4,26 @@
 
 ## Overview:
 
-This repository contains skeleton that allow to write End-2-End tests for HTTP(s) API with use of framework [godog](https://github.com/cucumber/godog)
-that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax using testing library [gdutils](https://github.com/pawelWritesCode/gdutils).
+This repository contains skeleton that allow to write end-2-end tests for HTTP(s) API using [godog](https://github.com/cucumber/godog)
+that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax with help of [gdutils](https://github.com/pawelWritesCode/gdutils) lib.
 
 ## Why ?
-This project **cuts initial time** & allows bootstrap e2e test framework with **plenty of
-utility methods** in just few steps. Just grab it and write tests right away!
+This project **shorten initial development phase** and allows to quickly bootstrap e2e test framework with **plenty of
+utility methods**. Just grab it and write tests right away using provided steps!
 
-Benefits:
-* [40+ well-documented, coupled in logical groups steps](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps) useful for testing HTTP(s) API,
-* support for using templated values as in [text/template](https://pkg.go.dev/text/template) package,
-* support for querying nodes with different path engines ([oliveagle](https://github.com/oliveagle/jsonpath), [gjson](https://github.com/tidwall/gjson) - JSON, [go-yaml](https://github.com/goccy/go-yaml) - YAML, [antchfx](https://github.com/antchfx/xmlquery) - XML),
-* support for sending _multipart/form-data_ forms with file in it,
-* developed with debugging in mind,
-* customisable through ability to [replace](https://github.com/pawelWritesCode/godog-http-api/blob/main/main_test.go#L53) utility services with your own implementations,
-* supports [custom steps development](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-development).
+![features](./assets/png/features.png)
+
+## Documentation
+
+See project ![hand pointing right](assets/gifs/hand-pointing-right.gif)  [wiki](https://github.com/pawelWritesCode/godog-http-api/wiki)  ![hand pointing left](assets/gifs/hand-pointing-left.gif) that covers following aspects:
+
+* [Overview](https://github.com/pawelWritesCode/godog-http-api/wiki/Overview) - general information about project,
+* [Project structure](https://github.com/pawelWritesCode/godog-http-api/wiki/Project-structure) - describes repository folder structure,
+* [Setup](https://github.com/pawelWritesCode/godog-http-api/wiki/Set-up) - guide how to bootstrap project on unix-like system,
+* [Steps](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps) - describes each available step and how to use it in tests with examples,
+* [Steps debugging](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-debugging) - guide how to debug tests,
+* [Steps development](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-development) - guide how to create custom steps(your own) using internal utility services,
+* [Usage](https://github.com/pawelWritesCode/godog-http-api/wiki/Usage) - how to run tests.
 
 ## Example
 
@@ -134,14 +139,6 @@ Feature: Adding new user
     And the "JSON" node "friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 ```
 
-## Documentation
+## [Available steps](https://github.com/pawelWritesCode/godog-http-api/blob/feature/new-readme/main_test.go#L88)
 
-See project ![hand pointing right](assets/gifs/hand-pointing-right.gif)  [wiki](https://github.com/pawelWritesCode/godog-http-api/wiki)  ![hand pointing left](assets/gifs/hand-pointing-left.gif)
-
-* [Overview](https://github.com/pawelWritesCode/godog-http-api/wiki/Overview) - general information about project,
-* [Project structure](https://github.com/pawelWritesCode/godog-http-api/wiki/Project-structure) - describes repository folder structure,
-* [Setup](https://github.com/pawelWritesCode/godog-http-api/wiki/Set-up) - guide how to bootstrap repository on your machine,
-* [Steps](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps) - describes each available step and how to use it in tests,
-* [Steps debugging](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-debugging) - how to debug tests,
-* [Steps development](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-development) - how to create custom steps using utility services,
-* [Usage](https://github.com/pawelWritesCode/godog-http-api/wiki/Usage) - how to run tests.
+![steps](./assets/png/steps.png)
