@@ -141,4 +141,4 @@ Feature: Adding new user
 
 ## [Available steps](https://github.com/pawelWritesCode/godog-http-api/blob/feature/new-readme/main_test.go#L88)
 
-![steps](./assets/png/steps.png)
+![steps](./assets/svg/steps.svg)
