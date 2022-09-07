@@ -134,7 +134,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Every argument following immediately after word "node" or "nodes"
 	   | should have syntax acceptable by one of path libraries and may contain template values:
-	   | https://github.com/tidwall/gjson or https://github.com/oliveagle/jsonpath (JSON)
+	   | https://github.com/tidwall/gjson or https://github.com/oliveagle/jsonpath or https://github.com/antchfx/jsonquery (JSON)
 	   | https://github.com/goccy/go-yaml (YAML)
 	   | https://github.com/antchfx/xmlquery (XML)
 	   | https://github.com/antchfx/htmlquery (HTML)
@@ -183,7 +183,7 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	   |
 	   | Argument following immediately after word "node"
 	   | should have syntax acceptable by one of path libraries and may contain template values:
-	   | https://github.com/tidwall/gjson or https://github.com/oliveagle/jsonpath (JSON)
+	   | https://github.com/tidwall/gjson or https://github.com/oliveagle/jsonpath or https://github.com/antchfx/jsonquery (JSON)
 	   | https://github.com/goccy/go-yaml (YAML)
 	   | https://github.com/antchfx/xmlquery (XML)
 	   | https://github.com/antchfx/htmlquery (HTML)
