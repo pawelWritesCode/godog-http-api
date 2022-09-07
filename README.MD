@@ -113,9 +113,10 @@ Feature: Adding new user
         "type": "string"
     }
     """
-    # here are used two different json-path engines (gjson & oliveagle) to find JSON nodes
+    # here are used three different json-path engines (tidwall/gjson & oliveagle/jsonpath & antchfx/jsonquery) to find nodes
     And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the "JSON" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
+    And the "JSON" node "//lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
 
     # here we look for substrings
     And the "JSON" node "$.lastName" should not contain sub string "smith"
@@ -125,11 +126,11 @@ Feature: Adding new user
     And the "JSON" node "lastName" should not match regExp "smith-.*"
     But the "JSON" node "lastName" should match regExp "doe-.*"
 
-    # assertion may be based on one of JSON data types: array, boolean, null, number, object
+    # in this case, assertion may be based on one of JSON data types: array, boolean, null, number, object
     And the "JSON" node "age" should not be "string"
     But the "JSON" node "$.age" should be "number"
     And the "JSON" node "$.age" should be "number" and contain one of values "18, 19, 20"
-    
+
     # or on one of Go-like data types: bool, float, int, map, slice, string
     But the "JSON" node "$.age" should be "int"
     And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
@@ -139,6 +140,6 @@ Feature: Adding new user
     And the "JSON" node "friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 ```
 
-## [Available steps](https://github.com/pawelWritesCode/godog-http-api/blob/feature/new-readme/main_test.go#L88)
+## [Available steps](https://github.com/pawelWritesCode/godog-http-api/blob/main/main_test.go#L74)
 
 ![steps](./assets/svg/steps.svg)
