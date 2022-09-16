@@ -159,12 +159,12 @@ func InitializeScenario(ctx *godog.ScenarioContext) {
 	ctx.Step(`^the "(JSON|YAML|XML|HTML)" response should have nodes "([^"]*)"$`, scenario.TheResponseShouldHaveNodes)
 	ctx.Step(`^the "(JSON|YAML|XML|HTML)" response should (not )?have node "([^"]*)"$`, scenario.TheResponseShouldOrShouldNotHaveNode)
 
-	ctx.Step(`^the "(JSON|YAML|XML|HTML|plain text)" node "([^"]*)" should be "(bool|boolean|float|int|integer|number|scalar|string)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
-	ctx.Step(`^the "(JSON|YAML|XML|HTML|plain text)" node "([^"]*)" should be "(bool|boolean|float|int|integer|number|scalar|string)" and contain one of values "([^"]*)"$`, scenario.TheNodeShouldBeOfValues)
-	ctx.Step(`^the "(JSON|YAML|XML|HTML|plain text)" node "([^"]*)" should (not )?contain sub string "([^"]*)"$`, scenario.TheNodeShouldOrShouldNotContainSubString)
+	ctx.Step(`^the "(JSON|YAML|XML|HTML)" node "([^"]*)" should be "(bool|boolean|float|int|integer|number|scalar|string)" of value "([^"]*)"$`, scenario.TheNodeShouldBeOfValue)
+	ctx.Step(`^the "(JSON|YAML|XML|HTML)" node "([^"]*)" should be "(bool|boolean|float|int|integer|number|scalar|string)" and contain one of values "([^"]*)"$`, scenario.TheNodeShouldBeOfValues)
+	ctx.Step(`^the "(JSON|YAML|XML|HTML)" node "([^"]*)" should (not )?contain sub string "([^"]*)"$`, scenario.TheNodeShouldOrShouldNotContainSubString)
 	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?be slice of length "(\d+)"$`, scenario.TheNodeShouldOrShouldNotBeSliceOfLength)
-	ctx.Step(`^the "(JSON|YAML|XML|plain text)" node "([^"]*)" should (not )?be "(array|bool|boolean|float|int|integer|map|mapping|nil|null|number|object|sequence|scalar|slice|string)"$`, scenario.TheNodeShouldOrShouldNotBe)
-	ctx.Step(`^the "(JSON|YAML|XML|HTML|plain text)" node "([^"]*)" should (not )?match regExp "([^"]*)"$`, scenario.TheNodeShouldOrShouldNotMatchRegExp)
+	ctx.Step(`^the "(JSON|YAML|XML)" node "([^"]*)" should (not )?be "(array|bool|boolean|float|int|integer|map|mapping|nil|null|number|object|sequence|scalar|slice|string)"$`, scenario.TheNodeShouldOrShouldNotBe)
+	ctx.Step(`^the "(JSON|YAML|XML|HTML)" node "([^"]*)" should (not )?match regExp "([^"]*)"$`, scenario.TheNodeShouldOrShouldNotMatchRegExp)
 	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema "([^"]*)"$`, scenario.IValidateNodeWithSchemaReference)
 	ctx.Step(`^the "(JSON)" node "([^"]*)" should be valid according to schema:$`, scenario.IValidateNodeWithSchemaString)
 
