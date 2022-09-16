@@ -11,7 +11,7 @@ that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax
 This project **shorten initial development phase** and allows to quickly bootstrap e2e test framework with **plenty of
 utility methods**. Just grab it and write tests right away using provided steps!
 
-![features](./assets/png/features.png)
+![features](./assets/svg/features.svg)
 
 ## Documentation
 
