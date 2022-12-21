@@ -225,7 +225,7 @@ func (s *Scenario) TheNodeShouldOrShouldNotBeSliceOfLength(dataFormat, exprTempl
 
 // TheNodeShouldOrShouldNotBe checks whether node from last response body is/is not of provided type
 // goType may be one of: nil, string, int, float, bool, map, slice
-// expr should be valid according to injected PathResolver
+// expr should be valid according to injected PathResolver.
 func (s *Scenario) TheNodeShouldOrShouldNotBe(dataFormat, exprTemplate, not, goType string) error {
 	if len(not) > 0 {
 		return s.APIContext.AssertNodeIsNotType(format.DataFormat(dataFormat), exprTemplate, types.DataType(goType))
