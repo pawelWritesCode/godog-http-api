@@ -23,7 +23,7 @@ assets_dir=./assets
 # image_tag represents default tag name for docker image
 image_tag=godog-http-api
 
-all: build env tests-using-docker
+all: env download-dependencies build
 
 # env creates .env file and populates it with default values
 env:
@@ -32,11 +32,14 @@ env:
 	GODOG_MY_APP_URL=${GODOG_MY_APP_URL}\n\
 	GODOG_JSON_SCHEMA_DIR=${GODOG_JSON_SCHEMA_DIR}" > .env
 
-
 # download-dependencies download go packages and godog binary
 download-dependencies:
 	go mod download
 	go install github.com/cucumber/godog/cmd/godog@v0.12.6
+
+# build builds docker image from Dockerfile and tags it
+build:
+	docker build -t ${image_tag} .
 
 # clean removes directories with binaries, git repository, github actions workflow and test suite
 clean:
@@ -46,7 +49,7 @@ clean:
 	rm -rf ${features_dir}
 	rm ${gitignore_path}
 
-# tests-using-host demonstrates how tests can be run using host OS
+# tests-using-host demonstrates how tests can be run using godog binary on host side
 # command runs all tests from features/httpbin/* directory
 tests-using-host:
 	godog --format=progress --concurrency=2 --random ${features_dir}/httpbin
@@ -85,6 +88,3 @@ tests-using-compose:
 down:
 	sudo docker compose down --remove-orphans
 
-# build builds docker image from Dockerfile and tags it
-build:
-	docker build -t ${image_tag} .

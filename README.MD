@@ -11,6 +11,19 @@ that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax
 This project **shorten initial development phase** and allows to quickly bootstrap e2e test framework with **plenty of
 utility methods**. Just grab it and write tests right away using provided steps!
 
+## Quickstart
+**Note**: Some users may require to run some commands with `sudo`
+```shell
+git clone https://github.com/pawelWritesCode/godog-http-api.git && cd godog-http-api
+make all
+```
+Afterwards you can run tests using 3 distinct ways
+```shell
+make tests-using-host
+make tests-using-docker
+make tests-using-compose
+```
+
 ![features](./assets/svg/features.svg)
 
 ## Documentation
