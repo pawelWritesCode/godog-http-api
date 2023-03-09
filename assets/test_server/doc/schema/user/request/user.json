@@ -1,0 +1,21 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "post user",
+	"description": "post user",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"firstName": {
+			"type": "string",
+			"example": "John"
+		},
+		"lastName": {
+			"type": "string",
+			"example": "Doe"
+		},
+		"age": {
+			"type": "integer",
+			"example": 10
+		}
+	}
+}

@@ -1,0 +1,43 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "get user",
+	"description": "get user",
+	"type": "object",
+	"additionalProperties": false,
+	"xml": {
+		"name": "user"
+	},
+	"properties": {
+		"id": {
+			"type": "integer",
+			"format": "int64",
+			"example": 34
+		},
+		"firstName": {
+			"type": "string",
+			"example": "John"
+		},
+		"lastName": {
+			"type": "string",
+			"example": "Doe"
+		},
+		"age": {
+			"type": "integer",
+			"example": 10
+		},
+		"description": {
+			"type": "string",
+			"example": "Doe"
+		},
+		"friendSince": {
+			"type": "string",
+			"format": "date-time",
+			"example": "2018-11-13T20:20:39+00:00Z",
+			"nullable": true
+		},
+		"avatar": {
+			"type": "string",
+			"nullable": true
+		}
+	}
+}

@@ -1,0 +1,46 @@
+# This compose file declares simple two service stack for demonstration purposes.
+#
+# user-crud service contains web server that allows to make simple CRUD operations for User entity
+# godog-tests service runs tests related to server within user-crud service.
+#
+# Please use "make tests-using-compose" declared in Makefile to run stack.
+#
+# note, that godog-tests service has defined profile "tests".
+# That implies when you simply run "docker compose up" godog-tests service won't start.
+# It is desirable feature as not always developer want to run tests when he turns up stack.
+# That is why you need to add "--profile tests" flag whenever you also want to run service that will run tests.
+
+services:
+  user-crud:
+    image: pawelwritescode/user-crud
+    container_name: pawelWritesCode.godog-http-api.user-crud.server
+    expose:
+      - "1234"
+    ports:
+      - "1234:1234"
+    networks:
+      - test-network
+
+  godog-tests:
+    container_name: pawelWritesCode.godog-http-api.tests
+    build:
+      context: .
+    # here we override default CMD directive from Dockerfile because we limit tests only to those related to user-crud
+    command: run features/test_server --random --concurrency=2 --format=progress
+    environment:
+      - GODOG_DEBUG=${GODOG_DEBUG}
+      - GODOG_MY_APP_URL=http://user-crud:1234
+      - GODOG_JSON_SCHEMA_DIR=${GODOG_JSON_SCHEMA_DIR}
+    volumes:
+      - type: bind
+        source: .
+        target: /godog-http-api
+    depends_on:
+      - user-crud
+    profiles:
+      - tests
+    networks:
+      - test-network
+
+networks:
+  test-network:
