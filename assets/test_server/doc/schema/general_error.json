@@ -1,12 +1,12 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "general error",
-    "description": "general error",
-    "type": "object",
-    "additionalProperties": false,
-    "properties": {
-        "error": {
-            "type": "string"
-        }
-    }
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"title": "general error",
+	"description": "general error",
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"error": {
+			"type": "string"
+		}
+	}
 }

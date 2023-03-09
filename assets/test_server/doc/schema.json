@@ -1,477 +1,477 @@
 {
-    "openapi": "3.0.1",
-    "info": {
-        "title": "User CRUD",
-        "description": "This is a sample server with CRUD for user.",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "url": "www.github.com/pawelWritesCode"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
-        "version": "1.0.0"
-    },
-    "externalDocs": {
-        "description": "Find out more about Swagger",
-        "url": "http://swagger.io"
-    },
-    "servers": [
-        {
-            "url": "http://localhost:1234"
-        }
-    ],
-    "tags": [
-        {
-            "name": "user",
-            "description": "Operations about user"
-        }
-    ],
-    "paths": {
-        "/users": {
-            "post": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Create user",
-                "parameters": [
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "description": "response body format",
-                        "required": false,
-                        "schema": {
-                            "enum": ["json", "xml", "yaml"]
-                        }
-                    }
-                ],
-                "description": "Creation of new user.",
-                "operationId": "create_user",
-                "requestBody": {
-                    "description": "Created user object",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/POSTUser"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successfully created user",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GETUser"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GETUser"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GETUser"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error_xml"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Get user by user name",
-                "operationId": "get_users_list",
-                "parameters": [
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "description": "response body format",
-                        "required": false,
-                        "schema": {
-                            "enum": ["json", "xml", "yaml"]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/GETUser"
-                                    }
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "type": "array",
-                                    "xml": {
-                                        "wrapped": true,
-                                        "name": "users"
-                                    },
-                                    "items": {
-                                        "$ref": "#/components/schemas/GETUser"
-                                    }
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/GETUser"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/user/{userId}": {
-            "get": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Get user by user name",
-                "operationId": "get_user",
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "Id of user",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "description": "response body format",
-                        "required": false,
-                        "schema": {
-                            "enum": ["json", "xml", "yaml"]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "successful operation",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GETUser"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GETUser"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GETUser"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "user of given userId not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error_xml"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Replace user",
-                "description": "Replace user",
-                "operationId": "replace_user",
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "Id of user",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "description": "response body format",
-                        "required": false,
-                        "schema": {
-                            "enum": ["json", "xml", "yaml"]
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Updated user object",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/POSTUser"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "Successfully replaced user",
-                        "content": {}
-                    },
-                    "400": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error_xml"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "user"
-                ],
-                "summary": "Delete user",
-                "description": "Delete user by id",
-                "operationId": "delete_user",
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "Id of user",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "description": "response body format",
-                        "required": false,
-                        "schema": {
-                            "enum": ["json", "xml", "yaml"]
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "User removed",
-                        "content": {}
-                    },
-                    "400": {
-                        "description": "error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error_xml"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/user/{userId}/avatar": {
-            "post": {
-                "tags": ["user"],
-                "summary": "Send avatar for user",
-                "operationId": "post_avatar",
-                "parameters": [
-                    {
-                        "name": "userId",
-                        "in": "path",
-                        "description": "Id of user",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "description": "response body format",
-                        "required": false,
-                        "schema": {
-                            "enum": ["json", "xml", "yaml"]
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "my-photo.png"
-                                    },
-                                    "avatar": {
-                                        "type": "string",
-                                        "format": "binary"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "successfully added avatar"
-                    },
-                    "400": {
-                        "description": "bad request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error_xml"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "user of given userId was not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error_xml"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "internal server error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/x-yaml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error"
-                                }
-                            },
-                            "application/xml": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/general_error_xml"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "GETUser": {
-                "$ref": "./schema/user/user.json"
-            },
-            "POSTUser": {
-                "$ref": "./schema/user/post_user.json"
-            },
-            "general_error": {
-                "$ref": "./schema/general_error.json"
-            },
-            "general_error_xml": {
-                "$ref": "./schema/general_error_xml.json"
-            }
-        }
-    }
+	"openapi": "3.0.1",
+	"info": {
+		"title": "User CRUD",
+		"description": "This is a sample server with CRUD for user.",
+		"termsOfService": "http://swagger.io/terms/",
+		"contact": {
+			"url": "www.github.com/pawelWritesCode"
+		},
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		},
+		"version": "1.0.0"
+	},
+	"externalDocs": {
+		"description": "Find out more about Swagger",
+		"url": "http://swagger.io"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:1234"
+		}
+	],
+	"tags": [
+		{
+			"name": "user",
+			"description": "Operations about user"
+		}
+	],
+	"paths": {
+		"/users": {
+			"post": {
+				"tags": [
+					"user"
+				],
+				"summary": "Create user",
+				"parameters": [
+					{
+						"name": "format",
+						"in": "query",
+						"description": "response body format",
+						"required": false,
+						"schema": {
+							"enum": ["json", "xml", "yaml"]
+						}
+					}
+				],
+				"description": "Creation of new user.",
+				"operationId": "create_user",
+				"requestBody": {
+					"description": "Created user object",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/POSTUser"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successfully created user",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GETUser"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/GETUser"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/GETUser"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error_xml"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"tags": [
+					"user"
+				],
+				"summary": "Get user by user name",
+				"operationId": "get_users_list",
+				"parameters": [
+					{
+						"name": "format",
+						"in": "query",
+						"description": "response body format",
+						"required": false,
+						"schema": {
+							"enum": ["json", "xml", "yaml"]
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/GETUser"
+									}
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"type": "array",
+									"xml": {
+										"wrapped": true,
+										"name": "users"
+									},
+									"items": {
+										"$ref": "#/components/schemas/GETUser"
+									}
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/GETUser"
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/{userId}": {
+			"get": {
+				"tags": [
+					"user"
+				],
+				"summary": "Get user by user name",
+				"operationId": "get_user",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"description": "Id of user",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"name": "format",
+						"in": "query",
+						"description": "response body format",
+						"required": false,
+						"schema": {
+							"enum": ["json", "xml", "yaml"]
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "successful operation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GETUser"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/GETUser"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/GETUser"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "user of given userId not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error_xml"
+								}
+							}
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"user"
+				],
+				"summary": "Replace user",
+				"description": "Replace user",
+				"operationId": "replace_user",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"description": "Id of user",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"name": "format",
+						"in": "query",
+						"description": "response body format",
+						"required": false,
+						"schema": {
+							"enum": ["json", "xml", "yaml"]
+						}
+					}
+				],
+				"requestBody": {
+					"description": "Updated user object",
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/POSTUser"
+							}
+						}
+					},
+					"required": true
+				},
+				"responses": {
+					"200": {
+						"description": "Successfully replaced user",
+						"content": {}
+					},
+					"400": {
+						"description": "Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error_xml"
+								}
+							}
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": [
+					"user"
+				],
+				"summary": "Delete user",
+				"description": "Delete user by id",
+				"operationId": "delete_user",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"description": "Id of user",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"name": "format",
+						"in": "query",
+						"description": "response body format",
+						"required": false,
+						"schema": {
+							"enum": ["json", "xml", "yaml"]
+						}
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "User removed",
+						"content": {}
+					},
+					"400": {
+						"description": "error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error_xml"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user/{userId}/avatar": {
+			"post": {
+				"tags": ["user"],
+				"summary": "Send avatar for user",
+				"operationId": "post_avatar",
+				"parameters": [
+					{
+						"name": "userId",
+						"in": "path",
+						"description": "Id of user",
+						"required": true,
+						"schema": {
+							"type": "integer"
+						}
+					},
+					{
+						"name": "format",
+						"in": "query",
+						"description": "response body format",
+						"required": false,
+						"schema": {
+							"enum": ["json", "xml", "yaml"]
+						}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string",
+										"example": "my-photo.png"
+									},
+									"avatar": {
+										"type": "string",
+										"format": "binary"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "successfully added avatar"
+					},
+					"400": {
+						"description": "bad request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error_xml"
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "user of given userId was not found",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error_xml"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "internal server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/x-yaml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error"
+								}
+							},
+							"application/xml": {
+								"schema": {
+									"$ref": "#/components/schemas/general_error_xml"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"GETUser": {
+				"$ref": "./schema/user/response/user.json"
+			},
+			"POSTUser": {
+				"$ref": "./schema/user/request/user.json"
+			},
+			"general_error": {
+				"$ref": "./schema/general_error.json"
+			},
+			"general_error_xml": {
+				"$ref": "./schema/general_error_xml.json"
+			}
+		}
+	}
 }
