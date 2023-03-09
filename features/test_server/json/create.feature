@@ -1,5 +1,7 @@
 Feature: Adding new user
-  User's CRUD API binary and it's documentation can be found in assets/test_server/ dir. It is web server with endpoints
+  Web server binary and it's documentation can be found in assets/test_server/ dir.
+  Server contains following endpoints:
+  - GET     /alive                  - healthcheck
   - POST    /users                  - creates new user
   - GET     /users                  - retrieve all users
   - GET     /users/{user_id}        - retrieve user by user_id
@@ -58,15 +60,15 @@ Feature: Adding new user
     And I wait "2ms"
 
     #---------------------------------------------------------------------------------------------------
-    # We validate response body with schema from assets/test_server/doc/schema/user/user.json
-    # step argument may be: relative (see .env variable GODOG_JSON_SCHEMA_DIR), full OS path, URL or raw schema definition
-    And the response body should be valid according to schema "user/user.json"
-    And the response body should be valid according to schema "{{.CWD}}/assets/test_server/doc/schema/user/user.json"
-    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-http-api/main/assets/test_server/doc/schema/user/user.json"
+    # We validate response body with schema from assets/test_server/doc/schema/user/response/user.json
+    # step argument may be: relative|full OS path, URL or raw schema definition
+    # relativity is obtained through env variable GODOG_JSON_SCHEMA_DIR
+    And the response body should be valid according to schema "user/response/user.json"
+    And the response body should be valid according to schema "{{.CWD}}/assets/test_server/doc/schema/user/response/user.json"
+    And the response body should be valid according to schema "https://raw.githubusercontent.com/pawelWritesCode/godog-http-api/main/assets/test_server/doc/schema/user/response/user.json"
     And the response body should be valid according to schema:
     """
     {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "title": "create user",
         "description": "Valid response from create user endpoint",
         "type": "object"
@@ -76,35 +78,35 @@ Feature: Adding new user
     And the "JSON" node "firstName" should be valid according to schema:
     """
     {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
         "title": "first name",
         "type": "string"
     }
     """
-    # here are used three different json-path engines (tidwall/gjson & oliveagle/jsonpath & antchfx/jsonquery) to find nodes
+    # querying JSON nodes in any step may be done using three different json-path engines
+    # tidwall/gjson or oliveagle/jsonpath or antchfx/jsonquery
     And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the "JSON" node "$.lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
     And the "JSON" node "//lastName" should be "string" of value "doe-{{.RANDOM_LAST_NAME}}"
 
-    # here we look for substrings
+    # you can look for substrings
     And the "JSON" node "$.lastName" should not contain sub string "smith"
-    But the "JSON" node "$.lastName" should contain sub string "doe"
+    But the "JSON" node "lastName" should contain sub string "doe"
 
-    # here is used regExp acceptable by standard go package "regExp"
+    # this step uses regExp acceptable by standard go package "regExp"
     And the "JSON" node "lastName" should not match regExp "smith-.*"
-    But the "JSON" node "lastName" should match regExp "doe-.*"
+    But the "JSON" node "//lastName" should match regExp "doe-.*"
 
-    # in this case, assertion may be based on one of JSON data types: array, boolean, null, number, object
+    # assertion may be based on one of JSON data types: array, boolean, null, number, object
     And the "JSON" node "age" should not be "string"
     But the "JSON" node "$.age" should be "number"
     And the "JSON" node "$.age" should be "number" and contain one of values "18, 19, 20"
 
-    # or on one of Go-like data types: bool, float, int, map, slice, string
+    # assertion may be based on one of Go-like data types: bool, float, int, map, slice, string
     But the "JSON" node "$.age" should be "int"
     And the "JSON" node "age" should be "int" of value "{{.RANDOM_AGE}}"
     And the "JSON" node "description" should be "string" of value "{{.RANDOM_DESCRIPTION}}"
 
-    # here date is formatted according to one of available formats from standard go package "time"
+    # date can be formatted according to one of available formats from standard go package "time"
     And the "JSON" node "friendSince" should be "string" of value "{{.MEET_DATE.Format `2006-01-02T15:04:05Z`}}"
 
   Scenario: Successfully create user v2.
@@ -153,7 +155,7 @@ Feature: Adding new user
     """
     #---------------------------------------------------------------------------------------------------
     # Finally, we send prepared request "CREATE_USER".
-    # Uncommenting lines next to step "I send request "CREATE_USER" will turn on debug mode for a while.
+    # Uncommenting lines next to step 'I send request "CREATE_USER"' will turn on debug mode for a while.
 
 #    Given I start debug mode
     When I send request "CREATE_USER"
@@ -165,7 +167,7 @@ Feature: Adding new user
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
 
   Scenario: Unsuccessful attempt to create new user due to invalid request body
     As application user

@@ -34,7 +34,7 @@ var opt = godog.Options{Output: colors.Colored(os.Stdout), Format: "progress", R
 
 func init() {
 	godog.BindCommandLineFlags("godog.", &opt)
-	checkErr(godotenv.Load()) // loading environment variables from .env file
+	godotenv.Load() // loading environment variables from .env file
 }
 
 func TestMain(m *testing.M) {

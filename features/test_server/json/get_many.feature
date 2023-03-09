@@ -35,7 +35,7 @@ Feature: Fetching many users.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
 
     #---------------------------------------------------------------------------------------------------
     # We generate second user's data
@@ -66,7 +66,7 @@ Feature: Fetching many users.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
 
     #---------------------------------------------------------------------------------------------------
     # We send HTTP(s) request to fetch all users.

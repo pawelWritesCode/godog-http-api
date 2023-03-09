@@ -35,7 +35,7 @@ Feature: Replacing single user account.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
     And I save from the last response "JSON" node "id" as "USER_ID"
 
     #---------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ Feature: Replacing single user account.
     Then the response status code should be 200
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
     And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the "JSON" node "lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the "JSON" node "age" should be "number" of value "{{.RANDOM_AGE}}"
@@ -104,7 +104,7 @@ Feature: Replacing single user account.
     Then the response status code should be 200
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
     And the "JSON" node "firstName" should be "string" of value "{{.NEW_USER_RANDOM_FIRST_NAME}}"
     And the "JSON" node "lastName" should be "string" of value "{{.NEW_USER_RANDOM_LAST_NAME}}"
     And the "JSON" node "age" should be "number" of value "{{.NEW_USER_RANDOM_AGE}}"
@@ -137,7 +137,7 @@ Feature: Replacing single user account.
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
     And I save from the last response "JSON" node "id" as "USER_ID"
 
     #---------------------------------------------------------------------------------------------------
@@ -182,7 +182,7 @@ Feature: Replacing single user account.
     Then the response status code should be 200
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
     And the "JSON" node "firstName" should be "string" of value "{{.RANDOM_FIRST_NAME}}"
     And the "JSON" node "lastName" should be "string" of value "{{.RANDOM_LAST_NAME}}"
     And the "JSON" node "age" should be "number" of value "{{.RANDOM_AGE}}"

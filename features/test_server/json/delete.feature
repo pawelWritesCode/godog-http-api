@@ -33,7 +33,7 @@ Feature: Removing user
     Then the response status code should be 201
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
     And I save from the last response "JSON" node "id" as "USER_ID"
 
     #---------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ Feature: Removing user
     And the response should have header "Content-Type" of value "application/json; charset=UTF-8"
     And the response body should have format "JSON"
     And time between last request and response should be less than or equal to "2s"
-    And the response body should be valid according to schema "user/user.json"
+    And the response body should be valid according to schema "user/response/user.json"
 
     #---------------------------------------------------------------------------------------------------
     # We send HTTP(s) request to delete user of id hold under cache key "USER_ID"
