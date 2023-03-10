@@ -8,9 +8,9 @@ import (
 	"time"
 
 	"github.com/cucumber/godog"
+	ch "github.com/pawelWritesCode/charset"
+	"github.com/pawelWritesCode/df"
 	"github.com/pawelWritesCode/gdutils"
-	"github.com/pawelWritesCode/gdutils/pkg/format"
-	"github.com/pawelWritesCode/gdutils/pkg/stringutils"
 	"github.com/pawelWritesCode/gdutils/pkg/timeutils"
 	"github.com/pawelWritesCode/gdutils/pkg/types"
 )
@@ -28,19 +28,19 @@ func (s *Scenario) IGenerateARandomRunesOfLengthWithCharactersAndSaveItAs(from, 
 
 	switch strings.ToLower(charset) {
 	case "ascii":
-		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetASCII)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(ch.ASCII)
 	case "unicode":
-		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetUnicode)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(ch.Unicode)
 	case "polish":
-		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetPolish)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(ch.Polish)
 	case "english":
-		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetEnglish)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(ch.English)
 	case "russian":
-		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetRussian)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(ch.Russian)
 	case "japanese":
-		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetJapanese)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(ch.Japanese)
 	case "emoji":
-		generateWordFunc = s.APIContext.GeneratorRandomRunes(stringutils.CharsetEmoji)
+		generateWordFunc = s.APIContext.GeneratorRandomRunes(ch.Emoji)
 	default:
 		return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian, japanese, emoji", charset)
 	}
@@ -68,19 +68,19 @@ func (s *Scenario) IGenerateARandomSentenceInTheRangeFromToWordsAndSaveItAs(minW
 		var generateSentenceFunc func(from, to int, cacheKey string) error
 		switch strings.ToLower(charset) {
 		case "ascii":
-			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetASCII, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(ch.ASCII, minWordLength, maxWordLength)
 		case "unicode":
-			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetUnicode, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(ch.Unicode, minWordLength, maxWordLength)
 		case "polish":
-			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetPolish, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(ch.Polish, minWordLength, maxWordLength)
 		case "english":
-			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetEnglish, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(ch.English, minWordLength, maxWordLength)
 		case "russian":
-			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetRussian, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(ch.Russian, minWordLength, maxWordLength)
 		case "japanese":
-			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetJapanese, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(ch.Japanese, minWordLength, maxWordLength)
 		case "emoji":
-			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(stringutils.CharsetEmoji, minWordLength, maxWordLength)
+			generateSentenceFunc = s.APIContext.GeneratorRandomSentence(ch.Emoji, minWordLength, maxWordLength)
 		default:
 			return fmt.Errorf("unknown charset '%s', available: ascii, unicode, polish, english, russian, japanese, emoji", charset)
 		}
@@ -183,44 +183,44 @@ func (s *Scenario) TheResponseStatusCodeShouldOrShouldNotBe(not string, code int
 // expr should be valid according to injected PathFinder for given data format
 func (s *Scenario) TheResponseShouldOrShouldNotHaveNode(dataFormat, not, exprTemplate string) error {
 	if len(not) > 0 {
-		return s.APIContext.AssertNodeNotExists(format.DataFormat(dataFormat), exprTemplate)
+		return s.APIContext.AssertNodeNotExists(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate)
 	}
 
-	return s.APIContext.AssertNodeExists(format.DataFormat(dataFormat), exprTemplate)
+	return s.APIContext.AssertNodeExists(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate)
 }
 
 // TheNodeShouldBeOfValue compares node value from expression to expected by user dataValue of given by user dataType
 // Available data types are listed in switch section in each case directive.
 // expr should be valid according to injected PathFinder for provided dataFormat.
 func (s *Scenario) TheNodeShouldBeOfValue(dataFormat, exprTemplate, dataType, dataValue string) error {
-	return s.APIContext.AssertNodeIsTypeAndValue(format.DataFormat(dataFormat), exprTemplate, types.DataType(dataType), dataValue)
+	return s.APIContext.AssertNodeIsTypeAndValue(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, types.DataType(dataType), dataValue)
 }
 
 // TheNodeShouldBeOfValues compares node value from expression to expected by user one of values of given by user dataType
 // Available data types are listed in switch section in each case directive.
 // expr should be valid according to injected PathFinder for provided dataFormat.
 func (s *Scenario) TheNodeShouldBeOfValues(dataFormat, exprTemplate, dataType, valuesTemplates string) error {
-	return s.APIContext.AssertNodeIsTypeAndHasOneOfValues(format.DataFormat(dataFormat), exprTemplate, types.DataType(dataType), valuesTemplates)
+	return s.APIContext.AssertNodeIsTypeAndHasOneOfValues(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, types.DataType(dataType), valuesTemplates)
 }
 
 // TheNodeShouldOrShouldNotContainSubString checks whether value of last HTTP response node, obtained using exprTemplate
 // is string type and contains/doesn't contain given substring
 func (s *Scenario) TheNodeShouldOrShouldNotContainSubString(dataFormat, exprTemplate, not, subTemplate string) error {
 	if len(not) > 0 {
-		return s.APIContext.AssertNodeNotContainsSubString(format.DataFormat(dataFormat), exprTemplate, subTemplate)
+		return s.APIContext.AssertNodeNotContainsSubString(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, subTemplate)
 	}
 
-	return s.APIContext.AssertNodeContainsSubString(format.DataFormat(dataFormat), exprTemplate, subTemplate)
+	return s.APIContext.AssertNodeContainsSubString(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, subTemplate)
 }
 
 // TheNodeShouldOrShouldNotBeSliceOfLength checks whether given key is slice and has/hasn't given length
 // expr should be valid according to injected PathFinder for provided dataFormat
 func (s *Scenario) TheNodeShouldOrShouldNotBeSliceOfLength(dataFormat, exprTemplate, not string, length int) error {
 	if len(not) > 0 {
-		return s.APIContext.AssertNodeSliceLengthIsNot(format.DataFormat(dataFormat), exprTemplate, length)
+		return s.APIContext.AssertNodeSliceLengthIsNot(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, length)
 	}
 
-	return s.APIContext.AssertNodeSliceLengthIs(format.DataFormat(dataFormat), exprTemplate, length)
+	return s.APIContext.AssertNodeSliceLengthIs(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, length)
 }
 
 // TheNodeShouldOrShouldNotBe checks whether node from last response body is/is not of provided type
@@ -228,35 +228,35 @@ func (s *Scenario) TheNodeShouldOrShouldNotBeSliceOfLength(dataFormat, exprTempl
 // expr should be valid according to injected PathResolver.
 func (s *Scenario) TheNodeShouldOrShouldNotBe(dataFormat, exprTemplate, not, goType string) error {
 	if len(not) > 0 {
-		return s.APIContext.AssertNodeIsNotType(format.DataFormat(dataFormat), exprTemplate, types.DataType(goType))
+		return s.APIContext.AssertNodeIsNotType(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, types.DataType(goType))
 	}
 
-	return s.APIContext.AssertNodeIsType(format.DataFormat(dataFormat), exprTemplate, types.DataType(goType))
+	return s.APIContext.AssertNodeIsType(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, types.DataType(goType))
 }
 
 // TheResponseShouldHaveNodes checks whether last request body has keys defined in string separated by comma
 // nodeExpr should be valid according to injected PathFinder expressions separated by comma (,)
 func (s *Scenario) TheResponseShouldHaveNodes(dataFormat, nodesExpr string) error {
-	return s.APIContext.AssertNodesExist(format.DataFormat(dataFormat), nodesExpr)
+	return s.APIContext.AssertNodesExist(df.DataFormat(strings.ToLower(dataFormat)), nodesExpr)
 }
 
 // TheNodeShouldOrShouldNotMatchRegExp checks whether last response body node matches or doesn't match provided regExp.
 func (s *Scenario) TheNodeShouldOrShouldNotMatchRegExp(dataFormat, exprTemplate, not, regExpTemplate string) error {
 	if len(not) > 0 {
-		return s.APIContext.AssertNodeNotMatchesRegExp(format.DataFormat(dataFormat), exprTemplate, regExpTemplate)
+		return s.APIContext.AssertNodeNotMatchesRegExp(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, regExpTemplate)
 	}
 
-	return s.APIContext.AssertNodeMatchesRegExp(format.DataFormat(dataFormat), exprTemplate, regExpTemplate)
+	return s.APIContext.AssertNodeMatchesRegExp(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, regExpTemplate)
 }
 
 // TheResponseBodyShouldOrShouldNotHaveFormat checks whether last response body has given data format.
 // Available data formats are listed in format package.
 func (s *Scenario) TheResponseBodyShouldOrShouldNotHaveFormat(not, dataFormat string) error {
 	if len(not) > 0 {
-		return s.APIContext.AssertResponseFormatIsNot(format.DataFormat(dataFormat))
+		return s.APIContext.AssertResponseFormatIsNot(df.DataFormat(strings.ToLower(dataFormat)))
 	}
 
-	return s.APIContext.AssertResponseFormatIs(format.DataFormat(dataFormat))
+	return s.APIContext.AssertResponseFormatIs(df.DataFormat(strings.ToLower(dataFormat)))
 }
 
 /*
@@ -315,12 +315,12 @@ func (s *Scenario) TheResponseCookieShouldOrShouldNotMatchRegExp(name, not, regE
 
 // IValidateNodeWithSchemaReference validates last response body node against schema as provided in reference
 func (s *Scenario) IValidateNodeWithSchemaReference(dataFormat, exprTemplate, referenceTemplate string) error {
-	return s.APIContext.AssertNodeMatchesSchemaByReference(format.DataFormat(dataFormat), exprTemplate, referenceTemplate)
+	return s.APIContext.AssertNodeMatchesSchemaByReference(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, referenceTemplate)
 }
 
 // IValidateNodeWithSchemaString validates last response body JSON node against schema
 func (s *Scenario) IValidateNodeWithSchemaString(dataFormat, exprTemplate string, schemaTemplate *godog.DocString) error {
-	return s.APIContext.AssertNodeMatchesSchemaByString(format.DataFormat(dataFormat), exprTemplate, schemaTemplate.Content)
+	return s.APIContext.AssertNodeMatchesSchemaByString(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, schemaTemplate.Content)
 }
 
 // ISaveAs saves into cache arbitrary passed value
@@ -335,7 +335,7 @@ func (s *Scenario) ISaveFollowingAs(cacheKey string, data *godog.DocString) erro
 
 // ISaveFromTheLastResponseNodeAs saves from last response json node under given cache key.
 func (s *Scenario) ISaveFromTheLastResponseNodeAs(dataFormat, exprTemplate, cacheKey string) error {
-	return s.APIContext.SaveNode(format.DataFormat(dataFormat), exprTemplate, cacheKey)
+	return s.APIContext.SaveNode(df.DataFormat(strings.ToLower(dataFormat)), exprTemplate, cacheKey)
 }
 
 // ISaveFromTheLastResponseHeaderAs saves from last response header value under given cache key
