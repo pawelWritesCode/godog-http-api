@@ -50,9 +50,9 @@ clean:
 	rm ${gitignore_path}
 
 # tests-using-host demonstrates how tests can be run using godog binary on host side
-# command runs all tests from features/httpbin/* directory
+# command runs all tests from features/7timer/* directory
 tests-using-host:
-	godog --format=progress --concurrency=2 --random ${features_dir}/httpbin
+	godog --format=progress --concurrency=2 --random ${features_dir}/7timer
 
 # tests-using-docker demonstrates how tests can be run using docker
 # command runs tests from features/httpbin/* directory
@@ -86,5 +86,5 @@ tests-using-compose:
 
 # down cleans up containers created by "tests-using-compose" command above
 down:
-	sudo docker compose down --remove-orphans
+	docker compose down --remove-orphans
 
