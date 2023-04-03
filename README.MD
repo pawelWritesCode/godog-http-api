@@ -28,15 +28,7 @@ make tests-using-compose
 
 ## Documentation
 
-See project ![hand pointing right](assets/gifs/hand-pointing-right.gif)  [wiki](https://github.com/pawelWritesCode/godog-http-api/wiki)  ![hand pointing left](assets/gifs/hand-pointing-left.gif) that covers following aspects:
-
-* [Overview](https://github.com/pawelWritesCode/godog-http-api/wiki/Overview) - general information about project,
-* [Project structure](https://github.com/pawelWritesCode/godog-http-api/wiki/Project-structure) - describes repository folder structure,
-* [Setup](https://github.com/pawelWritesCode/godog-http-api/wiki/Set-up) - guide how to bootstrap project on unix-like system,
-* [Steps](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps) - describes each available step and how to use it in tests with examples,
-* [Steps debugging](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-debugging) - guide how to debug tests,
-* [Steps development](https://github.com/pawelWritesCode/godog-http-api/wiki/Steps-development) - guide how to create custom steps(your own) using internal utility services,
-* [Usage](https://github.com/pawelWritesCode/godog-http-api/wiki/Usage) - how to run tests.
+https://pawelwritescode.github.io/godog-http-api.github.io/
 
 ## Example
 
