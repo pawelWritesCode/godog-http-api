@@ -150,4 +150,4 @@ Feature: Adding new user
 
 ## [Available steps](https://github.com/pawelWritesCode/godog-http-api/blob/main/main_test.go#L74)
 
-![steps](./assets/svg/steps.svg)
+![steps](./assets/svg/steps_v2.svg)
