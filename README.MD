@@ -4,8 +4,10 @@
 
 ## Overview:
 
-This repository contains skeleton that allow to write end-2-end tests for HTTP(s) API using [godog](https://github.com/cucumber/godog)
+This repository contains skeleton that allow to write tests for HTTP(s) API using [godog](https://github.com/cucumber/godog)
 that implements 🥒[cucumber/gherkin](https://cucumber.io/docs/gherkin/) syntax with help of [gdutils](https://github.com/pawelWritesCode/gdutils) lib.
+
+![features](./assets/svg/features_v2.svg)
 
 ## Why ?
 This project **shorten initial development phase** and allows to quickly bootstrap e2e test framework with **plenty of
@@ -23,8 +25,6 @@ make tests-using-host
 make tests-using-docker
 make tests-using-compose
 ```
-
-![features](./assets/svg/features.svg)
 
 ## Documentation
 
